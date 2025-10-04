@@ -1,10 +1,15 @@
 import pandas as pd
 
-data = pd.read_csv('database/DOHMH_New_York_City_Restaurant_Inspection_Results_20251004.csv')
+url = "https://data.cityofnewyork.us/resource/43nn-pn8j.csv"
+data = pd.read_csv(url)
 
 def get_restaurant_by_name(name):
-    result = data[data['DBA'].str.contains(name, case=False, na=False)]
-    print(result[['DBA', 'BORO', 'BUILDING', 'STREET', 'CUISINE DESCRIPTION', 'GRADE', 'VIOLATION DESCRIPTION', 'INSPECTION DATE']].head())
+    result = data[data['dba'].str.contains(name, case=False, na=False)].copy()
+    result['grade'] = result['grade'].fillna('Not Recorded')
+    grade_order = ['A', 'B', 'C', 'Not Recorded']
+    result['grade'] = pd.Categorical(result['grade'], categories=grade_order, ordered=True)
+    result = result.sort_values('grade')
+    print(result[['dba', 'boro', 'building', 'street', 'cuisine_description', 'grade', 'violation_description', 'inspection_date']].head(15))
 
 if __name__ == "__main__":
     name = input("Enter restaurant name: ")
