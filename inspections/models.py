@@ -1,11 +1,11 @@
 from django.db import models
 class Restaurant(models.Model):
+    camis = models.CharField(max_length=20, blank=True, default="", db_index=True)  # NYC unique ID
     name = models.CharField(max_length=255, db_index=True)
     address = models.CharField(max_length=255, blank=True, default="")
     city = models.CharField(max_length=64, blank=True, default="")
     state = models.CharField(max_length=2, blank=True, default="")
     zipcode = models.CharField(max_length=10, blank=True, default="")
-
 
     def __str__(self):
         return self.name
