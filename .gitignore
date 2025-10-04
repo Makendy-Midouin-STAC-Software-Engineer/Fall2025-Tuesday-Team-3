@@ -1,5 +1,32 @@
-node_modules/
-dist/
-.env
-.venv/
+# Django / Python
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+db.sqlite3
+
+# Virtual env
+.venv/
+env/
+venv/
+
+# VSCode / IDE
+.vscode/
+.idea/
+
+# Byte-compiled / cache
+*.egg-info/
+*.egg
+*.log
+
+# Migrations cache
+*/migrations/__pycache__/
+
+# Local settings
+*.env
+.env
+
+# Mac / Windows
+.DS_Store
+Thumbs.db
