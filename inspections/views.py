@@ -21,9 +21,12 @@ class RestaurantSearchView(ListAPIView):
         if not q:
             raise ValidationError({"detail": "q is required"})
 
-        # Subquery for the most recent inspection for each restaurant
+        # Subquery for the most recent GRADED inspection for each restaurant
+        # If no graded inspection exists, annotations below will be null/empty
         latest_qs = (
-            Inspection.objects.filter(restaurant=OuterRef("pk"))
+            Inspection.objects
+            .filter(restaurant=OuterRef("pk"))
+            .exclude(grade="")
             .order_by("-date")
             .values("date", "grade", "score", "summary")[:1]
         )
