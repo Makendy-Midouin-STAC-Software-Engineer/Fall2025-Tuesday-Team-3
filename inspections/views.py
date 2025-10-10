@@ -1,8 +1,8 @@
 # Create your views here.
 from django.db.models import OuterRef, Subquery
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
-from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError, NotFound
 
 from .models import Restaurant, Inspection
 from .serializers import RestaurantSearchSerializer
@@ -71,3 +71,52 @@ class RestaurantSearchView(ListAPIView):
             return self.get_paginated_response(serialize(page))
 
         return Response(serialize(queryset))
+
+
+class RestaurantDetailView(RetrieveAPIView):
+    """
+    GET /api/restaurants/{id}/
+    Returns detailed information about a specific restaurant including all inspections.
+    """
+    serializer_class = RestaurantSearchSerializer
+
+    def get_queryset(self):
+        return Restaurant.objects.all()
+
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            restaurant = self.get_object()
+            
+            # Get all inspections for this restaurant, ordered by date (most recent first)
+            inspections = Inspection.objects.filter(restaurant=restaurant).order_by('-date')
+            
+            # Prepare inspection data
+            inspections_data = []
+            for inspection in inspections:
+                inspections_data.append({
+                    'id': inspection.id,
+                    'date': inspection.date,
+                    'grade': inspection.grade,
+                    'score': inspection.score,
+                    'summary': inspection.summary,
+                })
+            
+            # Prepare restaurant data
+            data = {
+                'id': restaurant.id,
+                'camis': restaurant.camis,
+                'name': restaurant.name,
+                'address': restaurant.address,
+                'city': restaurant.city,
+                'state': restaurant.state,
+                'zipcode': restaurant.zipcode,
+                'full_address': f"{restaurant.address}, {restaurant.city}, {restaurant.state} {restaurant.zipcode}".strip(', '),
+                'inspections': inspections_data,
+                'total_inspections': len(inspections_data),
+                'latest_inspection': inspections_data[0] if inspections_data else None,
+            }
+            
+            return Response(data)
+            
+        except Restaurant.DoesNotExist:
+            raise NotFound("Restaurant not found")
