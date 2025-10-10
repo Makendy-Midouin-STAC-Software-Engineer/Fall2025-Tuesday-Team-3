@@ -1,11 +1,12 @@
 # Create your views here.
-from django.db.models import OuterRef, Subquery
-from rest_framework.generics import ListAPIView
+from django.db.models import OuterRef, Subquery, Prefetch
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
+import datetime
 
 from .models import Restaurant, Inspection
-from .serializers import RestaurantSearchSerializer
+from .serializers import RestaurantSearchSerializer, RestaurantDetailSerializer
 
 
 class RestaurantSearchView(ListAPIView):
@@ -31,7 +32,6 @@ class RestaurantSearchView(ListAPIView):
             .values("date", "grade", "score", "summary")[:1]
         )
 
-        # Annotate fields directly so the serializer can read them
         return (
             Restaurant.objects.filter(name__icontains=q)
             .annotate(
@@ -44,7 +44,6 @@ class RestaurantSearchView(ListAPIView):
         )
 
     def list(self, request, *args, **kwargs):
-        # Run parent ListAPIView logic, but map annotations into nested field
         queryset = self.filter_queryset(self.get_queryset())
 
         page = self.paginate_queryset(queryset)
@@ -71,3 +70,20 @@ class RestaurantSearchView(ListAPIView):
             return self.get_paginated_response(serialize(page))
 
         return Response(serialize(queryset))
+
+
+class RestaurantDetailView(RetrieveAPIView):
+    """
+    GET /api/restaurants/<id>/
+    Returns full details and inspection history for one restaurant.
+    """
+    serializer_class = RestaurantDetailSerializer
+    
+    def get_queryset(self):
+        # Filter inspections to only include last 5 years
+        cutoff_date = datetime.date(2021, 1, 1)
+        recent_inspections = Inspection.objects.filter(date__gte=cutoff_date)
+        
+        return Restaurant.objects.prefetch_related(
+            Prefetch('inspections', queryset=recent_inspections)
+        )

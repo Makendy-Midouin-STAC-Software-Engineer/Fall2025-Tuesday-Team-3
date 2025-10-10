@@ -20,5 +20,15 @@ class Inspection(models.Model):
     score = models.PositiveIntegerField(null=True, blank=True)
     summary = models.TextField(blank=True, default="")
 
+    class Meta:
+        ordering = ['-date']  # Most recent first
+        # Prevent duplicate inspections
+        constraints = [
+            models.UniqueConstraint(
+                fields=['restaurant', 'date', 'grade', 'summary'],
+                name='unique_inspection'
+            )
+        ]
+
     def __str__(self):
         return f"{self.restaurant.name} ({self.date})"

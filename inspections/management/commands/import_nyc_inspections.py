@@ -9,7 +9,7 @@ from django.core.management.base import BaseCommand, CommandError
 from inspections.models import Restaurant, Inspection
 
 SODA_URL = "https://data.cityofnewyork.us/resource/43nn-pn8j.json"
-PAGE_SIZE = 5000
+PAGE_SIZE = 50000  # NYC API max limit
 
 def norm(s: Any) -> str:
     return (s or "").strip()
@@ -18,7 +18,7 @@ class Command(BaseCommand):
     help = "Import NYC restaurant inspections into local DB."
 
     def add_arguments(self, parser):
-        parser.add_argument("--limit", type=int, default=20000, help="Max rows to import for this run (for demo).")
+        parser.add_argument("--limit", type=int, default=999999999, help="Max rows to import for this run.")
         parser.add_argument("--since", type=str, help="YYYY-MM-DD to import records with inspection_date >= since.")
         parser.add_argument("--token", type=str, help="Socrata app token (optional).")
 
@@ -60,6 +60,7 @@ class Command(BaseCommand):
     def _ingest(self, rows):
         # Cache/lookup to avoid repeated queries per batch
         restaurant_cache: Dict[str, Restaurant] = {}
+        inspections_to_create = []
 
         for row in rows:
             camis = norm(row.get("camis"))
@@ -72,6 +73,7 @@ class Command(BaseCommand):
             grade = norm(row.get("grade"))
             violation_desc = norm(row.get("violation_description"))
             date_str = norm(row.get("inspection_date"))
+            score_val = row.get("score")
 
             # Parse date
             insp_date = None
@@ -81,6 +83,14 @@ class Command(BaseCommand):
                     insp_date = dt.date.fromisoformat(date_str.split("T")[0])
                 except ValueError:
                     insp_date = None
+
+            # Parse score
+            score = None
+            if score_val:
+                try:
+                    score = int(score_val)
+                except (ValueError, TypeError):
+                    pass
 
             # Compose address from NYC fields
             address = " ".join([p for p in [building, street] if p]).strip()
@@ -119,11 +129,17 @@ class Command(BaseCommand):
                     )
                 restaurant_cache[key] = restaurant
 
-            # Create Inspection (no strict de-dup unless you want it)
-            Inspection.objects.create(
-                restaurant=restaurant,
-                date=insp_date or dt.date(1900,1,1),
-                grade=grade,
-                score=None,  # the NYC “score” lives in `score` field; add if you want to parse
-                summary=violation_desc,
+            # Add to bulk list instead of creating one-by-one
+            inspections_to_create.append(
+                Inspection(
+                    restaurant=restaurant,
+                    date=insp_date or dt.date(1900,1,1),
+                    grade=grade,
+                    score=score,
+                    summary=violation_desc,
+                )
             )
+
+        # Bulk create all inspections
+        if inspections_to_create:
+            Inspection.objects.bulk_create(inspections_to_create, batch_size=1000, ignore_conflicts=True)
