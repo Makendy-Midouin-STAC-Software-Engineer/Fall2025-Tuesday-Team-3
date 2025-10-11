@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Restaurant
+from .models import Restaurant, Inspection
 
 
 class InspectionSummarySerializer(serializers.Serializer):
@@ -23,3 +23,18 @@ class RestaurantSearchSerializer(serializers.ModelSerializer):
             "zipcode",
             "latest_inspection",
         ]
+
+
+# ✨ New detail serializer for restaurant details
+class InspectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Inspection
+        fields = ['date', 'grade', 'score', 'summary']
+
+
+class RestaurantDetailSerializer(serializers.ModelSerializer):
+    inspections = InspectionSerializer(many=True, source='inspection_set')
+
+    class Meta:
+        model = Restaurant
+        fields = ['id', 'name', 'address', 'city', 'state', 'zipcode', 'cuisine', 'inspections']
