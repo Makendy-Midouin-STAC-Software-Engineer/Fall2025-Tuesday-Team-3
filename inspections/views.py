@@ -71,3 +71,40 @@ class RestaurantSearchView(ListAPIView):
             return self.get_paginated_response(serialize(page))
 
         return Response(serialize(queryset))
+
+
+class RestaurantFilterView(ListAPIView):
+    """
+    GET /api/restaurants/filter/?borough=<borough>&cuisine=<cuisine>
+    Returns restaurants filtered by borough and/or cuisine.
+    """
+    serializer_class = RestaurantSearchSerializer
+
+    def get_queryset(self):
+        borough = (self.request.query_params.get("borough") or "").strip()
+        cuisine = (self.request.query_params.get("cuisine") or "").strip()
+
+        queryset = Restaurant.objects.all()
+
+        if borough:
+            queryset = queryset.filter(borough__iexact=borough)
+        if cuisine:
+            queryset = queryset.filter(cuisine_description__icontains=cuisine)
+
+        latest_qs = (
+            Inspection.objects
+            .filter(restaurant=OuterRef("pk"))
+            .exclude(grade="")
+            .order_by("-date")
+            .values("date", "grade", "score", "summary")[:1]
+        )
+
+        return (
+            queryset.annotate(
+                latest_date=Subquery(latest_qs.values("date")),
+                latest_grade=Subquery(latest_qs.values("grade")),
+                latest_score=Subquery(latest_qs.values("score")),
+                latest_summary=Subquery(latest_qs.values("summary")),
+            )
+            .order_by("name")
+        )
