@@ -133,6 +133,12 @@ body {
     gap: 12px;
 }
 
+.badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
 .name {
     font-weight: 700;
 }
