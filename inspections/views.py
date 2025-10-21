@@ -1,5 +1,6 @@
 # Create your views here.
 from django.db.models import OuterRef, Subquery
+from django.db import models
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
@@ -18,27 +19,49 @@ class RestaurantSearchView(ListAPIView):
 
     def get_queryset(self):
         q = (self.request.query_params.get("q") or "").strip()
-        if not q:
-            raise ValidationError({"detail": "q is required"})
+        borough = (self.request.query_params.get("borough") or "").strip()
+        cuisine = (self.request.query_params.get("cuisine") or "").strip()
+        
+        # Allow wildcard search for filter-only searches
+        if q == "*":
+            q = ""
+        
+        if not q and not borough and not cuisine:
+            raise ValidationError({"detail": "At least one search parameter (q, borough, or cuisine) is required"})
 
-        # Subquery for the most recent GRADED inspection for each restaurant
-        # If no graded inspection exists, annotations below will be null/empty
+        # Subquery for the most recent inspection (not just graded)
+        # Filter out placeholder dates (1900-01-01)
         latest_qs = (
             Inspection.objects
             .filter(restaurant=OuterRef("pk"))
-            .exclude(grade="")
+            .exclude(date__year=1900)  # Filter out placeholder dates
             .order_by("-date")
-            .values("date", "grade", "score", "summary")[:1]
+            .values("date", "grade", "score", "summary", "violation_code")[:1]
         )
+
+        # Build base queryset
+        if q:
+            queryset = Restaurant.objects.filter(name__icontains=q)
+        else:
+            queryset = Restaurant.objects.all()
+        
+        # Add borough filter if provided
+        if borough:
+            queryset = queryset.filter(borough__iexact=borough)
+            
+        # Add cuisine filter if provided
+        if cuisine:
+            queryset = queryset.filter(cuisine_description__icontains=cuisine)
 
         # Annotate fields directly so the serializer can read them
         return (
-            Restaurant.objects.filter(name__icontains=q)
+            queryset
             .annotate(
                 latest_date=Subquery(latest_qs.values("date")),
                 latest_grade=Subquery(latest_qs.values("grade")),
                 latest_score=Subquery(latest_qs.values("score")),
                 latest_summary=Subquery(latest_qs.values("summary")),
+                latest_violation_code=Subquery(latest_qs.values("violation_code")),
             )
             .order_by("name")
         )
@@ -58,11 +81,14 @@ class RestaurantSearchView(ListAPIView):
                     "city": r.city,
                     "state": r.state,
                     "zipcode": r.zipcode,
+                    "borough": r.borough,
+                    "cuisine_description": r.cuisine_description,
                     "latest_inspection": {
                         "date": getattr(r, "latest_date", None),
                         "grade": getattr(r, "latest_grade", "") or "",
                         "score": getattr(r, "latest_score", None),
                         "summary": getattr(r, "latest_summary", "") or "",
+                        "violation_code": getattr(r, "latest_violation_code", "") or "",
                     },
                 })
             return data
@@ -77,5 +103,20 @@ class RestaurantDetailView(RetrieveAPIView):
     GET /api/restaurants/<id>/
     Returns full restaurant details including all inspection history.
     """
-    queryset = Restaurant.objects.prefetch_related('inspections')
+    queryset = Restaurant.objects.prefetch_related(
+        models.Prefetch(
+            'inspections',
+            queryset=Inspection.objects.exclude(date__year=1900).order_by('-date')
+        )
+    )
     serializer_class = RestaurantDetailSerializer
+
+
+class BoroughListView(ListAPIView):
+    """
+    GET /api/restaurants/boroughs/
+    Returns list of unique boroughs for filter dropdown.
+    """
+    def get(self, request, *args, **kwargs):
+        boroughs = Restaurant.objects.exclude(borough="").values_list('borough', flat=True).distinct().order_by('borough')
+        return Response(list(boroughs))

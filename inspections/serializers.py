@@ -7,6 +7,7 @@ class InspectionSummarySerializer(serializers.Serializer):
     grade = serializers.CharField(allow_blank=True)
     score = serializers.IntegerField(allow_null=True)
     summary = serializers.CharField(allow_blank=True)
+    violation_code = serializers.CharField(allow_blank=True)
 
 
 class RestaurantSearchSerializer(serializers.ModelSerializer):
@@ -21,6 +22,8 @@ class RestaurantSearchSerializer(serializers.ModelSerializer):
             "city",
             "state",
             "zipcode",
+            "borough",
+            "cuisine_description",
             "latest_inspection",
         ]
 
@@ -29,7 +32,7 @@ class InspectionDetailSerializer(serializers.ModelSerializer):
     """Full inspection details for restaurant detail view"""
     class Meta:
         model = Inspection
-        fields = ["id", "date", "grade", "score", "summary"]
+        fields = ["id", "date", "grade", "score", "summary", "violation_code"]
 
 
 class RestaurantDetailSerializer(serializers.ModelSerializer):
@@ -46,5 +49,7 @@ class RestaurantDetailSerializer(serializers.ModelSerializer):
             "city",
             "state",
             "zipcode",
+            "borough",
+            "cuisine_description",
             "inspections",
         ]
