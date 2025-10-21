@@ -20,5 +20,8 @@ class Inspection(models.Model):
     score = models.PositiveIntegerField(null=True, blank=True)
     summary = models.TextField(blank=True, default="")
 
+    class Meta:
+        ordering = ['-date']  # Most recent first
+
     def __str__(self):
         return f"{self.restaurant.name} ({self.date})"

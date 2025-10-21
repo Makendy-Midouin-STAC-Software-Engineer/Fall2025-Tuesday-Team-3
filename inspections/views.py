@@ -65,49 +65,13 @@ class RestaurantSearchView(ListAPIView):
 
         if page is not None:
             return self.get_paginated_response(serialize(page))
-
         return Response(serialize(queryset))
 
 
 class RestaurantDetailView(RetrieveAPIView):
     """
-    GET /api/restaurants/{id}/
-    Returns detailed information about a specific restaurant including all inspections.
+    GET /api/restaurants/<id>/
+    Returns full restaurant details including all inspection history.
     """
-    queryset = Restaurant.objects.all()
+    queryset = Restaurant.objects.prefetch_related('inspections')
     serializer_class = RestaurantDetailSerializer
-
-    def retrieve(self, request, *args, **kwargs):
-        try:
-            restaurant = self.get_object()
-
-            inspections = Inspection.objects.filter(restaurant=restaurant).order_by('-date')
-            inspections_data = [
-                {
-                    'id': i.id,
-                    'date': i.date,
-                    'grade': i.grade,
-                    'score': i.score,
-                    'summary': i.summary,
-                }
-                for i in inspections
-            ]
-
-            data = {
-                'id': restaurant.id,
-                'camis': getattr(restaurant, 'camis', None),
-                'name': restaurant.name,
-                'address': restaurant.address,
-                'city': restaurant.city,
-                'state': restaurant.state,
-                'zipcode': restaurant.zipcode,
-                'full_address': f"{restaurant.address}, {restaurant.city}, {restaurant.state} {restaurant.zipcode}".strip(', '),
-                'inspections': inspections_data,
-                'total_inspections': len(inspections_data),
-                'latest_inspection': inspections_data[0] if inspections_data else None,
-            }
-
-            return Response(data)
-
-        except Restaurant.DoesNotExist:
-            raise NotFound("Restaurant not found")

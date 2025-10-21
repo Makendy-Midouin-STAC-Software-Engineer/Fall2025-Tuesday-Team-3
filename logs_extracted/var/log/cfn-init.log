@@ -1,0 +1,155 @@
+2025-10-07 02:09:28,413 [INFO] -----------------------Starting build-----------------------
+2025-10-07 02:09:28,418 [INFO] Running configSets: _OnInstanceBoot
+2025-10-07 02:09:28,420 [INFO] Running configSet _OnInstanceBoot
+2025-10-07 02:09:28,422 [INFO] Running config AWSEBBaseConfig
+2025-10-07 02:09:28,698 [INFO] Command clearbackupfiles succeeded
+2025-10-07 02:09:28,702 [INFO] Running config AWSEBCfnHupEndpointOverride
+2025-10-07 02:09:28,706 [INFO] Command clearbackupfiles succeeded
+2025-10-07 02:09:28,707 [INFO] ConfigSets completed
+2025-10-07 02:09:28,708 [INFO] -----------------------Build complete-----------------------
+2025-10-07 02:09:58,165 [INFO] -----------------------Starting build-----------------------
+2025-10-07 02:09:58,170 [INFO] Running configSets: Infra-EmbeddedPreBuild
+2025-10-07 02:09:58,172 [INFO] Running configSet Infra-EmbeddedPreBuild
+2025-10-07 02:09:58,174 [INFO] Running config prebuild_0_safeeats_app
+2025-10-07 02:10:13,659 [ERROR] postgresql-devel is not available to be installed
+2025-10-07 02:10:13,660 [ERROR] Error encountered during build of prebuild_0_safeeats_app: Yum does not have postgresql-devel available for installation
+Traceback (most recent call last):
+  File "/usr/lib/python3.9/site-packages/cfnbootstrap/construction.py", line 579, in run_config
+    CloudFormationCarpenter(config, self._auth_config, self.strict_mode).build(worklog)
+  File "/usr/lib/python3.9/site-packages/cfnbootstrap/construction.py", line 244, in build
+    changes['packages'][manager] = CloudFormationCarpenter._packageTools[manager]().apply(packages,
+  File "/usr/lib/python3.9/site-packages/cfnbootstrap/rpm_tools.py", line 80, in apply
+    raise ToolError("Yum does not have %s available for installation" % pkg_spec)
+cfnbootstrap.construction_errors.ToolError: Yum does not have postgresql-devel available for installation
+2025-10-07 02:10:13,662 [ERROR] -----------------------BUILD FAILED!------------------------
+2025-10-07 02:10:13,662 [ERROR] Unhandled exception during build: Yum does not have postgresql-devel available for installation
+Traceback (most recent call last):
+  File "/opt/aws/bin/cfn-init", line 181, in <module>
+    worklog.build(metadata, configSets, strict_mode)
+  File "/usr/lib/python3.9/site-packages/cfnbootstrap/construction.py", line 137, in build
+    Contractor(metadata, strict_mode).build(configSets, self)
+  File "/usr/lib/python3.9/site-packages/cfnbootstrap/construction.py", line 567, in build
+    self.run_config(config, worklog)
+  File "/usr/lib/python3.9/site-packages/cfnbootstrap/construction.py", line 579, in run_config
+    CloudFormationCarpenter(config, self._auth_config, self.strict_mode).build(worklog)
+  File "/usr/lib/python3.9/site-packages/cfnbootstrap/construction.py", line 244, in build
+    changes['packages'][manager] = CloudFormationCarpenter._packageTools[manager]().apply(packages,
+  File "/usr/lib/python3.9/site-packages/cfnbootstrap/rpm_tools.py", line 80, in apply
+    raise ToolError("Yum does not have %s available for installation" % pkg_spec)
+cfnbootstrap.construction_errors.ToolError: Yum does not have postgresql-devel available for installation
+2025-10-07 02:14:17,432 [INFO] -----------------------Starting build-----------------------
+2025-10-07 02:14:17,437 [INFO] Running configSets: Infra-EmbeddedPreBuild
+2025-10-07 02:14:17,439 [INFO] Running configSet Infra-EmbeddedPreBuild
+2025-10-07 02:14:17,439 [INFO] ConfigSets completed
+2025-10-07 02:14:17,439 [INFO] -----------------------Build complete-----------------------
+2025-10-07 02:38:35,582 [INFO] -----------------------Starting build-----------------------
+2025-10-07 02:38:35,587 [INFO] Running configSets: Infra-EmbeddedPreBuild
+2025-10-07 02:38:35,589 [INFO] Running configSet Infra-EmbeddedPreBuild
+2025-10-07 02:38:35,589 [INFO] ConfigSets completed
+2025-10-07 02:38:35,589 [INFO] -----------------------Build complete-----------------------
+2025-10-07 02:38:41,836 [INFO] -----------------------Starting build-----------------------
+2025-10-07 02:38:41,841 [INFO] Running configSets: Infra-EmbeddedPostBuild
+2025-10-07 02:38:41,843 [INFO] Running configSet Infra-EmbeddedPostBuild
+2025-10-07 02:38:41,845 [INFO] Running config postbuild_0_safeeats_app
+2025-10-07 02:38:42,770 [INFO] Command 01_migrate succeeded
+2025-10-07 02:38:43,157 [INFO] Command 02_collectstatic succeeded
+2025-10-07 02:38:44,179 [INFO] Command 03_createsu succeeded
+2025-10-07 02:38:44,181 [INFO] ConfigSets completed
+2025-10-07 02:38:44,181 [INFO] -----------------------Build complete-----------------------
+2025-10-07 02:48:03,789 [INFO] -----------------------Starting build-----------------------
+2025-10-07 02:48:03,794 [INFO] Running configSets: Infra-EmbeddedPreBuild
+2025-10-07 02:48:03,796 [INFO] Running configSet Infra-EmbeddedPreBuild
+2025-10-07 02:48:03,796 [INFO] ConfigSets completed
+2025-10-07 02:48:03,797 [INFO] -----------------------Build complete-----------------------
+2025-10-07 02:48:07,361 [INFO] -----------------------Starting build-----------------------
+2025-10-07 02:48:07,366 [INFO] Running configSets: Infra-EmbeddedPostBuild
+2025-10-07 02:48:07,369 [INFO] Running configSet Infra-EmbeddedPostBuild
+2025-10-07 02:48:07,371 [INFO] Running config postbuild_0_safeeats_app
+2025-10-07 02:48:08,201 [INFO] Command 01_migrate succeeded
+2025-10-07 02:48:08,576 [INFO] Command 02_collectstatic succeeded
+2025-10-07 02:48:09,591 [INFO] Command 03_createsu succeeded
+2025-10-07 02:48:09,593 [INFO] ConfigSets completed
+2025-10-07 02:48:09,593 [INFO] -----------------------Build complete-----------------------
+2025-10-07 02:57:38,491 [INFO] -----------------------Starting build-----------------------
+2025-10-07 02:57:38,496 [INFO] Running configSets: Infra-EmbeddedPreBuild
+2025-10-07 02:57:38,499 [INFO] Running configSet Infra-EmbeddedPreBuild
+2025-10-07 02:57:38,499 [INFO] ConfigSets completed
+2025-10-07 02:57:38,499 [INFO] -----------------------Build complete-----------------------
+2025-10-07 02:57:42,675 [INFO] -----------------------Starting build-----------------------
+2025-10-07 02:57:42,680 [INFO] Running configSets: Infra-EmbeddedPostBuild
+2025-10-07 02:57:42,682 [INFO] Running configSet Infra-EmbeddedPostBuild
+2025-10-07 02:57:42,685 [INFO] Running config postbuild_0_safeeats_app
+2025-10-07 02:57:43,549 [INFO] Command 01_migrate succeeded
+2025-10-07 02:57:43,936 [INFO] Command 02_collectstatic succeeded
+2025-10-07 02:57:44,959 [INFO] Command 03_createsu succeeded
+2025-10-07 02:57:44,962 [INFO] Running config postbuild_1_safeeats_app
+2025-10-07 02:57:49,527 [INFO] Command 04_import_nyc_data succeeded
+2025-10-07 02:57:49,528 [INFO] ConfigSets completed
+2025-10-07 02:57:49,529 [INFO] -----------------------Build complete-----------------------
+2025-10-21 02:47:13,791 [INFO] -----------------------Starting build-----------------------
+2025-10-21 02:47:13,796 [INFO] Running configSets: Infra-EmbeddedPreBuild
+2025-10-21 02:47:13,798 [INFO] Running configSet Infra-EmbeddedPreBuild
+2025-10-21 02:47:13,799 [INFO] ConfigSets completed
+2025-10-21 02:47:13,799 [INFO] -----------------------Build complete-----------------------
+2025-10-21 02:47:17,734 [INFO] -----------------------Starting build-----------------------
+2025-10-21 02:47:17,739 [INFO] Running configSets: Infra-EmbeddedPostBuild
+2025-10-21 02:47:17,742 [INFO] Running configSet Infra-EmbeddedPostBuild
+2025-10-21 02:47:17,745 [INFO] Running config postbuild_0_safeeats_app
+2025-10-21 02:47:18,642 [INFO] Command 01_migrate succeeded
+2025-10-21 02:47:19,010 [INFO] Command 02_collectstatic succeeded
+2025-10-21 02:47:19,011 [INFO] ConfigSets completed
+2025-10-21 02:47:19,011 [INFO] -----------------------Build complete-----------------------
+2025-10-21 02:51:29,489 [INFO] -----------------------Starting build-----------------------
+2025-10-21 02:51:29,495 [INFO] Running configSets: Infra-EmbeddedPreBuild
+2025-10-21 02:51:29,497 [INFO] Running configSet Infra-EmbeddedPreBuild
+2025-10-21 02:51:29,497 [INFO] ConfigSets completed
+2025-10-21 02:51:29,497 [INFO] -----------------------Build complete-----------------------
+2025-10-21 02:51:33,244 [INFO] -----------------------Starting build-----------------------
+2025-10-21 02:51:33,249 [INFO] Running configSets: Infra-EmbeddedPostBuild
+2025-10-21 02:51:33,252 [INFO] Running configSet Infra-EmbeddedPostBuild
+2025-10-21 02:51:33,254 [INFO] Running config postbuild_0_safeeats_app
+2025-10-21 02:51:34,151 [INFO] Command 01_migrate succeeded
+2025-10-21 02:51:34,522 [INFO] Command 02_collectstatic succeeded
+2025-10-21 02:51:34,524 [INFO] ConfigSets completed
+2025-10-21 02:51:34,524 [INFO] -----------------------Build complete-----------------------
+2025-10-21 03:08:27,954 [INFO] -----------------------Starting build-----------------------
+2025-10-21 03:08:27,959 [INFO] Running configSets: Infra-EmbeddedPreBuild
+2025-10-21 03:08:27,962 [INFO] Running configSet Infra-EmbeddedPreBuild
+2025-10-21 03:08:27,962 [INFO] ConfigSets completed
+2025-10-21 03:08:27,962 [INFO] -----------------------Build complete-----------------------
+2025-10-21 03:08:31,346 [INFO] -----------------------Starting build-----------------------
+2025-10-21 03:08:31,351 [INFO] Running configSets: Infra-EmbeddedPostBuild
+2025-10-21 03:08:31,353 [INFO] Running configSet Infra-EmbeddedPostBuild
+2025-10-21 03:08:31,355 [INFO] Running config postbuild_0_safeeats_app
+2025-10-21 03:08:32,209 [INFO] Command 01_migrate succeeded
+2025-10-21 03:08:32,575 [INFO] Command 02_collectstatic succeeded
+2025-10-21 03:08:32,576 [INFO] ConfigSets completed
+2025-10-21 03:08:32,576 [INFO] -----------------------Build complete-----------------------
+2025-10-21 03:12:44,526 [INFO] -----------------------Starting build-----------------------
+2025-10-21 03:12:44,531 [INFO] Running configSets: Infra-EmbeddedPreBuild
+2025-10-21 03:12:44,533 [INFO] Running configSet Infra-EmbeddedPreBuild
+2025-10-21 03:12:44,534 [INFO] ConfigSets completed
+2025-10-21 03:12:44,534 [INFO] -----------------------Build complete-----------------------
+2025-10-21 03:12:48,077 [INFO] -----------------------Starting build-----------------------
+2025-10-21 03:12:48,082 [INFO] Running configSets: Infra-EmbeddedPostBuild
+2025-10-21 03:12:48,084 [INFO] Running configSet Infra-EmbeddedPostBuild
+2025-10-21 03:12:48,086 [INFO] Running config postbuild_0_safeeats_app
+2025-10-21 03:12:48,927 [INFO] Command 01_migrate succeeded
+2025-10-21 03:12:49,293 [INFO] Command 02_collectstatic succeeded
+2025-10-21 03:12:49,294 [INFO] ConfigSets completed
+2025-10-21 03:12:49,294 [INFO] -----------------------Build complete-----------------------
+2025-10-21 03:39:25,138 [INFO] -----------------------Starting build-----------------------
+2025-10-21 03:39:25,143 [INFO] Running configSets: Infra-EmbeddedPreBuild
+2025-10-21 03:39:25,145 [INFO] Running configSet Infra-EmbeddedPreBuild
+2025-10-21 03:39:25,146 [INFO] ConfigSets completed
+2025-10-21 03:39:25,146 [INFO] -----------------------Build complete-----------------------
+2025-10-21 03:39:28,671 [INFO] -----------------------Starting build-----------------------
+2025-10-21 03:39:28,676 [INFO] Running configSets: Infra-EmbeddedPostBuild
+2025-10-21 03:39:28,678 [INFO] Running configSet Infra-EmbeddedPostBuild
+2025-10-21 03:39:28,681 [INFO] Running config postbuild_0_safeeats_app
+2025-10-21 03:39:29,535 [INFO] Command 01_migrate succeeded
+2025-10-21 03:39:29,909 [INFO] Command 02_collectstatic succeeded
+2025-10-21 03:39:29,912 [INFO] Running config postbuild_1_safeeats_app
+2025-10-21 03:39:34,593 [INFO] Command 03_import_data succeeded
+2025-10-21 03:39:34,595 [INFO] ConfigSets completed
+2025-10-21 03:39:34,595 [INFO] -----------------------Build complete-----------------------

@@ -70,6 +70,7 @@ class Command(BaseCommand):
             zipcode = norm(row.get("zipcode"))
             cuisine = norm(row.get("cuisine_description"))
             grade = norm(row.get("grade"))
+            score_str = norm(row.get("score"))
             violation_desc = norm(row.get("violation_description"))
             date_str = norm(row.get("inspection_date"))
 
@@ -81,6 +82,14 @@ class Command(BaseCommand):
                     insp_date = dt.date.fromisoformat(date_str.split("T")[0])
                 except ValueError:
                     insp_date = None
+            
+            # Parse score
+            score = None
+            if score_str:
+                try:
+                    score = int(score_str)
+                except (ValueError, TypeError):
+                    score = None
 
             # Compose address from NYC fields
             address = " ".join([p for p in [building, street] if p]).strip()
@@ -124,6 +133,6 @@ class Command(BaseCommand):
                 restaurant=restaurant,
                 date=insp_date or dt.date(1900,1,1),
                 grade=grade,
-                score=None,  # the NYC “score” lives in `score` field; add if you want to parse
+                score=score,
                 summary=violation_desc,
             )

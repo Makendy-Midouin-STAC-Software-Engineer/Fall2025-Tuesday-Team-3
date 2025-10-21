@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.13 (safe_eats_backend)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.13 (safe_eats_backend)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.13 (safeeats_deploy)" project-jdk-type="Python SDK" />
 </project>
