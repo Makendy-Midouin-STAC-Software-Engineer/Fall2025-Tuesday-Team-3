@@ -1,0 +1,62 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info
+dist-info
+
+# Virtual Environment
+venv/
+.venv/
+env/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Frontend source (we only need dist/)
+frontend/src/
+frontend/index.html
+frontend/package.json
+frontend/package-lock.json
+frontend/vite.config.ts
+
+# Tests
+**/tests/
+**/*test*.py
+pytest.ini
+.pytest_cache/
+
+# Deployment
+*.zip
+create_deployment_zip.py
+
+# Elastic Beanstalk
+.elasticbeanstalk/
+

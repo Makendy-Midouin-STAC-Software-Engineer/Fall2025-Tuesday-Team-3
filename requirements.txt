@@ -1,0 +1,14 @@
+# Django and REST Framework
+Django>=5.2,<6.0
+djangorestframework>=3.14,<4.0
+
+# HTTP requests for NYC API
+requests>=2.31,<3.0
+
+# CORS headers for frontend/backend communication
+django-cors-headers>=4.3,<5.0
+
+# Optional but recommended
+python-decouple>=3.8  # For environment variables
+whitenoise>=6.6  # For serving static files in production
+

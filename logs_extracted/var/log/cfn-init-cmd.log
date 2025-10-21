@@ -1,0 +1,555 @@
+2025-10-07 02:09:28,420 P1655 [INFO] ************************************************************
+2025-10-07 02:09:28,420 P1655 [INFO] ConfigSet _OnInstanceBoot
+2025-10-07 02:09:28,422 P1655 [INFO] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2025-10-07 02:09:28,422 P1655 [INFO] Config AWSEBBaseConfig
+2025-10-07 02:09:28,687 P1655 [INFO] ============================================================
+2025-10-07 02:09:28,687 P1655 [INFO] Command clearbackupfiles
+2025-10-07 02:09:28,698 P1655 [INFO] Completed successfully.
+2025-10-07 02:09:28,702 P1655 [INFO] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2025-10-07 02:09:28,702 P1655 [INFO] Config AWSEBCfnHupEndpointOverride
+2025-10-07 02:09:28,702 P1655 [INFO] ============================================================
+2025-10-07 02:09:28,702 P1655 [INFO] Command clearbackupfiles
+2025-10-07 02:09:28,706 P1655 [INFO] Completed successfully.
+2025-10-07 02:09:58,172 P1907 [INFO] ************************************************************
+2025-10-07 02:09:58,172 P1907 [INFO] ConfigSet Infra-EmbeddedPreBuild
+2025-10-07 02:09:58,174 P1907 [INFO] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2025-10-07 02:09:58,174 P1907 [INFO] Config prebuild_0_safeeats_app
+2025-10-07 02:09:58,174 P1907 [INFO] ============================================================
+2025-10-07 02:09:58,174 P1907 [INFO] yum clean metadata
+2025-10-07 02:09:58,748 P1907 [INFO] -----------------------Command Output-----------------------
+2025-10-07 02:09:58,748 P1907 [INFO] 	Cache was expired
+2025-10-07 02:09:58,748 P1907 [INFO] 	17 files removed
+2025-10-07 02:09:58,748 P1907 [INFO] ------------------------------------------------------------
+2025-10-07 02:09:58,748 P1907 [INFO] Completed successfully.
+2025-10-07 02:09:58,748 P1907 [INFO] ============================================================
+2025-10-07 02:09:58,748 P1907 [INFO] yum makecache
+2025-10-07 02:10:12,173 P1907 [INFO] -----------------------Command Output-----------------------
+2025-10-07 02:10:12,174 P1907 [INFO] 	Amazon Linux 2023 repository                     68 MB/s |  45 MB     00:00    
+2025-10-07 02:10:12,174 P1907 [INFO] 	Amazon Linux 2023 Kernel Livepatch repository   226 kB/s |  26 kB     00:00    
+2025-10-07 02:10:12,174 P1907 [INFO] 	Metadata cache created.
+2025-10-07 02:10:12,174 P1907 [INFO] ------------------------------------------------------------
+2025-10-07 02:10:12,174 P1907 [INFO] Completed successfully.
+2025-10-07 02:10:12,174 P1907 [INFO] ============================================================
+2025-10-07 02:10:12,174 P1907 [INFO] yum list installed python3-devel
+2025-10-07 02:10:12,530 P1907 [INFO] -----------------------Command Output-----------------------
+2025-10-07 02:10:12,531 P1907 [INFO] 	Error: No matching Packages to list
+2025-10-07 02:10:12,531 P1907 [INFO] ------------------------------------------------------------
+2025-10-07 02:10:12,531 P1907 [ERROR] Exited with error code 1
+2025-10-07 02:10:12,531 P1907 [INFO] ============================================================
+2025-10-07 02:10:12,531 P1907 [INFO] yum list available python3-devel
+2025-10-07 02:10:12,951 P1907 [INFO] -----------------------Command Output-----------------------
+2025-10-07 02:10:12,951 P1907 [INFO] 	Last metadata expiration check: 0:00:01 ago on Tue 07 Oct 2025 02:10:11 AM UTC.
+2025-10-07 02:10:12,951 P1907 [INFO] 	Available Packages
+2025-10-07 02:10:12,951 P1907 [INFO] 	python3-devel.x86_64              3.9.16-1.amzn2023.0.2              amazonlinux
+2025-10-07 02:10:12,951 P1907 [INFO] 	python3-devel.x86_64              3.9.16-1.amzn2023.0.3              amazonlinux
+2025-10-07 02:10:12,951 P1907 [INFO] 	python3-devel.x86_64              3.9.16-1.amzn2023.0.5              amazonlinux
+2025-10-07 02:10:12,951 P1907 [INFO] 	python3-devel.x86_64              3.9.16-1.amzn2023.0.6              amazonlinux
+2025-10-07 02:10:12,951 P1907 [INFO] 	python3-devel.x86_64              3.9.16-1.amzn2023.0.7              amazonlinux
+2025-10-07 02:10:12,951 P1907 [INFO] 	python3-devel.x86_64              3.9.16-1.amzn2023.0.8              amazonlinux
+2025-10-07 02:10:12,951 P1907 [INFO] 	python3-devel.x86_64              3.9.16-1.amzn2023.0.9              amazonlinux
+2025-10-07 02:10:12,951 P1907 [INFO] 	python3-devel.x86_64              3.9.20-1.amzn2023.0.2              amazonlinux
+2025-10-07 02:10:12,951 P1907 [INFO] 	python3-devel.x86_64              3.9.20-1.amzn2023.0.3              amazonlinux
+2025-10-07 02:10:12,952 P1907 [INFO] 	python3-devel.x86_64              3.9.21-1.amzn2023.0.1              amazonlinux
+2025-10-07 02:10:12,952 P1907 [INFO] 	python3-devel.x86_64              3.9.21-1.amzn2023.0.2              amazonlinux
+2025-10-07 02:10:12,952 P1907 [INFO] 	python3-devel.x86_64              3.9.21-1.amzn2023.0.3              amazonlinux
+2025-10-07 02:10:12,952 P1907 [INFO] 	python3-devel.x86_64              3.9.22-1.amzn2023.0.1              amazonlinux
+2025-10-07 02:10:12,952 P1907 [INFO] 	python3-devel.x86_64              3.9.22-1.amzn2023.0.2              amazonlinux
+2025-10-07 02:10:12,952 P1907 [INFO] 	python3-devel.x86_64              3.9.23-1.amzn2023.0.1              amazonlinux
+2025-10-07 02:10:12,952 P1907 [INFO] 	python3-devel.x86_64              3.9.23-1.amzn2023.0.2              amazonlinux
+2025-10-07 02:10:12,952 P1907 [INFO] 	python3-devel.x86_64              3.9.23-1.amzn2023.0.3              amazonlinux
+2025-10-07 02:10:12,952 P1907 [INFO] ------------------------------------------------------------
+2025-10-07 02:10:12,952 P1907 [INFO] Completed successfully.
+2025-10-07 02:10:12,952 P1907 [INFO] ============================================================
+2025-10-07 02:10:12,952 P1907 [INFO] yum list installed postgresql-devel
+2025-10-07 02:10:13,238 P1907 [INFO] -----------------------Command Output-----------------------
+2025-10-07 02:10:13,238 P1907 [INFO] 	Error: No matching Packages to list
+2025-10-07 02:10:13,238 P1907 [INFO] ------------------------------------------------------------
+2025-10-07 02:10:13,238 P1907 [ERROR] Exited with error code 1
+2025-10-07 02:10:13,238 P1907 [INFO] ============================================================
+2025-10-07 02:10:13,238 P1907 [INFO] yum list available postgresql-devel
+2025-10-07 02:10:13,659 P1907 [INFO] -----------------------Command Output-----------------------
+2025-10-07 02:10:13,659 P1907 [INFO] 	Last metadata expiration check: 0:00:02 ago on Tue 07 Oct 2025 02:10:11 AM UTC.
+2025-10-07 02:10:13,659 P1907 [INFO] 	Error: No matching Packages to list
+2025-10-07 02:10:13,659 P1907 [INFO] ------------------------------------------------------------
+2025-10-07 02:10:13,659 P1907 [ERROR] Exited with error code 1
+2025-10-07 02:14:17,439 P2091 [INFO] ************************************************************
+2025-10-07 02:14:17,439 P2091 [INFO] ConfigSet Infra-EmbeddedPreBuild
+2025-10-07 02:38:35,589 P2989 [INFO] ************************************************************
+2025-10-07 02:38:35,589 P2989 [INFO] ConfigSet Infra-EmbeddedPreBuild
+2025-10-07 02:38:41,844 P3173 [INFO] ************************************************************
+2025-10-07 02:38:41,844 P3173 [INFO] ConfigSet Infra-EmbeddedPostBuild
+2025-10-07 02:38:41,846 P3173 [INFO] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2025-10-07 02:38:41,846 P3173 [INFO] Config postbuild_0_safeeats_app
+2025-10-07 02:38:41,854 P3173 [INFO] ============================================================
+2025-10-07 02:38:41,854 P3173 [INFO] Test for Command 01_migrate
+2025-10-07 02:38:41,858 P3173 [INFO] Completed successfully.
+2025-10-07 02:38:41,858 P3173 [INFO] ============================================================
+2025-10-07 02:38:41,858 P3173 [INFO] Command 01_migrate
+2025-10-07 02:38:42,768 P3173 [INFO] -----------------------Command Output-----------------------
+2025-10-07 02:38:42,769 P3173 [INFO] 	Operations to perform:
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Apply all migrations: admin, auth, contenttypes, inspections, sessions
+2025-10-07 02:38:42,769 P3173 [INFO] 	Running migrations:
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying contenttypes.0001_initial... OK
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying auth.0001_initial... OK
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying admin.0001_initial... OK
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying admin.0002_logentry_remove_auto_add... OK
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying admin.0003_logentry_add_action_flag_choices... OK
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying contenttypes.0002_remove_content_type_name... OK
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying auth.0002_alter_permission_name_max_length... OK
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying auth.0003_alter_user_email_max_length... OK
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying auth.0004_alter_user_username_opts... OK
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying auth.0005_alter_user_last_login_null... OK
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying auth.0006_require_contenttypes_0002... OK
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying auth.0007_alter_validators_add_error_messages... OK
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying auth.0008_alter_user_username_max_length... OK
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying auth.0009_alter_user_last_name_max_length... OK
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying auth.0010_alter_group_name_max_length... OK
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying auth.0011_update_proxy_permissions... OK
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying auth.0012_alter_user_first_name_max_length... OK
+2025-10-07 02:38:42,769 P3173 [INFO] 	  Applying inspections.0001_initial... OK
+2025-10-07 02:38:42,770 P3173 [INFO] 	  Applying inspections.0002_restaurant_camis... OK
+2025-10-07 02:38:42,770 P3173 [INFO] 	  Applying sessions.0001_initial... OK
+2025-10-07 02:38:42,770 P3173 [INFO] ------------------------------------------------------------
+2025-10-07 02:38:42,770 P3173 [INFO] Completed successfully.
+2025-10-07 02:38:42,778 P3173 [INFO] ============================================================
+2025-10-07 02:38:42,778 P3173 [INFO] Test for Command 02_collectstatic
+2025-10-07 02:38:42,782 P3173 [INFO] Completed successfully.
+2025-10-07 02:38:42,782 P3173 [INFO] ============================================================
+2025-10-07 02:38:42,782 P3173 [INFO] Command 02_collectstatic
+2025-10-07 02:38:43,157 P3173 [INFO] -----------------------Command Output-----------------------
+2025-10-07 02:38:43,157 P3173 [INFO] 	
+2025-10-07 02:38:43,157 P3173 [INFO] 	163 static files copied to '/var/app/staging/staticfiles'.
+2025-10-07 02:38:43,157 P3173 [INFO] ------------------------------------------------------------
+2025-10-07 02:38:43,157 P3173 [INFO] Completed successfully.
+2025-10-07 02:38:43,170 P3173 [INFO] ============================================================
+2025-10-07 02:38:43,170 P3173 [INFO] Test for Command 03_createsu
+2025-10-07 02:38:43,175 P3173 [INFO] Completed successfully.
+2025-10-07 02:38:43,175 P3173 [INFO] ============================================================
+2025-10-07 02:38:43,175 P3173 [INFO] Command 03_createsu
+2025-10-07 02:38:44,179 P3173 [INFO] -----------------------Command Output-----------------------
+2025-10-07 02:38:44,179 P3173 [INFO] 	8 objects imported automatically (use -v 2 for details).
+2025-10-07 02:38:44,179 P3173 [INFO] 	
+2025-10-07 02:38:44,179 P3173 [INFO] ------------------------------------------------------------
+2025-10-07 02:38:44,179 P3173 [INFO] Completed successfully.
+2025-10-07 02:48:03,796 P3730 [INFO] ************************************************************
+2025-10-07 02:48:03,796 P3730 [INFO] ConfigSet Infra-EmbeddedPreBuild
+2025-10-07 02:48:07,369 P3906 [INFO] ************************************************************
+2025-10-07 02:48:07,369 P3906 [INFO] ConfigSet Infra-EmbeddedPostBuild
+2025-10-07 02:48:07,372 P3906 [INFO] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2025-10-07 02:48:07,372 P3906 [INFO] Config postbuild_0_safeeats_app
+2025-10-07 02:48:07,380 P3906 [INFO] ============================================================
+2025-10-07 02:48:07,380 P3906 [INFO] Test for Command 01_migrate
+2025-10-07 02:48:07,385 P3906 [INFO] Completed successfully.
+2025-10-07 02:48:07,385 P3906 [INFO] ============================================================
+2025-10-07 02:48:07,385 P3906 [INFO] Command 01_migrate
+2025-10-07 02:48:08,200 P3906 [INFO] -----------------------Command Output-----------------------
+2025-10-07 02:48:08,200 P3906 [INFO] 	Operations to perform:
+2025-10-07 02:48:08,200 P3906 [INFO] 	  Apply all migrations: admin, auth, contenttypes, inspections, sessions
+2025-10-07 02:48:08,200 P3906 [INFO] 	Running migrations:
+2025-10-07 02:48:08,200 P3906 [INFO] 	  Applying contenttypes.0001_initial... OK
+2025-10-07 02:48:08,200 P3906 [INFO] 	  Applying auth.0001_initial... OK
+2025-10-07 02:48:08,200 P3906 [INFO] 	  Applying admin.0001_initial... OK
+2025-10-07 02:48:08,200 P3906 [INFO] 	  Applying admin.0002_logentry_remove_auto_add... OK
+2025-10-07 02:48:08,200 P3906 [INFO] 	  Applying admin.0003_logentry_add_action_flag_choices... OK
+2025-10-07 02:48:08,200 P3906 [INFO] 	  Applying contenttypes.0002_remove_content_type_name... OK
+2025-10-07 02:48:08,200 P3906 [INFO] 	  Applying auth.0002_alter_permission_name_max_length... OK
+2025-10-07 02:48:08,200 P3906 [INFO] 	  Applying auth.0003_alter_user_email_max_length... OK
+2025-10-07 02:48:08,200 P3906 [INFO] 	  Applying auth.0004_alter_user_username_opts... OK
+2025-10-07 02:48:08,200 P3906 [INFO] 	  Applying auth.0005_alter_user_last_login_null... OK
+2025-10-07 02:48:08,200 P3906 [INFO] 	  Applying auth.0006_require_contenttypes_0002... OK
+2025-10-07 02:48:08,200 P3906 [INFO] 	  Applying auth.0007_alter_validators_add_error_messages... OK
+2025-10-07 02:48:08,200 P3906 [INFO] 	  Applying auth.0008_alter_user_username_max_length... OK
+2025-10-07 02:48:08,200 P3906 [INFO] 	  Applying auth.0009_alter_user_last_name_max_length... OK
+2025-10-07 02:48:08,201 P3906 [INFO] 	  Applying auth.0010_alter_group_name_max_length... OK
+2025-10-07 02:48:08,201 P3906 [INFO] 	  Applying auth.0011_update_proxy_permissions... OK
+2025-10-07 02:48:08,201 P3906 [INFO] 	  Applying auth.0012_alter_user_first_name_max_length... OK
+2025-10-07 02:48:08,201 P3906 [INFO] 	  Applying inspections.0001_initial... OK
+2025-10-07 02:48:08,201 P3906 [INFO] 	  Applying inspections.0002_restaurant_camis... OK
+2025-10-07 02:48:08,201 P3906 [INFO] 	  Applying sessions.0001_initial... OK
+2025-10-07 02:48:08,201 P3906 [INFO] ------------------------------------------------------------
+2025-10-07 02:48:08,201 P3906 [INFO] Completed successfully.
+2025-10-07 02:48:08,210 P3906 [INFO] ============================================================
+2025-10-07 02:48:08,210 P3906 [INFO] Test for Command 02_collectstatic
+2025-10-07 02:48:08,215 P3906 [INFO] Completed successfully.
+2025-10-07 02:48:08,215 P3906 [INFO] ============================================================
+2025-10-07 02:48:08,215 P3906 [INFO] Command 02_collectstatic
+2025-10-07 02:48:08,576 P3906 [INFO] -----------------------Command Output-----------------------
+2025-10-07 02:48:08,576 P3906 [INFO] 	
+2025-10-07 02:48:08,576 P3906 [INFO] 	163 static files copied to '/var/app/staging/staticfiles'.
+2025-10-07 02:48:08,576 P3906 [INFO] ------------------------------------------------------------
+2025-10-07 02:48:08,576 P3906 [INFO] Completed successfully.
+2025-10-07 02:48:08,585 P3906 [INFO] ============================================================
+2025-10-07 02:48:08,586 P3906 [INFO] Test for Command 03_createsu
+2025-10-07 02:48:08,590 P3906 [INFO] Completed successfully.
+2025-10-07 02:48:08,590 P3906 [INFO] ============================================================
+2025-10-07 02:48:08,590 P3906 [INFO] Command 03_createsu
+2025-10-07 02:48:09,591 P3906 [INFO] -----------------------Command Output-----------------------
+2025-10-07 02:48:09,591 P3906 [INFO] 	8 objects imported automatically (use -v 2 for details).
+2025-10-07 02:48:09,591 P3906 [INFO] 	
+2025-10-07 02:48:09,591 P3906 [INFO] ------------------------------------------------------------
+2025-10-07 02:48:09,591 P3906 [INFO] Completed successfully.
+2025-10-07 02:57:38,499 P4558 [INFO] ************************************************************
+2025-10-07 02:57:38,499 P4558 [INFO] ConfigSet Infra-EmbeddedPreBuild
+2025-10-07 02:57:42,682 P4735 [INFO] ************************************************************
+2025-10-07 02:57:42,682 P4735 [INFO] ConfigSet Infra-EmbeddedPostBuild
+2025-10-07 02:57:42,685 P4735 [INFO] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2025-10-07 02:57:42,685 P4735 [INFO] Config postbuild_0_safeeats_app
+2025-10-07 02:57:42,693 P4735 [INFO] ============================================================
+2025-10-07 02:57:42,693 P4735 [INFO] Test for Command 01_migrate
+2025-10-07 02:57:42,698 P4735 [INFO] Completed successfully.
+2025-10-07 02:57:42,698 P4735 [INFO] ============================================================
+2025-10-07 02:57:42,698 P4735 [INFO] Command 01_migrate
+2025-10-07 02:57:43,548 P4735 [INFO] -----------------------Command Output-----------------------
+2025-10-07 02:57:43,549 P4735 [INFO] 	Operations to perform:
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Apply all migrations: admin, auth, contenttypes, inspections, sessions
+2025-10-07 02:57:43,549 P4735 [INFO] 	Running migrations:
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying contenttypes.0001_initial... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying auth.0001_initial... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying admin.0001_initial... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying admin.0002_logentry_remove_auto_add... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying admin.0003_logentry_add_action_flag_choices... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying contenttypes.0002_remove_content_type_name... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying auth.0002_alter_permission_name_max_length... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying auth.0003_alter_user_email_max_length... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying auth.0004_alter_user_username_opts... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying auth.0005_alter_user_last_login_null... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying auth.0006_require_contenttypes_0002... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying auth.0007_alter_validators_add_error_messages... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying auth.0008_alter_user_username_max_length... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying auth.0009_alter_user_last_name_max_length... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying auth.0010_alter_group_name_max_length... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying auth.0011_update_proxy_permissions... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying auth.0012_alter_user_first_name_max_length... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying inspections.0001_initial... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying inspections.0002_restaurant_camis... OK
+2025-10-07 02:57:43,549 P4735 [INFO] 	  Applying sessions.0001_initial... OK
+2025-10-07 02:57:43,549 P4735 [INFO] ------------------------------------------------------------
+2025-10-07 02:57:43,549 P4735 [INFO] Completed successfully.
+2025-10-07 02:57:43,558 P4735 [INFO] ============================================================
+2025-10-07 02:57:43,558 P4735 [INFO] Test for Command 02_collectstatic
+2025-10-07 02:57:43,563 P4735 [INFO] Completed successfully.
+2025-10-07 02:57:43,563 P4735 [INFO] ============================================================
+2025-10-07 02:57:43,563 P4735 [INFO] Command 02_collectstatic
+2025-10-07 02:57:43,936 P4735 [INFO] -----------------------Command Output-----------------------
+2025-10-07 02:57:43,936 P4735 [INFO] 	
+2025-10-07 02:57:43,936 P4735 [INFO] 	163 static files copied to '/var/app/staging/staticfiles'.
+2025-10-07 02:57:43,936 P4735 [INFO] ------------------------------------------------------------
+2025-10-07 02:57:43,936 P4735 [INFO] Completed successfully.
+2025-10-07 02:57:43,945 P4735 [INFO] ============================================================
+2025-10-07 02:57:43,945 P4735 [INFO] Test for Command 03_createsu
+2025-10-07 02:57:43,949 P4735 [INFO] Completed successfully.
+2025-10-07 02:57:43,950 P4735 [INFO] ============================================================
+2025-10-07 02:57:43,950 P4735 [INFO] Command 03_createsu
+2025-10-07 02:57:44,959 P4735 [INFO] -----------------------Command Output-----------------------
+2025-10-07 02:57:44,959 P4735 [INFO] 	8 objects imported automatically (use -v 2 for details).
+2025-10-07 02:57:44,959 P4735 [INFO] 	
+2025-10-07 02:57:44,959 P4735 [INFO] ------------------------------------------------------------
+2025-10-07 02:57:44,959 P4735 [INFO] Completed successfully.
+2025-10-07 02:57:44,962 P4735 [INFO] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2025-10-07 02:57:44,962 P4735 [INFO] Config postbuild_1_safeeats_app
+2025-10-07 02:57:44,971 P4735 [INFO] ============================================================
+2025-10-07 02:57:44,971 P4735 [INFO] Test for Command 04_import_nyc_data
+2025-10-07 02:57:44,975 P4735 [INFO] Completed successfully.
+2025-10-07 02:57:44,976 P4735 [INFO] ============================================================
+2025-10-07 02:57:44,976 P4735 [INFO] Command 04_import_nyc_data
+2025-10-07 02:57:49,526 P4735 [INFO] -----------------------Command Output-----------------------
+2025-10-07 02:57:49,527 P4735 [INFO] 	Fetched 5000 rows (offset 0)
+2025-10-07 02:57:49,527 P4735 [INFO] 	Imported ~5000 rows.
+2025-10-07 02:57:49,527 P4735 [INFO] ------------------------------------------------------------
+2025-10-07 02:57:49,527 P4735 [INFO] Completed successfully.
+2025-10-21 02:47:13,798 P748506 [INFO] ************************************************************
+2025-10-21 02:47:13,799 P748506 [INFO] ConfigSet Infra-EmbeddedPreBuild
+2025-10-21 02:47:17,742 P748738 [INFO] ************************************************************
+2025-10-21 02:47:17,743 P748738 [INFO] ConfigSet Infra-EmbeddedPostBuild
+2025-10-21 02:47:17,745 P748738 [INFO] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2025-10-21 02:47:17,745 P748738 [INFO] Config postbuild_0_safeeats_app
+2025-10-21 02:47:17,762 P748738 [INFO] ============================================================
+2025-10-21 02:47:17,762 P748738 [INFO] Test for Command 01_migrate
+2025-10-21 02:47:17,767 P748738 [INFO] Completed successfully.
+2025-10-21 02:47:17,767 P748738 [INFO] ============================================================
+2025-10-21 02:47:17,767 P748738 [INFO] Command 01_migrate
+2025-10-21 02:47:18,640 P748738 [INFO] -----------------------Command Output-----------------------
+2025-10-21 02:47:18,641 P748738 [INFO] 	System check identified some issues:
+2025-10-21 02:47:18,641 P748738 [INFO] 	
+2025-10-21 02:47:18,641 P748738 [INFO] 	WARNINGS:
+2025-10-21 02:47:18,641 P748738 [INFO] 	?: (staticfiles.W004) The directory '/var/app/staging/frontend/dist' in the STATICFILES_DIRS setting does not exist.
+2025-10-21 02:47:18,641 P748738 [INFO] 	Operations to perform:
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Apply all migrations: admin, auth, contenttypes, inspections, sessions
+2025-10-21 02:47:18,641 P748738 [INFO] 	Running migrations:
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying contenttypes.0001_initial... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying auth.0001_initial... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying admin.0001_initial... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying admin.0002_logentry_remove_auto_add... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying admin.0003_logentry_add_action_flag_choices... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying contenttypes.0002_remove_content_type_name... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying auth.0002_alter_permission_name_max_length... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying auth.0003_alter_user_email_max_length... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying auth.0004_alter_user_username_opts... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying auth.0005_alter_user_last_login_null... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying auth.0006_require_contenttypes_0002... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying auth.0007_alter_validators_add_error_messages... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying auth.0008_alter_user_username_max_length... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying auth.0009_alter_user_last_name_max_length... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying auth.0010_alter_group_name_max_length... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying auth.0011_update_proxy_permissions... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying auth.0012_alter_user_first_name_max_length... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying inspections.0001_initial... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying inspections.0002_restaurant_camis... OK
+2025-10-21 02:47:18,641 P748738 [INFO] 	  Applying inspections.0003_alter_inspection_options... OK
+2025-10-21 02:47:18,642 P748738 [INFO] 	  Applying sessions.0001_initial... OK
+2025-10-21 02:47:18,642 P748738 [INFO] ------------------------------------------------------------
+2025-10-21 02:47:18,642 P748738 [INFO] Completed successfully.
+2025-10-21 02:47:18,655 P748738 [INFO] ============================================================
+2025-10-21 02:47:18,655 P748738 [INFO] Test for Command 02_collectstatic
+2025-10-21 02:47:18,660 P748738 [INFO] Completed successfully.
+2025-10-21 02:47:18,660 P748738 [INFO] ============================================================
+2025-10-21 02:47:18,660 P748738 [INFO] Command 02_collectstatic
+2025-10-21 02:47:19,009 P748738 [INFO] -----------------------Command Output-----------------------
+2025-10-21 02:47:19,009 P748738 [INFO] 	System check identified some issues:
+2025-10-21 02:47:19,009 P748738 [INFO] 	
+2025-10-21 02:47:19,009 P748738 [INFO] 	WARNINGS:
+2025-10-21 02:47:19,009 P748738 [INFO] 	?: (staticfiles.W004) The directory '/var/app/staging/frontend/dist' in the STATICFILES_DIRS setting does not exist.
+2025-10-21 02:47:19,009 P748738 [INFO] 	
+2025-10-21 02:47:19,009 P748738 [INFO] 	0 static files copied to '/var/app/staging/staticfiles', 163 unmodified.
+2025-10-21 02:47:19,009 P748738 [INFO] ------------------------------------------------------------
+2025-10-21 02:47:19,009 P748738 [INFO] Completed successfully.
+2025-10-21 02:51:29,497 P749237 [INFO] ************************************************************
+2025-10-21 02:51:29,497 P749237 [INFO] ConfigSet Infra-EmbeddedPreBuild
+2025-10-21 02:51:33,252 P749411 [INFO] ************************************************************
+2025-10-21 02:51:33,252 P749411 [INFO] ConfigSet Infra-EmbeddedPostBuild
+2025-10-21 02:51:33,254 P749411 [INFO] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2025-10-21 02:51:33,254 P749411 [INFO] Config postbuild_0_safeeats_app
+2025-10-21 02:51:33,263 P749411 [INFO] ============================================================
+2025-10-21 02:51:33,263 P749411 [INFO] Test for Command 01_migrate
+2025-10-21 02:51:33,267 P749411 [INFO] Completed successfully.
+2025-10-21 02:51:33,267 P749411 [INFO] ============================================================
+2025-10-21 02:51:33,268 P749411 [INFO] Command 01_migrate
+2025-10-21 02:51:34,150 P749411 [INFO] -----------------------Command Output-----------------------
+2025-10-21 02:51:34,150 P749411 [INFO] 	System check identified some issues:
+2025-10-21 02:51:34,150 P749411 [INFO] 	
+2025-10-21 02:51:34,150 P749411 [INFO] 	WARNINGS:
+2025-10-21 02:51:34,151 P749411 [INFO] 	?: (staticfiles.W004) The directory '/var/app/staging/frontend/dist' in the STATICFILES_DIRS setting does not exist.
+2025-10-21 02:51:34,151 P749411 [INFO] 	Operations to perform:
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Apply all migrations: admin, auth, contenttypes, inspections, sessions
+2025-10-21 02:51:34,151 P749411 [INFO] 	Running migrations:
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying contenttypes.0001_initial... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying auth.0001_initial... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying admin.0001_initial... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying admin.0002_logentry_remove_auto_add... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying admin.0003_logentry_add_action_flag_choices... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying contenttypes.0002_remove_content_type_name... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying auth.0002_alter_permission_name_max_length... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying auth.0003_alter_user_email_max_length... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying auth.0004_alter_user_username_opts... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying auth.0005_alter_user_last_login_null... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying auth.0006_require_contenttypes_0002... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying auth.0007_alter_validators_add_error_messages... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying auth.0008_alter_user_username_max_length... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying auth.0009_alter_user_last_name_max_length... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying auth.0010_alter_group_name_max_length... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying auth.0011_update_proxy_permissions... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying auth.0012_alter_user_first_name_max_length... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying inspections.0001_initial... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying inspections.0002_restaurant_camis... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying inspections.0003_alter_inspection_options... OK
+2025-10-21 02:51:34,151 P749411 [INFO] 	  Applying sessions.0001_initial... OK
+2025-10-21 02:51:34,151 P749411 [INFO] ------------------------------------------------------------
+2025-10-21 02:51:34,151 P749411 [INFO] Completed successfully.
+2025-10-21 02:51:34,161 P749411 [INFO] ============================================================
+2025-10-21 02:51:34,161 P749411 [INFO] Test for Command 02_collectstatic
+2025-10-21 02:51:34,166 P749411 [INFO] Completed successfully.
+2025-10-21 02:51:34,166 P749411 [INFO] ============================================================
+2025-10-21 02:51:34,166 P749411 [INFO] Command 02_collectstatic
+2025-10-21 02:51:34,522 P749411 [INFO] -----------------------Command Output-----------------------
+2025-10-21 02:51:34,522 P749411 [INFO] 	System check identified some issues:
+2025-10-21 02:51:34,522 P749411 [INFO] 	
+2025-10-21 02:51:34,522 P749411 [INFO] 	WARNINGS:
+2025-10-21 02:51:34,522 P749411 [INFO] 	?: (staticfiles.W004) The directory '/var/app/staging/frontend/dist' in the STATICFILES_DIRS setting does not exist.
+2025-10-21 02:51:34,522 P749411 [INFO] 	
+2025-10-21 02:51:34,522 P749411 [INFO] 	0 static files copied to '/var/app/staging/staticfiles', 163 unmodified.
+2025-10-21 02:51:34,522 P749411 [INFO] ------------------------------------------------------------
+2025-10-21 02:51:34,522 P749411 [INFO] Completed successfully.
+2025-10-21 03:08:27,962 P750423 [INFO] ************************************************************
+2025-10-21 03:08:27,962 P750423 [INFO] ConfigSet Infra-EmbeddedPreBuild
+2025-10-21 03:08:31,353 P750600 [INFO] ************************************************************
+2025-10-21 03:08:31,353 P750600 [INFO] ConfigSet Infra-EmbeddedPostBuild
+2025-10-21 03:08:31,356 P750600 [INFO] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2025-10-21 03:08:31,356 P750600 [INFO] Config postbuild_0_safeeats_app
+2025-10-21 03:08:31,364 P750600 [INFO] ============================================================
+2025-10-21 03:08:31,364 P750600 [INFO] Test for Command 01_migrate
+2025-10-21 03:08:31,369 P750600 [INFO] Completed successfully.
+2025-10-21 03:08:31,369 P750600 [INFO] ============================================================
+2025-10-21 03:08:31,369 P750600 [INFO] Command 01_migrate
+2025-10-21 03:08:32,207 P750600 [INFO] -----------------------Command Output-----------------------
+2025-10-21 03:08:32,208 P750600 [INFO] 	System check identified some issues:
+2025-10-21 03:08:32,208 P750600 [INFO] 	
+2025-10-21 03:08:32,208 P750600 [INFO] 	WARNINGS:
+2025-10-21 03:08:32,208 P750600 [INFO] 	?: (staticfiles.W004) The directory '/var/app/staging/frontend/dist' in the STATICFILES_DIRS setting does not exist.
+2025-10-21 03:08:32,208 P750600 [INFO] 	Operations to perform:
+2025-10-21 03:08:32,208 P750600 [INFO] 	  Apply all migrations: admin, auth, contenttypes, inspections, sessions
+2025-10-21 03:08:32,208 P750600 [INFO] 	Running migrations:
+2025-10-21 03:08:32,208 P750600 [INFO] 	  Applying contenttypes.0001_initial... OK
+2025-10-21 03:08:32,208 P750600 [INFO] 	  Applying auth.0001_initial... OK
+2025-10-21 03:08:32,208 P750600 [INFO] 	  Applying admin.0001_initial... OK
+2025-10-21 03:08:32,208 P750600 [INFO] 	  Applying admin.0002_logentry_remove_auto_add... OK
+2025-10-21 03:08:32,208 P750600 [INFO] 	  Applying admin.0003_logentry_add_action_flag_choices... OK
+2025-10-21 03:08:32,208 P750600 [INFO] 	  Applying contenttypes.0002_remove_content_type_name... OK
+2025-10-21 03:08:32,208 P750600 [INFO] 	  Applying auth.0002_alter_permission_name_max_length... OK
+2025-10-21 03:08:32,208 P750600 [INFO] 	  Applying auth.0003_alter_user_email_max_length... OK
+2025-10-21 03:08:32,208 P750600 [INFO] 	  Applying auth.0004_alter_user_username_opts... OK
+2025-10-21 03:08:32,208 P750600 [INFO] 	  Applying auth.0005_alter_user_last_login_null... OK
+2025-10-21 03:08:32,208 P750600 [INFO] 	  Applying auth.0006_require_contenttypes_0002... OK
+2025-10-21 03:08:32,208 P750600 [INFO] 	  Applying auth.0007_alter_validators_add_error_messages... OK
+2025-10-21 03:08:32,208 P750600 [INFO] 	  Applying auth.0008_alter_user_username_max_length... OK
+2025-10-21 03:08:32,208 P750600 [INFO] 	  Applying auth.0009_alter_user_last_name_max_length... OK
+2025-10-21 03:08:32,209 P750600 [INFO] 	  Applying auth.0010_alter_group_name_max_length... OK
+2025-10-21 03:08:32,209 P750600 [INFO] 	  Applying auth.0011_update_proxy_permissions... OK
+2025-10-21 03:08:32,209 P750600 [INFO] 	  Applying auth.0012_alter_user_first_name_max_length... OK
+2025-10-21 03:08:32,209 P750600 [INFO] 	  Applying inspections.0001_initial... OK
+2025-10-21 03:08:32,209 P750600 [INFO] 	  Applying inspections.0002_restaurant_camis... OK
+2025-10-21 03:08:32,209 P750600 [INFO] 	  Applying inspections.0003_alter_inspection_options... OK
+2025-10-21 03:08:32,209 P750600 [INFO] 	  Applying sessions.0001_initial... OK
+2025-10-21 03:08:32,209 P750600 [INFO] ------------------------------------------------------------
+2025-10-21 03:08:32,209 P750600 [INFO] Completed successfully.
+2025-10-21 03:08:32,219 P750600 [INFO] ============================================================
+2025-10-21 03:08:32,220 P750600 [INFO] Test for Command 02_collectstatic
+2025-10-21 03:08:32,224 P750600 [INFO] Completed successfully.
+2025-10-21 03:08:32,225 P750600 [INFO] ============================================================
+2025-10-21 03:08:32,225 P750600 [INFO] Command 02_collectstatic
+2025-10-21 03:08:32,574 P750600 [INFO] -----------------------Command Output-----------------------
+2025-10-21 03:08:32,575 P750600 [INFO] 	System check identified some issues:
+2025-10-21 03:08:32,575 P750600 [INFO] 	
+2025-10-21 03:08:32,575 P750600 [INFO] 	WARNINGS:
+2025-10-21 03:08:32,575 P750600 [INFO] 	?: (staticfiles.W004) The directory '/var/app/staging/frontend/dist' in the STATICFILES_DIRS setting does not exist.
+2025-10-21 03:08:32,575 P750600 [INFO] 	
+2025-10-21 03:08:32,575 P750600 [INFO] 	0 static files copied to '/var/app/staging/staticfiles', 163 unmodified.
+2025-10-21 03:08:32,575 P750600 [INFO] ------------------------------------------------------------
+2025-10-21 03:08:32,575 P750600 [INFO] Completed successfully.
+2025-10-21 03:12:44,533 P751114 [INFO] ************************************************************
+2025-10-21 03:12:44,533 P751114 [INFO] ConfigSet Infra-EmbeddedPreBuild
+2025-10-21 03:12:48,084 P751345 [INFO] ************************************************************
+2025-10-21 03:12:48,084 P751345 [INFO] ConfigSet Infra-EmbeddedPostBuild
+2025-10-21 03:12:48,087 P751345 [INFO] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2025-10-21 03:12:48,087 P751345 [INFO] Config postbuild_0_safeeats_app
+2025-10-21 03:12:48,095 P751345 [INFO] ============================================================
+2025-10-21 03:12:48,095 P751345 [INFO] Test for Command 01_migrate
+2025-10-21 03:12:48,100 P751345 [INFO] Completed successfully.
+2025-10-21 03:12:48,101 P751345 [INFO] ============================================================
+2025-10-21 03:12:48,101 P751345 [INFO] Command 01_migrate
+2025-10-21 03:12:48,926 P751345 [INFO] -----------------------Command Output-----------------------
+2025-10-21 03:12:48,926 P751345 [INFO] 	System check identified some issues:
+2025-10-21 03:12:48,926 P751345 [INFO] 	
+2025-10-21 03:12:48,926 P751345 [INFO] 	WARNINGS:
+2025-10-21 03:12:48,926 P751345 [INFO] 	?: (staticfiles.W004) The directory '/var/app/staging/frontend/dist' in the STATICFILES_DIRS setting does not exist.
+2025-10-21 03:12:48,926 P751345 [INFO] 	Operations to perform:
+2025-10-21 03:12:48,926 P751345 [INFO] 	  Apply all migrations: admin, auth, contenttypes, inspections, sessions
+2025-10-21 03:12:48,926 P751345 [INFO] 	Running migrations:
+2025-10-21 03:12:48,926 P751345 [INFO] 	  Applying contenttypes.0001_initial... OK
+2025-10-21 03:12:48,926 P751345 [INFO] 	  Applying auth.0001_initial... OK
+2025-10-21 03:12:48,926 P751345 [INFO] 	  Applying admin.0001_initial... OK
+2025-10-21 03:12:48,926 P751345 [INFO] 	  Applying admin.0002_logentry_remove_auto_add... OK
+2025-10-21 03:12:48,926 P751345 [INFO] 	  Applying admin.0003_logentry_add_action_flag_choices... OK
+2025-10-21 03:12:48,926 P751345 [INFO] 	  Applying contenttypes.0002_remove_content_type_name... OK
+2025-10-21 03:12:48,926 P751345 [INFO] 	  Applying auth.0002_alter_permission_name_max_length... OK
+2025-10-21 03:12:48,926 P751345 [INFO] 	  Applying auth.0003_alter_user_email_max_length... OK
+2025-10-21 03:12:48,926 P751345 [INFO] 	  Applying auth.0004_alter_user_username_opts... OK
+2025-10-21 03:12:48,927 P751345 [INFO] 	  Applying auth.0005_alter_user_last_login_null... OK
+2025-10-21 03:12:48,927 P751345 [INFO] 	  Applying auth.0006_require_contenttypes_0002... OK
+2025-10-21 03:12:48,927 P751345 [INFO] 	  Applying auth.0007_alter_validators_add_error_messages... OK
+2025-10-21 03:12:48,927 P751345 [INFO] 	  Applying auth.0008_alter_user_username_max_length... OK
+2025-10-21 03:12:48,927 P751345 [INFO] 	  Applying auth.0009_alter_user_last_name_max_length... OK
+2025-10-21 03:12:48,927 P751345 [INFO] 	  Applying auth.0010_alter_group_name_max_length... OK
+2025-10-21 03:12:48,927 P751345 [INFO] 	  Applying auth.0011_update_proxy_permissions... OK
+2025-10-21 03:12:48,927 P751345 [INFO] 	  Applying auth.0012_alter_user_first_name_max_length... OK
+2025-10-21 03:12:48,927 P751345 [INFO] 	  Applying inspections.0001_initial... OK
+2025-10-21 03:12:48,927 P751345 [INFO] 	  Applying inspections.0002_restaurant_camis... OK
+2025-10-21 03:12:48,927 P751345 [INFO] 	  Applying inspections.0003_alter_inspection_options... OK
+2025-10-21 03:12:48,927 P751345 [INFO] 	  Applying sessions.0001_initial... OK
+2025-10-21 03:12:48,927 P751345 [INFO] ------------------------------------------------------------
+2025-10-21 03:12:48,927 P751345 [INFO] Completed successfully.
+2025-10-21 03:12:48,937 P751345 [INFO] ============================================================
+2025-10-21 03:12:48,937 P751345 [INFO] Test for Command 02_collectstatic
+2025-10-21 03:12:48,942 P751345 [INFO] Completed successfully.
+2025-10-21 03:12:48,942 P751345 [INFO] ============================================================
+2025-10-21 03:12:48,942 P751345 [INFO] Command 02_collectstatic
+2025-10-21 03:12:49,292 P751345 [INFO] -----------------------Command Output-----------------------
+2025-10-21 03:12:49,293 P751345 [INFO] 	System check identified some issues:
+2025-10-21 03:12:49,293 P751345 [INFO] 	
+2025-10-21 03:12:49,293 P751345 [INFO] 	WARNINGS:
+2025-10-21 03:12:49,293 P751345 [INFO] 	?: (staticfiles.W004) The directory '/var/app/staging/frontend/dist' in the STATICFILES_DIRS setting does not exist.
+2025-10-21 03:12:49,293 P751345 [INFO] 	
+2025-10-21 03:12:49,293 P751345 [INFO] 	0 static files copied to '/var/app/staging/staticfiles', 163 unmodified.
+2025-10-21 03:12:49,293 P751345 [INFO] ------------------------------------------------------------
+2025-10-21 03:12:49,293 P751345 [INFO] Completed successfully.
+2025-10-21 03:39:25,145 P752571 [INFO] ************************************************************
+2025-10-21 03:39:25,146 P752571 [INFO] ConfigSet Infra-EmbeddedPreBuild
+2025-10-21 03:39:28,678 P752804 [INFO] ************************************************************
+2025-10-21 03:39:28,678 P752804 [INFO] ConfigSet Infra-EmbeddedPostBuild
+2025-10-21 03:39:28,681 P752804 [INFO] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2025-10-21 03:39:28,681 P752804 [INFO] Config postbuild_0_safeeats_app
+2025-10-21 03:39:28,690 P752804 [INFO] ============================================================
+2025-10-21 03:39:28,690 P752804 [INFO] Test for Command 01_migrate
+2025-10-21 03:39:28,695 P752804 [INFO] Completed successfully.
+2025-10-21 03:39:28,695 P752804 [INFO] ============================================================
+2025-10-21 03:39:28,695 P752804 [INFO] Command 01_migrate
+2025-10-21 03:39:29,534 P752804 [INFO] -----------------------Command Output-----------------------
+2025-10-21 03:39:29,534 P752804 [INFO] 	System check identified some issues:
+2025-10-21 03:39:29,534 P752804 [INFO] 	
+2025-10-21 03:39:29,534 P752804 [INFO] 	WARNINGS:
+2025-10-21 03:39:29,534 P752804 [INFO] 	?: (staticfiles.W004) The directory '/var/app/staging/frontend/dist' in the STATICFILES_DIRS setting does not exist.
+2025-10-21 03:39:29,534 P752804 [INFO] 	Operations to perform:
+2025-10-21 03:39:29,534 P752804 [INFO] 	  Apply all migrations: admin, auth, contenttypes, inspections, sessions
+2025-10-21 03:39:29,534 P752804 [INFO] 	Running migrations:
+2025-10-21 03:39:29,534 P752804 [INFO] 	  Applying contenttypes.0001_initial... OK
+2025-10-21 03:39:29,534 P752804 [INFO] 	  Applying auth.0001_initial... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying admin.0001_initial... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying admin.0002_logentry_remove_auto_add... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying admin.0003_logentry_add_action_flag_choices... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying contenttypes.0002_remove_content_type_name... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying auth.0002_alter_permission_name_max_length... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying auth.0003_alter_user_email_max_length... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying auth.0004_alter_user_username_opts... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying auth.0005_alter_user_last_login_null... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying auth.0006_require_contenttypes_0002... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying auth.0007_alter_validators_add_error_messages... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying auth.0008_alter_user_username_max_length... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying auth.0009_alter_user_last_name_max_length... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying auth.0010_alter_group_name_max_length... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying auth.0011_update_proxy_permissions... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying auth.0012_alter_user_first_name_max_length... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying inspections.0001_initial... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying inspections.0002_restaurant_camis... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying inspections.0003_alter_inspection_options... OK
+2025-10-21 03:39:29,535 P752804 [INFO] 	  Applying sessions.0001_initial... OK
+2025-10-21 03:39:29,535 P752804 [INFO] ------------------------------------------------------------
+2025-10-21 03:39:29,535 P752804 [INFO] Completed successfully.
+2025-10-21 03:39:29,545 P752804 [INFO] ============================================================
+2025-10-21 03:39:29,545 P752804 [INFO] Test for Command 02_collectstatic
+2025-10-21 03:39:29,549 P752804 [INFO] Completed successfully.
+2025-10-21 03:39:29,550 P752804 [INFO] ============================================================
+2025-10-21 03:39:29,550 P752804 [INFO] Command 02_collectstatic
+2025-10-21 03:39:29,909 P752804 [INFO] -----------------------Command Output-----------------------
+2025-10-21 03:39:29,909 P752804 [INFO] 	System check identified some issues:
+2025-10-21 03:39:29,909 P752804 [INFO] 	
+2025-10-21 03:39:29,909 P752804 [INFO] 	WARNINGS:
+2025-10-21 03:39:29,909 P752804 [INFO] 	?: (staticfiles.W004) The directory '/var/app/staging/frontend/dist' in the STATICFILES_DIRS setting does not exist.
+2025-10-21 03:39:29,909 P752804 [INFO] 	
+2025-10-21 03:39:29,909 P752804 [INFO] 	0 static files copied to '/var/app/staging/staticfiles', 163 unmodified.
+2025-10-21 03:39:29,909 P752804 [INFO] ------------------------------------------------------------
+2025-10-21 03:39:29,909 P752804 [INFO] Completed successfully.
+2025-10-21 03:39:29,913 P752804 [INFO] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2025-10-21 03:39:29,913 P752804 [INFO] Config postbuild_1_safeeats_app
+2025-10-21 03:39:29,922 P752804 [INFO] ============================================================
+2025-10-21 03:39:29,923 P752804 [INFO] Test for Command 03_import_data
+2025-10-21 03:39:29,927 P752804 [INFO] Completed successfully.
+2025-10-21 03:39:29,927 P752804 [INFO] ============================================================
+2025-10-21 03:39:29,927 P752804 [INFO] Command 03_import_data
+2025-10-21 03:39:34,593 P752804 [INFO] -----------------------Command Output-----------------------
+2025-10-21 03:39:34,593 P752804 [INFO] 	System check identified some issues:
+2025-10-21 03:39:34,593 P752804 [INFO] 	
+2025-10-21 03:39:34,593 P752804 [INFO] 	WARNINGS:
+2025-10-21 03:39:34,593 P752804 [INFO] 	?: (staticfiles.W004) The directory '/var/app/staging/frontend/dist' in the STATICFILES_DIRS setting does not exist.
+2025-10-21 03:39:34,593 P752804 [INFO] 	Fetched 5000 rows (offset 0)
+2025-10-21 03:39:34,593 P752804 [INFO] 	Imported ~5000 rows.
+2025-10-21 03:39:34,593 P752804 [INFO] ------------------------------------------------------------
+2025-10-21 03:39:34,593 P752804 [INFO] Completed successfully.

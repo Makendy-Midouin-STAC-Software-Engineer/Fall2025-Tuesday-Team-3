@@ -1,11 +1,11 @@
 # Create your views here.
 from django.db.models import OuterRef, Subquery
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 
 from .models import Restaurant, Inspection
-from .serializers import RestaurantSearchSerializer
+from .serializers import RestaurantSearchSerializer, RestaurantDetailSerializer
 
 
 class RestaurantSearchView(ListAPIView):
@@ -69,5 +69,13 @@ class RestaurantSearchView(ListAPIView):
 
         if page is not None:
             return self.get_paginated_response(serialize(page))
-
         return Response(serialize(queryset))
+
+
+class RestaurantDetailView(RetrieveAPIView):
+    """
+    GET /api/restaurants/<id>/
+    Returns full restaurant details including all inspection history.
+    """
+    queryset = Restaurant.objects.prefetch_related('inspections')
+    serializer_class = RestaurantDetailSerializer

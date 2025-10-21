@@ -7,6 +7,8 @@ export default function App() {
     const [sortOption, setSortOption] = useState('grade_asc')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
+    const [selectedRestaurant, setSelectedRestaurant] = useState(null)
+    const [detailLoading, setDetailLoading] = useState(false)
 
     // Client-side sorting function
     const sortResults = (results, sortOption) => {
@@ -82,6 +84,24 @@ export default function App() {
         }
     }
 
+    async function onRestaurantClick(restaurantId) {
+        try {
+            setDetailLoading(true)
+            const res = await fetch(`/api/restaurants/${restaurantId}/`)
+            if (!res.ok) throw new Error(`Failed to load details: ${res.status}`)
+            const data = await res.json()
+            setSelectedRestaurant(data)
+        } catch (err) {
+            alert(err?.message || 'Error loading restaurant details')
+        } finally {
+            setDetailLoading(false)
+        }
+    }
+
+    function closeModal() {
+        setSelectedRestaurant(null)
+    }
+
     return (
         <div className="container">
             <div className="header">
@@ -133,7 +153,7 @@ export default function App() {
                         const score = r?.latest_inspection?.score
                         const badgeClass = grade === 'A' ? 'badge success' : grade ? 'badge warn' : 'badge'
                         return (
-                            <div key={r.id} className="card">
+                            <div key={r.id} className="card" onClick={() => onRestaurantClick(r.id)} style={{ cursor: 'pointer' }}>
                                 <div className="card-header">
                                     <span className="name">{r.name}</span>
                                     <div className="badges">
@@ -148,6 +168,54 @@ export default function App() {
                             </div>
                         )
                     })}
+                </div>
+            )}
+
+            {selectedRestaurant && (
+                <div className="modal-overlay" onClick={closeModal}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <button className="modal-close" onClick={closeModal}>&times;</button>
+                        <h2>{selectedRestaurant.name}</h2>
+                        <p className="modal-address">
+                            {[selectedRestaurant.address, selectedRestaurant.city, selectedRestaurant.state, selectedRestaurant.zipcode].filter(Boolean).join(', ')}
+                        </p>
+                        {selectedRestaurant.camis && (
+                            <p className="modal-camis">CAMIS ID: {selectedRestaurant.camis}</p>
+                        )}
+                        
+                        <h3 className="inspection-history-title">Inspection History</h3>
+                        {detailLoading ? (
+                            <p className="muted">Loading inspection history...</p>
+                        ) : selectedRestaurant.inspections && selectedRestaurant.inspections.length > 0 ? (
+                            <div className="inspection-list">
+                                {selectedRestaurant.inspections.map((inspection) => {
+                                    const gradeClass = inspection.grade === 'A' ? 'badge success' : inspection.grade ? 'badge warn' : 'badge'
+                                    return (
+                                        <div key={inspection.id} className="inspection-item">
+                                            <div className="inspection-header">
+                                                <span className="inspection-date">{inspection.date}</span>
+                                                <div className="badges">
+                                                    {inspection.grade ? (
+                                                        <span className={gradeClass}>Grade: {inspection.grade}</span>
+                                                    ) : (
+                                                        <span className="badge">Grade: N/A</span>
+                                                    )}
+                                                    {inspection.score !== null && inspection.score !== undefined && (
+                                                        <span className="badge">Score: {inspection.score}</span>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            {inspection.summary && (
+                                                <p className="inspection-summary">{inspection.summary}</p>
+                                            )}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        ) : (
+                            <p className="muted">No inspection history available.</p>
+                        )}
+                    </div>
                 </div>
             )}
         </div>

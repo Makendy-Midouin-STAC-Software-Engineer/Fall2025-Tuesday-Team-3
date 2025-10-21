@@ -177,3 +177,155 @@ body {
     font-size: 14px;
     color: var(--text);
 }
+
+/* Sort Controls */
+.sort-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0;
+    padding: 12px;
+    background: var(--surface);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+}
+
+.sort-label {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.sort-select {
+    flex: 1;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid var(--card-border);
+    background: var(--muted-surface);
+    color: var(--text);
+    outline: none;
+    cursor: pointer;
+}
+
+.sort-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--ring);
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.modal-content {
+    background: linear-gradient(180deg, var(--surface) 0%, var(--muted-surface) 100%);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 700px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--card-border);
+    background: var(--muted-surface);
+    color: var(--text);
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.modal-close:hover {
+    background: var(--surface);
+    border-color: var(--primary);
+}
+
+.modal-content h2 {
+    margin: 0 40px 8px 0;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.modal-address {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0 0 4px 0;
+}
+
+.modal-camis {
+    color: var(--muted);
+    font-size: 13px;
+    margin: 0 0 20px 0;
+    font-family: 'Courier New', monospace;
+}
+
+.inspection-history-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 20px 0 12px 0;
+    color: var(--text);
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 8px;
+}
+
+.inspection-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.inspection-item {
+    background: var(--bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 14px;
+}
+
+.inspection-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.inspection-date {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 14px;
+}
+
+.inspection-summary {
+    margin: 8px 0 0 0;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.5;
+}

@@ -1,0 +1,32 @@
+2025/10/07 02:22:19.735772 [INFO] Cleaning log publish record...
+2025/10/07 02:22:19.735819 [INFO] Start log publish job.
+2025/10/07 02:22:19.735824 [INFO] Start publish file /tmp/BundleLogs-1759803739719.zip
+2025/10/07 02:22:19.785149 [INFO] Successful upload file /tmp/BundleLogs-1759803739719.zip to s3 resources/environments/logs/bundle/e-f63kzbjrqj/i-03facd8bcdc8558f2/BundleLogs-1759803739719.zip
+2025/10/07 02:22:19.785279 [INFO] Finished log publish job.
+2025/10/07 02:22:53.135147 [INFO] Cleaning log publish record...
+2025/10/07 02:22:53.135184 [INFO] /tmp/BundleLogs-1759803739719.zip exists, no need for clean up
+2025/10/07 02:22:53.135188 [INFO] Start log publish job.
+2025/10/07 02:22:53.135190 [INFO] Start publish file /tmp/TailLogs-1759803773133.txt
+2025/10/07 02:22:53.190189 [INFO] Successful upload file /tmp/TailLogs-1759803773133.txt to s3 resources/environments/logs/tail/e-f63kzbjrqj/i-03facd8bcdc8558f2/TailLogs-1759803773133.txt
+2025/10/07 02:22:53.190317 [INFO] Finished log publish job.
+2025/10/07 02:41:50.823069 [INFO] Cleaning log publish record...
+2025/10/07 02:41:50.823108 [INFO] /tmp/BundleLogs-1759803739719.zip exists, no need for clean up
+2025/10/07 02:41:50.823114 [INFO] /tmp/TailLogs-1759803773133.txt exists, no need for clean up
+2025/10/07 02:41:50.823116 [INFO] Start log publish job.
+2025/10/07 02:41:50.823119 [INFO] Start publish file /tmp/TailLogs-1759804910813.txt
+2025/10/07 02:41:50.876154 [INFO] Successful upload file /tmp/TailLogs-1759804910813.txt to s3 resources/environments/logs/tail/e-f63kzbjrqj/i-03facd8bcdc8558f2/TailLogs-1759804910813.txt
+2025/10/07 02:41:50.876288 [INFO] Finished log publish job.
+2025/10/21 02:52:41.902723 [INFO] Cleaning log publish record...
+2025/10/21 02:52:41.902771 [INFO] removing file /opt/elasticbeanstalk/.log-publish-record/_tmp_BundleLogs-1759803739719.zip
+2025/10/21 02:52:41.902799 [INFO] removing file /opt/elasticbeanstalk/.log-publish-record/_tmp_TailLogs-1759803773133.txt
+2025/10/21 02:52:41.902813 [INFO] removing file /opt/elasticbeanstalk/.log-publish-record/_tmp_TailLogs-1759804910813.txt
+2025/10/21 02:52:41.902824 [INFO] Start log publish job.
+2025/10/21 02:52:41.902827 [INFO] Start publish file /tmp/TailLogs-1761015161892.txt
+2025/10/21 02:52:41.956521 [INFO] Successful upload file /tmp/TailLogs-1761015161892.txt to s3 resources/environments/logs/tail/e-f63kzbjrqj/i-03facd8bcdc8558f2/TailLogs-1761015161892.txt
+2025/10/21 02:52:41.956663 [INFO] Finished log publish job.
+2025/10/21 03:10:08.022755 [INFO] Cleaning log publish record...
+2025/10/21 03:10:08.022800 [INFO] /tmp/TailLogs-1761015161892.txt exists, no need for clean up
+2025/10/21 03:10:08.022803 [INFO] Start log publish job.
+2025/10/21 03:10:08.022806 [INFO] Start publish file /tmp/TailLogs-1761016208012.txt
+2025/10/21 03:10:08.081913 [INFO] Successful upload file /tmp/TailLogs-1761016208012.txt to s3 resources/environments/logs/tail/e-f63kzbjrqj/i-03facd8bcdc8558f2/TailLogs-1761016208012.txt
+2025/10/21 03:10:08.082054 [INFO] Finished log publish job.

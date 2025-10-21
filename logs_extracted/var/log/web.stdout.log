@@ -1,0 +1,81 @@
+Oct  7 02:38:45 ip-172-31-7-134 web[3281]: [2025-10-07 02:38:45 +0000] [3281] [INFO] Starting gunicorn 23.0.0
+Oct  7 02:38:45 ip-172-31-7-134 web[3281]: [2025-10-07 02:38:45 +0000] [3281] [INFO] Listening at: http://127.0.0.1:8000 (3281)
+Oct  7 02:38:45 ip-172-31-7-134 web[3281]: [2025-10-07 02:38:45 +0000] [3281] [INFO] Using worker: gthread
+Oct  7 02:38:45 ip-172-31-7-134 web[3309]: [2025-10-07 02:38:45 +0000] [3309] [INFO] Booting worker with pid: 3309
+Oct  7 02:48:10 ip-172-31-7-134 web[3281]: [2025-10-07 02:48:10 +0000] [3281] [INFO] Handling signal: term
+Oct  7 02:48:11 ip-172-31-7-134 web[3309]: [2025-10-07 02:48:11 +0000] [3309] [INFO] Worker exiting (pid: 3309)
+Oct  7 02:48:11 ip-172-31-7-134 web[3281]: [2025-10-07 02:48:11 +0000] [3281] [INFO] Shutting down: Master
+Oct  7 02:48:13 ip-172-31-7-134 web[4130]: [2025-10-07 02:48:13 +0000] [4130] [INFO] Starting gunicorn 23.0.0
+Oct  7 02:48:13 ip-172-31-7-134 web[4130]: [2025-10-07 02:48:13 +0000] [4130] [INFO] Listening at: http://127.0.0.1:8000 (4130)
+Oct  7 02:48:13 ip-172-31-7-134 web[4130]: [2025-10-07 02:48:13 +0000] [4130] [INFO] Using worker: gthread
+Oct  7 02:48:13 ip-172-31-7-134 web[4138]: [2025-10-07 02:48:13 +0000] [4138] [INFO] Booting worker with pid: 4138
+Oct  7 02:57:50 ip-172-31-7-134 web[4130]: [2025-10-07 02:57:50 +0000] [4130] [INFO] Handling signal: term
+Oct  7 02:57:51 ip-172-31-7-134 web[4138]: [2025-10-07 02:57:51 +0000] [4138] [INFO] Worker exiting (pid: 4138)
+Oct  7 02:57:51 ip-172-31-7-134 web[4130]: [2025-10-07 02:57:51 +0000] [4130] [INFO] Shutting down: Master
+Oct  7 02:57:52 ip-172-31-7-134 web[4969]: [2025-10-07 02:57:52 +0000] [4969] [INFO] Starting gunicorn 23.0.0
+Oct  7 02:57:52 ip-172-31-7-134 web[4969]: [2025-10-07 02:57:52 +0000] [4969] [INFO] Listening at: http://127.0.0.1:8000 (4969)
+Oct  7 02:57:52 ip-172-31-7-134 web[4969]: [2025-10-07 02:57:52 +0000] [4969] [INFO] Using worker: gthread
+Oct  7 02:57:52 ip-172-31-7-134 web[4998]: [2025-10-07 02:57:52 +0000] [4998] [INFO] Booting worker with pid: 4998
+Oct 21 02:47:19 ip-172-31-7-134 web[4969]: [2025-10-21 02:47:19 +0000] [4969] [INFO] Handling signal: term
+Oct 21 02:47:19 ip-172-31-7-134 web[4998]: [2025-10-21 02:47:19 +0000] [4998] [INFO] Worker exiting (pid: 4998)
+Oct 21 02:47:20 ip-172-31-7-134 web[4969]: [2025-10-21 02:47:20 +0000] [4969] [INFO] Shutting down: Master
+Oct 21 02:47:21 ip-172-31-7-134 web[748959]: [2025-10-21 02:47:21 +0000] [748959] [INFO] Starting gunicorn 23.0.0
+Oct 21 02:47:21 ip-172-31-7-134 web[748959]: [2025-10-21 02:47:21 +0000] [748959] [INFO] Listening at: http://127.0.0.1:8000 (748959)
+Oct 21 02:47:21 ip-172-31-7-134 web[748959]: [2025-10-21 02:47:21 +0000] [748959] [INFO] Using worker: gthread
+Oct 21 02:47:21 ip-172-31-7-134 web[748967]: [2025-10-21 02:47:21 +0000] [748967] [INFO] Booting worker with pid: 748967
+Oct 21 02:48:17 ip-172-31-7-134 web[748967]: Invalid HTTP_HOST header: 'safeeats-app-env.eba-nknmey2d.us-east-2.elasticbeanstalk.com'. You may need to add 'safeeats-app-env.eba-nknmey2d.us-east-2.elasticbeanstalk.com' to ALLOWED_HOSTS.
+Oct 21 02:48:17 ip-172-31-7-134 web[748967]: Traceback (most recent call last):
+Oct 21 02:48:17 ip-172-31-7-134 web[748967]:  File "/var/app/venv/staging-LQM1lest/lib64/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+Oct 21 02:48:17 ip-172-31-7-134 web[748967]:    response = get_response(request)
+Oct 21 02:48:17 ip-172-31-7-134 web[748967]:               ^^^^^^^^^^^^^^^^^^^^^
+Oct 21 02:48:17 ip-172-31-7-134 web[748967]:  File "/var/app/venv/staging-LQM1lest/lib64/python3.11/site-packages/django/utils/deprecation.py", line 119, in __call__
+Oct 21 02:48:17 ip-172-31-7-134 web[748967]:    response = self.process_request(request)
+Oct 21 02:48:17 ip-172-31-7-134 web[748967]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Oct 21 02:48:17 ip-172-31-7-134 web[748967]:  File "/var/app/venv/staging-LQM1lest/lib64/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+Oct 21 02:48:17 ip-172-31-7-134 web[748967]:    host = request.get_host()
+Oct 21 02:48:17 ip-172-31-7-134 web[748967]:           ^^^^^^^^^^^^^^^^^^
+Oct 21 02:48:17 ip-172-31-7-134 web[748967]:  File "/var/app/venv/staging-LQM1lest/lib64/python3.11/site-packages/django/http/request.py", line 202, in get_host
+Oct 21 02:48:17 ip-172-31-7-134 web[748967]:    raise DisallowedHost(msg)
+Oct 21 02:48:17 ip-172-31-7-134 web[748967]: django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'safeeats-app-env.eba-nknmey2d.us-east-2.elasticbeanstalk.com'. You may need to add 'safeeats-app-env.eba-nknmey2d.us-east-2.elasticbeanstalk.com' to ALLOWED_HOSTS.
+Oct 21 02:48:18 ip-172-31-7-134 web[748967]: Invalid HTTP_HOST header: 'safeeats-app-env.eba-nknmey2d.us-east-2.elasticbeanstalk.com'. You may need to add 'safeeats-app-env.eba-nknmey2d.us-east-2.elasticbeanstalk.com' to ALLOWED_HOSTS.
+Oct 21 02:48:18 ip-172-31-7-134 web[748967]: Traceback (most recent call last):
+Oct 21 02:48:18 ip-172-31-7-134 web[748967]:  File "/var/app/venv/staging-LQM1lest/lib64/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+Oct 21 02:48:18 ip-172-31-7-134 web[748967]:    response = get_response(request)
+Oct 21 02:48:18 ip-172-31-7-134 web[748967]:               ^^^^^^^^^^^^^^^^^^^^^
+Oct 21 02:48:18 ip-172-31-7-134 web[748967]:  File "/var/app/venv/staging-LQM1lest/lib64/python3.11/site-packages/django/utils/deprecation.py", line 119, in __call__
+Oct 21 02:48:18 ip-172-31-7-134 web[748967]:    response = self.process_request(request)
+Oct 21 02:48:18 ip-172-31-7-134 web[748967]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Oct 21 02:48:18 ip-172-31-7-134 web[748967]:  File "/var/app/venv/staging-LQM1lest/lib64/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+Oct 21 02:48:18 ip-172-31-7-134 web[748967]:    host = request.get_host()
+Oct 21 02:48:18 ip-172-31-7-134 web[748967]:           ^^^^^^^^^^^^^^^^^^
+Oct 21 02:48:18 ip-172-31-7-134 web[748967]:  File "/var/app/venv/staging-LQM1lest/lib64/python3.11/site-packages/django/http/request.py", line 202, in get_host
+Oct 21 02:48:18 ip-172-31-7-134 web[748967]:    raise DisallowedHost(msg)
+Oct 21 02:48:18 ip-172-31-7-134 web[748967]: django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'safeeats-app-env.eba-nknmey2d.us-east-2.elasticbeanstalk.com'. You may need to add 'safeeats-app-env.eba-nknmey2d.us-east-2.elasticbeanstalk.com' to ALLOWED_HOSTS.
+Oct 21 02:51:35 ip-172-31-7-134 web[748959]: [2025-10-21 02:51:35 +0000] [748959] [INFO] Handling signal: term
+Oct 21 02:51:35 ip-172-31-7-134 web[748967]: [2025-10-21 02:51:35 +0000] [748967] [INFO] Worker exiting (pid: 748967)
+Oct 21 02:51:36 ip-172-31-7-134 web[748959]: [2025-10-21 02:51:36 +0000] [748959] [INFO] Shutting down: Master
+Oct 21 02:51:38 ip-172-31-7-134 web[749630]: [2025-10-21 02:51:38 +0000] [749630] [INFO] Starting gunicorn 23.0.0
+Oct 21 02:51:38 ip-172-31-7-134 web[749630]: [2025-10-21 02:51:38 +0000] [749630] [INFO] Listening at: http://127.0.0.1:8000 (749630)
+Oct 21 02:51:38 ip-172-31-7-134 web[749630]: [2025-10-21 02:51:38 +0000] [749630] [INFO] Using worker: gthread
+Oct 21 02:51:38 ip-172-31-7-134 web[749638]: [2025-10-21 02:51:38 +0000] [749638] [INFO] Booting worker with pid: 749638
+Oct 21 03:08:33 ip-172-31-7-134 web[749630]: [2025-10-21 03:08:33 +0000] [749630] [INFO] Handling signal: term
+Oct 21 03:08:33 ip-172-31-7-134 web[749638]: [2025-10-21 03:08:33 +0000] [749638] [INFO] Worker exiting (pid: 749638)
+Oct 21 03:08:33 ip-172-31-7-134 web[749630]: [2025-10-21 03:08:33 +0000] [749630] [INFO] Shutting down: Master
+Oct 21 03:08:35 ip-172-31-7-134 web[750874]: [2025-10-21 03:08:35 +0000] [750874] [INFO] Starting gunicorn 23.0.0
+Oct 21 03:08:35 ip-172-31-7-134 web[750874]: [2025-10-21 03:08:35 +0000] [750874] [INFO] Listening at: http://127.0.0.1:8000 (750874)
+Oct 21 03:08:35 ip-172-31-7-134 web[750874]: [2025-10-21 03:08:35 +0000] [750874] [INFO] Using worker: gthread
+Oct 21 03:08:35 ip-172-31-7-134 web[750882]: [2025-10-21 03:08:35 +0000] [750882] [INFO] Booting worker with pid: 750882
+Oct 21 03:12:50 ip-172-31-7-134 web[750874]: [2025-10-21 03:12:50 +0000] [750874] [INFO] Handling signal: term
+Oct 21 03:12:50 ip-172-31-7-134 web[750882]: [2025-10-21 03:12:50 +0000] [750882] [INFO] Worker exiting (pid: 750882)
+Oct 21 03:12:50 ip-172-31-7-134 web[750874]: [2025-10-21 03:12:50 +0000] [750874] [INFO] Shutting down: Master
+Oct 21 03:12:51 ip-172-31-7-134 web[751563]: [2025-10-21 03:12:51 +0000] [751563] [INFO] Starting gunicorn 23.0.0
+Oct 21 03:12:51 ip-172-31-7-134 web[751563]: [2025-10-21 03:12:51 +0000] [751563] [INFO] Listening at: http://127.0.0.1:8000 (751563)
+Oct 21 03:12:51 ip-172-31-7-134 web[751563]: [2025-10-21 03:12:51 +0000] [751563] [INFO] Using worker: gthread
+Oct 21 03:12:51 ip-172-31-7-134 web[751571]: [2025-10-21 03:12:51 +0000] [751571] [INFO] Booting worker with pid: 751571
+Oct 21 03:39:35 ip-172-31-7-134 web[751563]: [2025-10-21 03:39:35 +0000] [751563] [INFO] Handling signal: term
+Oct 21 03:39:36 ip-172-31-7-134 web[751571]: [2025-10-21 03:39:36 +0000] [751571] [INFO] Worker exiting (pid: 751571)
+Oct 21 03:39:36 ip-172-31-7-134 web[751563]: [2025-10-21 03:39:36 +0000] [751563] [INFO] Shutting down: Master
+Oct 21 03:39:38 ip-172-31-7-134 web[753029]: [2025-10-21 03:39:38 +0000] [753029] [INFO] Starting gunicorn 23.0.0
+Oct 21 03:39:38 ip-172-31-7-134 web[753029]: [2025-10-21 03:39:38 +0000] [753029] [INFO] Listening at: http://127.0.0.1:8000 (753029)
+Oct 21 03:39:38 ip-172-31-7-134 web[753029]: [2025-10-21 03:39:38 +0000] [753029] [INFO] Using worker: gthread
+Oct 21 03:39:38 ip-172-31-7-134 web[753063]: [2025-10-21 03:39:38 +0000] [753063] [INFO] Booting worker with pid: 753063
