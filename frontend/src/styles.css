@@ -178,26 +178,36 @@ body {
     color: var(--text);
 }
 
-/* Sort Controls */
-.sort-controls {
+/* Filter Controls */
+.filter-controls {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     margin: 12px 0;
-    padding: 12px;
+    padding: 16px;
     background: var(--surface);
     border: 1px solid var(--card-border);
-    border-radius: 10px;
+    border-radius: 12px;
 }
 
-.sort-label {
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 120px;
+}
+
+.filter-label {
     color: var(--muted);
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.sort-select {
-    flex: 1;
+.filter-select,
+.filter-input {
     height: 36px;
     padding: 0 12px;
     border-radius: 8px;
@@ -205,12 +215,66 @@ body {
     background: var(--muted-surface);
     color: var(--text);
     outline: none;
+    font-size: 14px;
+}
+
+.filter-select {
     cursor: pointer;
 }
 
-.sort-select:focus {
+.filter-input {
+    min-width: 150px;
+}
+
+.filter-select:focus,
+.filter-input:focus {
     border-color: var(--primary);
     box-shadow: 0 0 0 2px var(--ring);
+}
+
+.filter-button {
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 8px;
+    border: 1px solid var(--primary);
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    align-self: flex-end;
+}
+
+.filter-button:hover:not(:disabled) {
+    background: var(--primary-600);
+    border-color: var(--primary-600);
+}
+
+.filter-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.restaurant-details {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+
+.detail-badge {
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(79, 140, 255, 0.1);
+    border: 1px solid rgba(79, 140, 255, 0.2);
+    color: var(--primary);
+}
+
+.violation-code {
+    font-weight: 700;
+    color: var(--warning);
+    font-family: 'Courier New', monospace;
 }
 
 /* Modal Styles */
@@ -278,6 +342,14 @@ body {
     color: var(--muted);
     font-size: 14px;
     margin: 0 0 4px 0;
+}
+
+.modal-borough,
+.modal-cuisine {
+    color: var(--primary);
+    font-size: 14px;
+    margin: 0 0 4px 0;
+    font-weight: 500;
 }
 
 .modal-camis {

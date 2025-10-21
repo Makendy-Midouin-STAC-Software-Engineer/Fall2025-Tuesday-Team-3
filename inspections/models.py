@@ -6,6 +6,8 @@ class Restaurant(models.Model):
     city = models.CharField(max_length=64, blank=True, default="")
     state = models.CharField(max_length=2, blank=True, default="")
     zipcode = models.CharField(max_length=10, blank=True, default="")
+    borough = models.CharField(max_length=64, blank=True, default="", db_index=True)
+    cuisine_description = models.CharField(max_length=255, blank=True, default="", db_index=True)
 
     def __str__(self):
         return self.name
@@ -19,6 +21,7 @@ class Inspection(models.Model):
     grade = models.CharField(max_length=2, blank=True, default="")
     score = models.PositiveIntegerField(null=True, blank=True)
     summary = models.TextField(blank=True, default="")
+    violation_code = models.CharField(max_length=10, blank=True, default="")
 
     class Meta:
         ordering = ['-date']  # Most recent first

@@ -5,10 +5,29 @@ export default function App() {
     const [query, setQuery] = useState('')
     const [rawResults, setRawResults] = useState([])
     const [sortOption, setSortOption] = useState('grade_asc')
+    const [boroughFilter, setBoroughFilter] = useState('')
+    const [cuisineFilter, setCuisineFilter] = useState('')
+    const [boroughs, setBoroughs] = useState([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [selectedRestaurant, setSelectedRestaurant] = useState(null)
     const [detailLoading, setDetailLoading] = useState(false)
+
+    // Fetch boroughs on component mount
+    React.useEffect(() => {
+        async function fetchBoroughs() {
+            try {
+                const res = await fetch('/api/restaurants/boroughs/')
+                if (res.ok) {
+                    const data = await res.json()
+                    setBoroughs(data)
+                }
+            } catch (err) {
+                console.error('Failed to fetch boroughs:', err)
+            }
+        }
+        fetchBoroughs()
+    }, [])
 
     // Client-side sorting function
     const sortResults = (results, sortOption) => {
@@ -64,14 +83,54 @@ export default function App() {
     async function onSearch(e) {
         e.preventDefault()
         const q = query.trim()
-        if (!q) {
+
+        if (!q && !boroughFilter && !cuisineFilter.trim()) {
             setRawResults([])
             return
         }
         try {
             setLoading(true)
             setError(null)
-            const res = await fetch(`/api/restaurants/search/?q=${encodeURIComponent(q)}`)
+
+            // Build query parameters - use wildcard if no name but filters exist
+            const params = new URLSearchParams({ q: q || '*' })
+            if (boroughFilter) params.append('borough', boroughFilter)
+            if (cuisineFilter.trim()) params.append('cuisine', cuisineFilter.trim())
+
+            console.log('Search URL:', `/api/restaurants/search/?${params}`)
+
+            const res = await fetch(`/api/restaurants/search/?${params}`)
+            if (!res.ok) throw new Error(`Request failed: ${res.status}`)
+            const data = await res.json()
+            const list = Array.isArray(data) ? data : data.results ?? []
+            setRawResults(list)
+        } catch (err) {
+            setError(err?.message || 'Unknown error')
+            setRawResults([])
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    async function onFilterSearch() {
+        // Search by filters only (no name required)
+        if (!boroughFilter && !cuisineFilter.trim()) {
+            setError('Please select at least one filter (borough or cuisine)')
+            return
+        }
+
+        try {
+            setLoading(true)
+            setError(null)
+
+            // Build query parameters - use a wildcard search if no name provided
+            const params = new URLSearchParams({ q: query.trim() || '*' })
+            if (boroughFilter) params.append('borough', boroughFilter)
+            if (cuisineFilter.trim()) params.append('cuisine', cuisineFilter.trim())
+
+            console.log('Filter search URL:', `/api/restaurants/search/?${params}`)
+
+            const res = await fetch(`/api/restaurants/search/?${params}`)
             if (!res.ok) throw new Error(`Request failed: ${res.status}`)
             const data = await res.json()
             const list = Array.isArray(data) ? data : data.results ?? []
@@ -120,24 +179,60 @@ export default function App() {
                 <button className="button" disabled={loading} type="submit">Search</button>
             </form>
 
-            {results.length > 0 && (
-                <div className="sort-controls">
-                    <label htmlFor="sort-select" className="sort-label">Sort by:</label>
+            <div className="filter-controls">
+                <div className="filter-group">
+                    <label htmlFor="borough-select" className="filter-label">Borough:</label>
+                    <select
+                        id="borough-select"
+                        value={boroughFilter}
+                        onChange={(e) => setBoroughFilter(e.target.value)}
+                        className="filter-select"
+                    >
+                        <option value="">All Boroughs</option>
+                        {boroughs.map(borough => (
+                            <option key={borough} value={borough}>{borough}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="filter-group">
+                    <label htmlFor="cuisine-input" className="filter-label">Cuisine:</label>
+                    <input
+                        id="cuisine-input"
+                        type="text"
+                        value={cuisineFilter}
+                        onChange={(e) => setCuisineFilter(e.target.value)}
+                        placeholder="e.g., Italian, Chinese..."
+                        className="filter-input"
+                    />
+                </div>
+
+                <div className="filter-group">
+                    <label htmlFor="sort-select" className="filter-label">Sort by:</label>
                     <select
                         id="sort-select"
                         value={sortOption}
                         onChange={(e) => setSortOption(e.target.value)}
-                        className="sort-select"
+                        className="filter-select"
                     >
-                        <option value="grade_asc">Grade (A → C) - Safest First</option>
+                        <option value="grade_asc">Grade (A → C) - Best First</option>
                         <option value="grade_desc">Grade (C → A) - Worst First</option>
-                        <option value="score_asc">Score (Low → High) - Safest First</option>
-                        <option value="score_desc">Score (High → Low) - Worst First</option>
+                        <option value="score_asc">Score (Low → High) - Fewest Violations First</option>
+                        <option value="score_desc">Score (High → Low) - Most Violations First</option>
                         <option value="name_asc">Name (A-Z)</option>
                         <option value="name_desc">Name (Z-A)</option>
                     </select>
                 </div>
-            )}
+
+                <button
+                    type="button"
+                    onClick={onFilterSearch}
+                    className="filter-button"
+                    disabled={loading}
+                >
+                    Search by Filters
+                </button>
+            </div>
 
             {loading && <p className="muted">Loading...</p>}
             {error && <p role="alert" className="error">{error}</p>}
@@ -157,13 +252,32 @@ export default function App() {
                                 <div className="card-header">
                                     <span className="name">{r.name}</span>
                                     <div className="badges">
-                                        {grade ? <span className={badgeClass}>Grade: {grade}</span> : <span className="badge">Grade: N/A</span>}
-                                        {score !== null && score !== undefined && <span className="badge">Score: {score}</span>}
+                                        {r.latest_inspection?.grade ? (
+                                            <span className={badgeClass}>Grade: {r.latest_inspection.grade}</span>
+                                        ) : r.latest_inspection?.date ? (
+                                            <span className="badge">Grade: Pending</span>
+                                        ) : (
+                                            <span className="badge">No Recent Inspection</span>
+                                        )}
+                                        {r.latest_inspection?.score !== null && r.latest_inspection?.score !== undefined && (
+                                            <span className="badge">Score: {r.latest_inspection.score}</span>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="address">{[r.address, r.city, r.state, r.zipcode].filter(Boolean).join(', ')}</div>
+                                {(r.borough || r.cuisine_description) && (
+                                    <div className="restaurant-details">
+                                        {r.borough && <span className="detail-badge">📍 {r.borough}</span>}
+                                        {r.cuisine_description && <span className="detail-badge">🍽️ {r.cuisine_description}</span>}
+                                    </div>
+                                )}
                                 {r.latest_inspection?.summary && (
-                                    <div className="summary">{r.latest_inspection.summary}</div>
+                                    <div className="summary">
+                                        {r.latest_inspection?.violation_code && (
+                                            <span className="violation-code">{r.latest_inspection.violation_code}: </span>
+                                        )}
+                                        {r.latest_inspection.summary}
+                                    </div>
                                 )}
                             </div>
                         )
@@ -179,6 +293,12 @@ export default function App() {
                         <p className="modal-address">
                             {[selectedRestaurant.address, selectedRestaurant.city, selectedRestaurant.state, selectedRestaurant.zipcode].filter(Boolean).join(', ')}
                         </p>
+                        {selectedRestaurant.borough && (
+                            <p className="modal-borough">📍 {selectedRestaurant.borough}</p>
+                        )}
+                        {selectedRestaurant.cuisine_description && (
+                            <p className="modal-cuisine">🍽️ {selectedRestaurant.cuisine_description}</p>
+                        )}
                         {selectedRestaurant.camis && (
                             <p className="modal-camis">CAMIS ID: {selectedRestaurant.camis}</p>
                         )}
@@ -190,15 +310,18 @@ export default function App() {
                             <div className="inspection-list">
                                 {selectedRestaurant.inspections.map((inspection) => {
                                     const gradeClass = inspection.grade === 'A' ? 'badge success' : inspection.grade ? 'badge warn' : 'badge'
+                                    const isValidDate = inspection.date && inspection.date !== '1900-01-01'
                                     return (
                                         <div key={inspection.id} className="inspection-item">
                                             <div className="inspection-header">
-                                                <span className="inspection-date">{new Date(inspection.date).toLocaleDateString()}</span>
+                                                <span className="inspection-date">
+                                                    {isValidDate ? new Date(inspection.date).toLocaleDateString() : 'Date Unknown'}
+                                                </span>
                                                 <div className="badges">
                                                     {inspection.grade ? (
                                                         <span className={gradeClass}>Grade: {inspection.grade}</span>
                                                     ) : (
-                                                        <span className="badge">Grade: N/A</span>
+                                                        <span className="badge">Grade: Pending</span>
                                                     )}
                                                     {inspection.score !== null && inspection.score !== undefined && (
                                                         <span className="badge">Score: {inspection.score}</span>
@@ -206,7 +329,12 @@ export default function App() {
                                                 </div>
                                             </div>
                                             {inspection.summary && (
-                                                <p className="inspection-summary">{inspection.summary}</p>
+                                                <p className="inspection-summary">
+                                                    {inspection.violation_code && (
+                                                        <span className="violation-code">{inspection.violation_code}: </span>
+                                                    )}
+                                                    {inspection.summary}
+                                                </p>
                                             )}
                                         </div>
                                     )
