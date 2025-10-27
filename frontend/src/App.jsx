@@ -13,20 +13,9 @@ export default function App() {
     const [selectedRestaurant, setSelectedRestaurant] = useState(null)
     const [detailLoading, setDetailLoading] = useState(false)
 
-    // Fetch boroughs on component mount
+    // Set boroughs directly (hardcoded for demo)
     React.useEffect(() => {
-        async function fetchBoroughs() {
-            try {
-                const res = await fetch('/api/restaurants/boroughs/')
-                if (res.ok) {
-                    const data = await res.json()
-                    setBoroughs(data)
-                }
-            } catch (err) {
-                console.error('Failed to fetch boroughs:', err)
-            }
-        }
-        fetchBoroughs()
+        setBoroughs(['Bronx', 'Brooklyn', 'Manhattan', 'Queens', 'Staten Island'])
     }, [])
 
     // Client-side sorting function
@@ -185,7 +174,13 @@ export default function App() {
                     <select
                         id="borough-select"
                         value={boroughFilter}
-                        onChange={(e) => setBoroughFilter(e.target.value)}
+                        onChange={(e) => {
+                            setBoroughFilter(e.target.value)
+                            // Auto-search when borough changes (if there's already a query)
+                            if (query.trim()) {
+                                setTimeout(() => onSearch({ preventDefault: () => { } }), 100)
+                            }
+                        }}
                         className="filter-select"
                     >
                         <option value="">All Boroughs</option>
@@ -201,7 +196,13 @@ export default function App() {
                         id="cuisine-input"
                         type="text"
                         value={cuisineFilter}
-                        onChange={(e) => setCuisineFilter(e.target.value)}
+                        onChange={(e) => {
+                            setCuisineFilter(e.target.value)
+                            // Auto-search when cuisine changes (if there's already a query)
+                            if (query.trim()) {
+                                setTimeout(() => onSearch({ preventDefault: () => { } }), 300)
+                            }
+                        }}
                         placeholder="e.g., Italian, Chinese..."
                         className="filter-input"
                     />
@@ -302,6 +303,9 @@ export default function App() {
                         {selectedRestaurant.camis && (
                             <p className="modal-camis">CAMIS ID: {selectedRestaurant.camis}</p>
                         )}
+                        {selectedRestaurant.phone && (
+                            <p className="modal-phone">📞 {selectedRestaurant.phone}</p>
+                        )}
 
                         <h3 className="inspection-history-title">Inspection History</h3>
                         {detailLoading ? (
@@ -334,6 +338,16 @@ export default function App() {
                                                         <span className="violation-code">{inspection.violation_code}: </span>
                                                     )}
                                                     {inspection.summary}
+                                                </p>
+                                            )}
+                                            {inspection.action && (
+                                                <p className="inspection-action">
+                                                    <strong>Action:</strong> {inspection.action}
+                                                </p>
+                                            )}
+                                            {inspection.critical_flag && (
+                                                <p className="inspection-critical-flag">
+                                                    <strong>Critical Flag:</strong> {inspection.critical_flag}
                                                 </p>
                                             )}
                                         </div>

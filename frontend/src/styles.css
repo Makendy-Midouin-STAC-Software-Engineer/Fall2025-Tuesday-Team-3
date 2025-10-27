@@ -359,6 +359,12 @@ body {
     font-family: 'Courier New', monospace;
 }
 
+.modal-phone {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0 0 20px 0;
+}
+
 .inspection-history-title {
     font-size: 18px;
     font-weight: 700;
@@ -400,4 +406,16 @@ body {
     font-size: 14px;
     color: var(--muted);
     line-height: 1.5;
+}
+
+.inspection-action,
+.inspection-critical-flag {
+    margin: 8px 0 0 0;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.4;
+}
+
+.inspection-critical-flag strong {
+    color: #ff6b6b;
 }

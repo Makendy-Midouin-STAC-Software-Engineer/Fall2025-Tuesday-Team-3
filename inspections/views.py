@@ -1,5 +1,5 @@
 # Create your views here.
-from django.db.models import OuterRef, Subquery
+from django.db.models import OuterRef, Subquery, Q
 from django.db import models
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
@@ -36,7 +36,7 @@ class RestaurantSearchView(ListAPIView):
             .filter(restaurant=OuterRef("pk"))
             .exclude(date__year=1900)  # Filter out placeholder dates
             .order_by("-date")
-            .values("date", "grade", "score", "summary", "violation_code")[:1]
+            .values("date", "grade", "score", "summary", "violation_code", "action", "critical_flag")[:1]
         )
 
         # Build base queryset
@@ -47,7 +47,8 @@ class RestaurantSearchView(ListAPIView):
         
         # Add borough filter if provided
         if borough:
-            queryset = queryset.filter(borough__iexact=borough)
+            # Search for borough in the address field (e.g., "Bronx" in "123 Main St, Bronx, NY")
+            queryset = queryset.filter(address__icontains=borough)
             
         # Add cuisine filter if provided
         if cuisine:
@@ -62,6 +63,8 @@ class RestaurantSearchView(ListAPIView):
                 latest_score=Subquery(latest_qs.values("score")),
                 latest_summary=Subquery(latest_qs.values("summary")),
                 latest_violation_code=Subquery(latest_qs.values("violation_code")),
+                latest_action=Subquery(latest_qs.values("action")),
+                latest_critical_flag=Subquery(latest_qs.values("critical_flag")),
             )
             .order_by("name")
         )
@@ -82,12 +85,15 @@ class RestaurantSearchView(ListAPIView):
                     "zipcode": r.zipcode,
                     "borough": r.borough,
                     "cuisine_description": r.cuisine_description,
+                    "phone": r.phone,
                     "latest_inspection": {
                         "date": getattr(r, "latest_date", None),
                         "grade": getattr(r, "latest_grade", "") or "",
                         "score": getattr(r, "latest_score", None),
                         "summary": getattr(r, "latest_summary", "") or "",
                         "violation_code": getattr(r, "latest_violation_code", "") or "",
+                        "action": getattr(r, "latest_action", "") or "",
+                        "critical_flag": getattr(r, "latest_critical_flag", "") or "",
                     },
                 })
             return data
