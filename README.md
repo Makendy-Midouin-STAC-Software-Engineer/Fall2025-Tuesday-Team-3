@@ -1,4 +1,4 @@
- ab# 🏙️ SafeEats NYC
+# 🏙️ SafeEats NYC
 
 A Django + React web application that helps users explore NYC restaurant health inspection data using the official NYC Open Data API.
 
@@ -25,7 +25,7 @@ Each member also configured CI and test suites individually.
 | Branch | Build Status | Coverage |
 |--------|---------------|-----------|
 | `main` | ![CI](https://github.com/Makendy-Midouin-STAC-Software-Engineer/Fall2025-Tuesday-Team-3/actions/workflows/django.yml/badge.svg?branch=main) | [![Coverage Status](https://coveralls.io/repos/github/Makendy-Midouin-STAC-Software-Engineer/Fall2025-Tuesday-Team-3/badge.svg?branch=main)](https://coveralls.io/github/Makendy-Midouin-STAC-Software-Engineer/Fall2025-Tuesday-Team-3?branch=main) |
-| `develop` | ![CI](https://github.com/Makendy-Midouin-STAC-Software-Engineer/Fall2025-Tuesday-Team-3/actions/workflows/django.yml/badge.svg?branch=develop penalty ) | [![Coverage Status](https://coveralls.io/repos/github/Makendy-Midouin-STAC-Software-Engineer/Fall2025-Tuesday-Team-3/badge.svg?branch=develop)](https://coveralls.io/github/Makendy-Midouin-STAC-Software-Engineer/Fall2025-Tuesday-Team-3?branch=develop) |
+| `develop` | ![CI](https://github.com/Makendy-Midouin-STAC-Software-Engineer/Fall2025-Tuesday-Team-3/actions/workflows/django.yml/badge.svg?branch=develop) | [![Coverage Status](https://coveralls.io/repos/github/Makendy-Midouin-STAC-Software-Engineer/Fall2025-Tuesday-Team-3/badge.svg?branch=develop)](https://coveralls.io/github/Makendy-Midouin-STAC-Software-Engineer/Fall2025-Tuesday-Team-3?branch=develop) |
 
 > If Coveralls badges don't show yet, connect the repo at [https://coveralls.io](https://coveralls.io).
 
