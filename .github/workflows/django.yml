@@ -29,11 +29,12 @@ jobs:
         run: black --check .
 
       - name: Run linting
-        run: flake8 --ignore=E501,F401
+        run: flake8 --ignore=E501,F401 .
 
       - name: Run tests with coverage
         run: |
           coverage run manage.py test
+          coverage report
           coverage xml
 
       - name: Upload coverage to Coveralls
@@ -42,4 +43,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         run: coveralls --service=github
-

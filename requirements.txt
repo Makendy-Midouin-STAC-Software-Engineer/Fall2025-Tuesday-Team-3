@@ -18,9 +18,11 @@ psycopg2-binary>=2.9,<3.0
 python-decouple>=3.8  # For environment variables
 whitenoise>=6.6  # For serving static files in production
 
+# Testing and code quality
 black==24.8.0
 flake8==7.1.1
 pytest==8.3.3
 pytest-django==4.9.0
 coverage==7.6.1
+coveralls==3.3.1
 

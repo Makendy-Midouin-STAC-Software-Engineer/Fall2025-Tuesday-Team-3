@@ -1,0 +1,28 @@
+[tool.black]
+line-length = 100
+target-version = ['py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | migrations
+  | staticfiles
+)/
+'''
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "safe_eats_backend.settings"
+python_files = "tests.py test_*.py *_tests.py"
+addopts = "--cov=inspections --cov-report=term-missing --cov-report=xml --cov-report=html"
+
