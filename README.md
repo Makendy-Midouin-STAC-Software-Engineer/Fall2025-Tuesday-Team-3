@@ -53,7 +53,7 @@ pytest --cov=inspections
 - Deployed manually to AWS Elastic Beanstalk
 - Production: main branch
 - Integration: develop branch
-- URL (example): http://your-elasticbeanstalk-env.us-east-1.elasticbeanstalk.com
+- **URL:** http://safeeats-app-env.eba-nknmey2d.us-east-2.elasticbeanstalk.com/
 
 ## 🧩 Tech Stack
 
@@ -81,4 +81,3 @@ pytest --cov=inspections
 ## 📝 License
 
 MIT License
-

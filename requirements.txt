@@ -19,10 +19,10 @@ python-decouple>=3.8  # For environment variables
 whitenoise>=6.6  # For serving static files in production
 
 # Testing and code quality
-pytest>=7.4,<8.0
-pytest-django>=4.8,<5.0
-coverage>=7.3,<8.0
-black>=23.12,<24.0
-flake8>=6.1,<7.0
-coveralls>=3.3,<4.0
+black==24.8.0
+flake8==7.1.1
+pytest==8.3.3
+pytest-django==4.9.0
+coverage==7.6.1
+coveralls==3.3.1
 
