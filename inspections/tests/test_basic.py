@@ -54,7 +54,7 @@ class SmokeTest(TestCase):
             zipcode="11201",
             borough="Brooklyn",
             cuisine_description="Mexican",
-            phone="718-555-9999"
+            phone="718-555-9999",
         )
         self.assertEqual(restaurant.camis, "99999")
         self.assertEqual(restaurant.phone, "718-555-9999")
@@ -73,7 +73,7 @@ class SmokeTest(TestCase):
             summary="Clean",
             violation_code="",
             action="",
-            critical_flag=""
+            critical_flag="",
         )
         self.assertEqual(inspection.restaurant, restaurant)
         self.assertEqual(inspection.grade, "A")
@@ -93,7 +93,7 @@ class SmokeTest(TestCase):
             summary="Minor violations noted",
             violation_code="10F",
             action="Violations cited",
-            critical_flag="Critical"
+            critical_flag="Critical",
         )
         self.assertEqual(inspection.violation_code, "10F")
         self.assertEqual(inspection.action, "Violations cited")
@@ -105,17 +105,9 @@ class SmokeTest(TestCase):
         from datetime import date
 
         restaurant = Restaurant.objects.create(name="Test Restaurant")
-        Inspection.objects.create(
-            restaurant=restaurant,
-            date=date(2024, 1, 1),
-            grade="A"
-        )
-        Inspection.objects.create(
-            restaurant=restaurant,
-            date=date(2024, 2, 1),
-            grade="B"
-        )
-        
+        Inspection.objects.create(restaurant=restaurant, date=date(2024, 1, 1), grade="A")
+        Inspection.objects.create(restaurant=restaurant, date=date(2024, 2, 1), grade="B")
+
         self.assertEqual(restaurant.inspections.count(), 2)
 
     def test_restaurant_cascade_delete(self):
@@ -124,11 +116,7 @@ class SmokeTest(TestCase):
         from datetime import date
 
         restaurant = Restaurant.objects.create(name="Test Restaurant")
-        Inspection.objects.create(
-            restaurant=restaurant,
-            date=date(2024, 1, 1),
-            grade="A"
-        )
-        
+        Inspection.objects.create(restaurant=restaurant, date=date(2024, 1, 1), grade="A")
+
         restaurant.delete()
         self.assertEqual(Inspection.objects.count(), 0)

@@ -17,7 +17,7 @@ class RestaurantSearchViewTest(TestCase):
     def setUp(self):
         """Set up test data."""
         self.client = APIClient()
-        
+
         # Create test restaurants
         self.restaurant1 = Restaurant.objects.create(
             camis="12345",
@@ -28,9 +28,9 @@ class RestaurantSearchViewTest(TestCase):
             zipcode="10001",
             borough="Manhattan",
             cuisine_description="Pizza",
-            phone="212-555-0100"
+            phone="212-555-0100",
         )
-        
+
         self.restaurant2 = Restaurant.objects.create(
             camis="67890",
             name="Burger King",
@@ -40,9 +40,9 @@ class RestaurantSearchViewTest(TestCase):
             zipcode="11201",
             borough="Brooklyn",
             cuisine_description="American",
-            phone="718-555-0200"
+            phone="718-555-0200",
         )
-        
+
         # Create inspections
         Inspection.objects.create(
             restaurant=self.restaurant1,
@@ -52,9 +52,9 @@ class RestaurantSearchViewTest(TestCase):
             summary="Clean and sanitary",
             violation_code="",
             action="",
-            critical_flag=""
+            critical_flag="",
         )
-        
+
         Inspection.objects.create(
             restaurant=self.restaurant2,
             date=date(2024, 2, 20),
@@ -63,14 +63,14 @@ class RestaurantSearchViewTest(TestCase):
             summary="Minor violations",
             violation_code="10F",
             action="Violations cited",
-            critical_flag="Critical"
+            critical_flag="Critical",
         )
 
     def test_search_by_name(self):
         """Test searching by restaurant name."""
         url = reverse("restaurant-search")
         response = self.client.get(url, {"q": "Pizza"})
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]["name"], "Joe's Pizza")
@@ -79,7 +79,7 @@ class RestaurantSearchViewTest(TestCase):
         """Test that search is case-insensitive."""
         url = reverse("restaurant-search")
         response = self.client.get(url, {"q": "joe's"})
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
 
@@ -87,7 +87,7 @@ class RestaurantSearchViewTest(TestCase):
         """Test searching with borough filter."""
         url = reverse("restaurant-search")
         response = self.client.get(url, {"borough": "Manhattan"})
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]["borough"], "Manhattan")
@@ -96,7 +96,7 @@ class RestaurantSearchViewTest(TestCase):
         """Test searching with cuisine filter."""
         url = reverse("restaurant-search")
         response = self.client.get(url, {"cuisine": "Pizza"})
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]["cuisine_description"], "Pizza")
@@ -105,7 +105,7 @@ class RestaurantSearchViewTest(TestCase):
         """Test searching with multiple filters."""
         url = reverse("restaurant-search")
         response = self.client.get(url, {"q": "Joe", "borough": "Manhattan"})
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
 
@@ -113,7 +113,7 @@ class RestaurantSearchViewTest(TestCase):
         """Test that search without params raises validation error."""
         url = reverse("restaurant-search")
         response = self.client.get(url)
-        
+
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("detail", response.data)
 
@@ -121,7 +121,7 @@ class RestaurantSearchViewTest(TestCase):
         """Test that latest inspection is included in results."""
         url = reverse("restaurant-search")
         response = self.client.get(url, {"q": "Pizza"})
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("latest_inspection", response.data[0])
         self.assertEqual(response.data[0]["latest_inspection"]["grade"], "A")
@@ -130,7 +130,7 @@ class RestaurantSearchViewTest(TestCase):
         """Test wildcard search with *."""
         url = reverse("restaurant-search")
         response = self.client.get(url, {"q": "*", "borough": "Manhattan"})
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
 
@@ -141,7 +141,7 @@ class RestaurantDetailViewTest(TestCase):
     def setUp(self):
         """Set up test data."""
         self.client = APIClient()
-        
+
         self.restaurant = Restaurant.objects.create(
             camis="11111",
             name="Test Restaurant",
@@ -151,9 +151,9 @@ class RestaurantDetailViewTest(TestCase):
             zipcode="11101",
             borough="Queens",
             cuisine_description="Italian",
-            phone="718-555-0300"
+            phone="718-555-0300",
         )
-        
+
         # Create multiple inspections
         Inspection.objects.create(
             restaurant=self.restaurant,
@@ -163,9 +163,9 @@ class RestaurantDetailViewTest(TestCase):
             summary="Good",
             violation_code="",
             action="",
-            critical_flag=""
+            critical_flag="",
         )
-        
+
         Inspection.objects.create(
             restaurant=self.restaurant,
             date=date(2024, 3, 15),
@@ -174,14 +174,14 @@ class RestaurantDetailViewTest(TestCase):
             summary="Fair",
             violation_code="10F",
             action="Actions required",
-            critical_flag="Critical"
+            critical_flag="Critical",
         )
 
     def test_get_restaurant_detail(self):
         """Test retrieving restaurant detail with inspections."""
         url = reverse("restaurant-detail", kwargs={"pk": self.restaurant.pk})
         response = self.client.get(url)
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["name"], "Test Restaurant")
         self.assertIn("inspections", response.data)
@@ -191,7 +191,7 @@ class RestaurantDetailViewTest(TestCase):
         """Test getting non-existent restaurant returns 404."""
         url = reverse("restaurant-detail", kwargs={"pk": 99999})
         response = self.client.get(url)
-        
+
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
@@ -201,7 +201,7 @@ class BoroughListViewTest(TestCase):
     def setUp(self):
         """Set up test data."""
         self.client = APIClient()
-        
+
         Restaurant.objects.create(name="Restaurant 1", borough="Manhattan")
         Restaurant.objects.create(name="Restaurant 2", borough="Brooklyn")
         Restaurant.objects.create(name="Restaurant 3", borough="Queens")
@@ -211,7 +211,7 @@ class BoroughListViewTest(TestCase):
         """Test retrieving list of unique boroughs."""
         url = reverse("borough-list")
         response = self.client.get(url)
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("Brooklyn", response.data)
         self.assertIn("Manhattan", response.data)
@@ -223,7 +223,7 @@ class BoroughListViewTest(TestCase):
         """Test that boroughs are returned sorted."""
         url = reverse("borough-list")
         response = self.client.get(url)
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         sorted_boroughs = sorted(response.data)
         self.assertEqual(response.data, sorted_boroughs)
@@ -241,9 +241,7 @@ class ModelTests(TestCase):
         """Test Inspection __str__ method."""
         restaurant = Restaurant.objects.create(name="Test Place")
         inspection = Inspection.objects.create(
-            restaurant=restaurant,
-            date=date(2024, 5, 1),
-            grade="A"
+            restaurant=restaurant, date=date(2024, 5, 1), grade="A"
         )
         expected = f"Test Place ({date(2024, 5, 1)})"
         self.assertEqual(str(inspection), expected)
@@ -251,13 +249,12 @@ class ModelTests(TestCase):
     def test_inspection_ordering(self):
         """Test that inspections are ordered by date descending."""
         restaurant = Restaurant.objects.create(name="Test Place")
-        
+
         Inspection.objects.create(restaurant=restaurant, date=date(2024, 1, 1))
         Inspection.objects.create(restaurant=restaurant, date=date(2024, 3, 1))
         Inspection.objects.create(restaurant=restaurant, date=date(2024, 2, 1))
-        
+
         inspections = Inspection.objects.filter(restaurant=restaurant)
         dates = [inv.date for inv in inspections]
-        
-        self.assertEqual(dates, [date(2024, 3, 1), date(2024, 2, 1), date(2024, 1, 1)])
 
+        self.assertEqual(dates, [date(2024, 3, 1), date(2024, 2, 1), date(2024, 1, 1)])
