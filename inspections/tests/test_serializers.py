@@ -74,7 +74,7 @@ class RestaurantSearchSerializerTest(TestCase):
             cuisine_description="American",
             phone="212-555-0100"
         )
-        
+
         Inspection.objects.create(
             restaurant=self.restaurant,
             date=date(2024, 1, 1),
@@ -86,11 +86,11 @@ class RestaurantSearchSerializerTest(TestCase):
         """Test serializing restaurant with latest inspection."""
         # Annotate restaurant with latest inspection data
         from django.db.models import OuterRef, Subquery
-        
+
         latest_qs = Inspection.objects.filter(
             restaurant=OuterRef("pk")
         ).order_by("-date").values(
-            "date", "grade", "score", "summary", 
+            "date", "grade", "score", "summary",
             "violation_code", "action", "critical_flag"
         )[:1]
         
@@ -103,10 +103,10 @@ class RestaurantSearchSerializerTest(TestCase):
             latest_action=Subquery(latest_qs.values("action")),
             latest_critical_flag=Subquery(latest_qs.values("critical_flag")),
         ).first()
-        
+
         serializer = RestaurantSearchSerializer(restaurant)
         data = serializer.data
-        
+
         self.assertEqual(data["name"], "Test Restaurant")
         self.assertEqual(data["borough"], "Manhattan")
         self.assertIn("latest_inspection", data)
@@ -122,7 +122,7 @@ class RestaurantDetailSerializerTest(TestCase):
             borough="Brooklyn",
             cuisine_description="Italian"
         )
-        
+
         Inspection.objects.create(
             restaurant=self.restaurant,
             date=date(2024, 1, 1),
@@ -140,7 +140,7 @@ class RestaurantDetailSerializerTest(TestCase):
         # Fetch with prefetch_related
         from django.db import models
         from inspections.views import RestaurantDetailView
-        
+
         queryset = Restaurant.objects.prefetch_related(
             models.Prefetch(
                 "inspections",
