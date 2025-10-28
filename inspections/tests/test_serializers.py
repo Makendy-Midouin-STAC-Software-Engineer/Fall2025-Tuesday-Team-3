@@ -24,7 +24,7 @@ class InspectionSummarySerializerTest(TestCase):
             "summary": "Clean",
             "violation_code": "10F",
             "action": "No action needed",
-            "critical_flag": ""
+            "critical_flag": "",
         }
         serializer = InspectionSummarySerializer(data=data)
         self.assertTrue(serializer.is_valid())
@@ -44,14 +44,14 @@ class InspectionDetailSerializerTest(TestCase):
             summary="Minor issues",
             violation_code="10F",
             action="Violations cited",
-            critical_flag="Critical"
+            critical_flag="Critical",
         )
 
     def test_serialize_inspection_instance(self):
         """Test serializing an inspection instance."""
         serializer = InspectionDetailSerializer(self.inspection)
         data = serializer.data
-        
+
         self.assertEqual(data["grade"], "B")
         self.assertEqual(data["score"], 15)
         self.assertEqual(data["violation_code"], "10F")
@@ -72,14 +72,11 @@ class RestaurantSearchSerializerTest(TestCase):
             zipcode="10001",
             borough="Manhattan",
             cuisine_description="American",
-            phone="212-555-0100"
+            phone="212-555-0100",
         )
 
         Inspection.objects.create(
-            restaurant=self.restaurant,
-            date=date(2024, 1, 1),
-            grade="A",
-            score=10
+            restaurant=self.restaurant, date=date(2024, 1, 1), grade="A", score=10
         )
 
     def test_serialize_restaurant_with_latest_inspection(self):
@@ -87,13 +84,14 @@ class RestaurantSearchSerializerTest(TestCase):
         # Annotate restaurant with latest inspection data
         from django.db.models import OuterRef, Subquery
 
-        latest_qs = Inspection.objects.filter(
-            restaurant=OuterRef("pk")
-        ).order_by("-date").values(
-            "date", "grade", "score", "summary",
-            "violation_code", "action", "critical_flag"
-        )[:1]
-        
+        latest_qs = (
+            Inspection.objects.filter(restaurant=OuterRef("pk"))
+            .order_by("-date")
+            .values(
+                "date", "grade", "score", "summary", "violation_code", "action", "critical_flag"
+            )[:1]
+        )
+
         restaurant = Restaurant.objects.annotate(
             latest_date=Subquery(latest_qs.values("date")),
             latest_grade=Subquery(latest_qs.values("grade")),
@@ -118,22 +116,12 @@ class RestaurantDetailSerializerTest(TestCase):
     def setUp(self):
         """Set up test data."""
         self.restaurant = Restaurant.objects.create(
-            name="Detailed Restaurant",
-            borough="Brooklyn",
-            cuisine_description="Italian"
+            name="Detailed Restaurant", borough="Brooklyn", cuisine_description="Italian"
         )
 
-        Inspection.objects.create(
-            restaurant=self.restaurant,
-            date=date(2024, 1, 1),
-            grade="A"
-        )
-        
-        Inspection.objects.create(
-            restaurant=self.restaurant,
-            date=date(2024, 2, 1),
-            grade="B"
-        )
+        Inspection.objects.create(restaurant=self.restaurant, date=date(2024, 1, 1), grade="A")
+
+        Inspection.objects.create(restaurant=self.restaurant, date=date(2024, 2, 1), grade="B")
 
     def test_serialize_restaurant_with_inspections(self):
         """Test serializing restaurant with inspection history."""
@@ -144,15 +132,14 @@ class RestaurantDetailSerializerTest(TestCase):
         queryset = Restaurant.objects.prefetch_related(
             models.Prefetch(
                 "inspections",
-                queryset=Inspection.objects.exclude(date__year=1900).order_by("-date")
+                queryset=Inspection.objects.exclude(date__year=1900).order_by("-date"),
             )
         )
-        
+
         restaurant = queryset.first()
         serializer = RestaurantDetailSerializer(restaurant)
         data = serializer.data
-        
+
         self.assertEqual(data["name"], "Detailed Restaurant")
         self.assertIn("inspections", data)
         self.assertEqual(len(data["inspections"]), 2)
-
