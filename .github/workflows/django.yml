@@ -28,7 +28,7 @@ jobs:
         run: black --check .
 
       - name: Run linting
-        run: flake8 --ignore=E501,F401 .
+        run: flake8 .
 
       - name: Run tests with coverage
         run: |
