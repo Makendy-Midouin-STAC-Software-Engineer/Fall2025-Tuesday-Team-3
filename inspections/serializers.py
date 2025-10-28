@@ -33,13 +33,24 @@ class RestaurantSearchSerializer(serializers.ModelSerializer):
 
 class InspectionDetailSerializer(serializers.ModelSerializer):
     """Full inspection details for restaurant detail view"""
+
     class Meta:
         model = Inspection
-        fields = ["id", "date", "grade", "score", "summary", "violation_code", "action", "critical_flag"]
+        fields = [
+            "id",
+            "date",
+            "grade",
+            "score",
+            "summary",
+            "violation_code",
+            "action",
+            "critical_flag",
+        ]
 
 
 class RestaurantDetailSerializer(serializers.ModelSerializer):
     """Restaurant with all inspection history"""
+
     inspections = InspectionDetailSerializer(many=True, read_only=True)
 
     class Meta:

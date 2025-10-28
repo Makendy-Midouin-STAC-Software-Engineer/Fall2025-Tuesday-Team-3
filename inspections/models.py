@@ -1,4 +1,6 @@
 from django.db import models
+
+
 class Restaurant(models.Model):
     camis = models.CharField(max_length=20, blank=True, default="", db_index=True)  # NYC unique ID
     name = models.CharField(max_length=255, db_index=True)
@@ -15,9 +17,7 @@ class Restaurant(models.Model):
 
 
 class Inspection(models.Model):
-    restaurant = models.ForeignKey(
-        Restaurant, on_delete=models.CASCADE, related_name="inspections"
-    )
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name="inspections")
     date = models.DateField()
     grade = models.CharField(max_length=2, blank=True, default="")
     score = models.PositiveIntegerField(null=True, blank=True)
@@ -27,7 +27,7 @@ class Inspection(models.Model):
     critical_flag = models.CharField(max_length=20, blank=True, default="")
 
     class Meta:
-        ordering = ['-date']  # Most recent first
+        ordering = ["-date"]  # Most recent first
 
     def __str__(self):
         return f"{self.restaurant.name} ({self.date})"

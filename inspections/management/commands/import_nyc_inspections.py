@@ -11,15 +11,21 @@ from inspections.models import Restaurant, Inspection
 SODA_URL = "https://data.cityofnewyork.us/resource/43nn-pn8j.json"
 PAGE_SIZE = 5000
 
+
 def norm(s: Any) -> str:
     return (s or "").strip()
+
 
 class Command(BaseCommand):
     help = "Import NYC restaurant inspections into local DB."
 
     def add_arguments(self, parser):
-        parser.add_argument("--limit", type=int, default=20000, help="Max rows to import for this run (for demo).")
-        parser.add_argument("--since", type=str, help="YYYY-MM-DD to import records with inspection_date >= since.")
+        parser.add_argument(
+            "--limit", type=int, default=20000, help="Max rows to import for this run (for demo)."
+        )
+        parser.add_argument(
+            "--since", type=str, help="YYYY-MM-DD to import records with inspection_date >= since."
+        )
         parser.add_argument("--token", type=str, help="Socrata app token (optional).")
 
     def handle(self, *args, **opts):
@@ -48,7 +54,9 @@ class Command(BaseCommand):
             if not rows:
                 break
 
-            self.stdout.write(self.style.NOTICE(f"Fetched {len(rows)} rows (offset {params['$offset']})"))
+            self.stdout.write(
+                self.style.NOTICE(f"Fetched {len(rows)} rows (offset {params['$offset']})")
+            )
             self._ingest(rows)
 
             imported += len(rows)
@@ -82,7 +90,7 @@ class Command(BaseCommand):
                     insp_date = dt.date.fromisoformat(date_str.split("T")[0])
                 except ValueError:
                     insp_date = None
-            
+
             # Parse score
             score = None
             if score_str:
@@ -114,24 +122,29 @@ class Command(BaseCommand):
                     # If name/address changed, update light fields
                     changed = False
                     if name and restaurant.name != name:
-                        restaurant.name = name; changed = True
+                        restaurant.name = name
+                        changed = True
                     if address and restaurant.address != address:
-                        restaurant.address = address; changed = True
+                        restaurant.address = address
+                        changed = True
                     if zipcode and restaurant.zipcode != zipcode:
-                        restaurant.zipcode = zipcode; changed = True
+                        restaurant.zipcode = zipcode
+                        changed = True
                     if changed:
                         restaurant.save(update_fields=["name", "address", "zipcode"])
                 else:
                     restaurant, _ = Restaurant.objects.get_or_create(
-                        name=name, address=address, zipcode=zipcode,
-                        defaults={"city": city, "state": "NY"}
+                        name=name,
+                        address=address,
+                        zipcode=zipcode,
+                        defaults={"city": city, "state": "NY"},
                     )
                 restaurant_cache[key] = restaurant
 
             # Create Inspection (no strict de-dup unless you want it)
             Inspection.objects.create(
                 restaurant=restaurant,
-                date=insp_date or dt.date(1900,1,1),
+                date=insp_date or dt.date(1900, 1, 1),
                 grade=grade,
                 score=score,
                 summary=violation_desc,
