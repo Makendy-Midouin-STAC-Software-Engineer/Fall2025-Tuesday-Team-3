@@ -63,12 +63,6 @@ pytest --cov=inspections
 - Hosting: AWS Elastic Beanstalk
 - CI/CD: GitHub Actions + Coveralls
 
-## 👥 Team Members
-
-- Nick Nikac – Backend Developer / CI Lead
-- Makendy Midouin – Scrum Master
-- [Add others here]
-
 ## 📖 Features
 
 - Search NYC restaurants by name
