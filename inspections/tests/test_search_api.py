@@ -109,6 +109,30 @@ class RestaurantSearchViewTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
 
+    def test_search_no_name_only_borough(self):
+        """Test searching with only borough filter."""
+        url = reverse("restaurant-search")
+        response = self.client.get(url, {"borough": "Brooklyn"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+
+    def test_search_no_name_only_cuisine(self):
+        """Test searching with only cuisine filter."""
+        url = reverse("restaurant-search")
+        response = self.client.get(url, {"cuisine": "American"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+
+    def test_search_with_all_filters(self):
+        """Test searching with q, borough, and cuisine filters."""
+        url = reverse("restaurant-search")
+        response = self.client.get(url, {"q": "King", "borough": "Brooklyn", "cuisine": "American"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+
     def test_search_no_params_raises_error(self):
         """Test that search without params raises validation error."""
         url = reverse("restaurant-search")
