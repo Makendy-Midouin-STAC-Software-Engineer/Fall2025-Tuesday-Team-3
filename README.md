@@ -39,7 +39,20 @@ cd Fall2025-Tuesday-Team-3
 python -m venv venv
 venv\Scripts\activate  # (on Windows)
 pip install -r requirements.txt
+python manage.py migrate  # Create database tables
 python manage.py runserver
+```
+
+### Import Data
+
+To import NYC restaurant inspection data:
+
+```bash
+# Import all data (no limit)
+python manage.py import_nyc_inspections
+
+# Or import with a limit (for testing)
+python manage.py import_nyc_inspections --limit 10000
 ```
 
 ### To run tests:
@@ -59,9 +72,33 @@ pytest --cov=inspections
 
 - Backend: Django REST Framework
 - Frontend: React + Vite
-- Database: SQLite (local) / PostgreSQL (AWS)
+- Database: PostgreSQL (production) / SQLite (local dev fallback)
 - Hosting: AWS Elastic Beanstalk
 - CI/CD: GitHub Actions + Coveralls
+
+## 🗄️ Database Setup
+
+### Local Development (SQLite)
+By default, the application uses SQLite for local development. No setup required.
+
+### PostgreSQL Migration
+To migrate to PostgreSQL and import all NYC restaurant inspection data:
+
+1. **See [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)** for detailed instructions
+2. **Quick start:**
+   ```bash
+   # Install PostgreSQL and create database
+   # Set DATABASE_URL environment variable
+   export DATABASE_URL="postgresql://user:pass@localhost:5432/safeeats_db"
+   
+   # Run migrations
+   python manage.py migrate
+   
+   # Import all data (no limit)
+   python manage.py import_nyc_inspections
+   ```
+
+The application automatically uses PostgreSQL when `DATABASE_URL` is set, otherwise falls back to SQLite.
 
 ## 👥 Team Members
 

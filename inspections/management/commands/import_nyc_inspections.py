@@ -21,7 +21,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            "--limit", type=int, default=20000, help="Max rows to import for this run (for demo)."
+            "--limit", type=int, default=None, help="Max rows to import for this run (default: no limit, import all data)."
         )
         parser.add_argument(
             "--since", type=str, help="YYYY-MM-DD to import records with inspection_date >= since."
@@ -42,10 +42,13 @@ class Command(BaseCommand):
             params["$where"] = f"inspection_date >= '{since}T00:00:00.000'"
 
         imported = 0
-        while imported < total_limit:
-            # Cap the final page
-            page_limit = min(PAGE_SIZE, total_limit - imported)
-            params["$limit"] = page_limit
+        while total_limit is None or imported < total_limit:
+            # Cap the final page if limit is set
+            if total_limit is not None:
+                page_limit = min(PAGE_SIZE, total_limit - imported)
+                params["$limit"] = page_limit
+            else:
+                params["$limit"] = PAGE_SIZE
 
             r = requests.get(SODA_URL, params=params, headers=headers, timeout=60)
             if r.status_code != 200:
@@ -102,6 +105,11 @@ class Command(BaseCommand):
             # Compose address from NYC fields
             address = " ".join([p for p in [building, street] if p]).strip()
             city = boro if boro else ""
+            
+            # Extract additional fields
+            violation_code = norm(row.get("violation_code"))
+            action = norm(row.get("action"))
+            critical_flag = norm(row.get("critical_flag"))
 
             # Find or create Restaurant (prefer camis)
             key = camis or f"{name}|{address}|{zipcode}"
@@ -117,6 +125,8 @@ class Command(BaseCommand):
                             "city": city,
                             "state": "NY",
                             "zipcode": zipcode,
+                            "borough": boro,
+                            "cuisine_description": cuisine,
                         },
                     )
                     # If name/address changed, update light fields
@@ -130,14 +140,25 @@ class Command(BaseCommand):
                     if zipcode and restaurant.zipcode != zipcode:
                         restaurant.zipcode = zipcode
                         changed = True
+                    if boro and restaurant.borough != boro:
+                        restaurant.borough = boro
+                        changed = True
+                    if cuisine and restaurant.cuisine_description != cuisine:
+                        restaurant.cuisine_description = cuisine
+                        changed = True
                     if changed:
-                        restaurant.save(update_fields=["name", "address", "zipcode"])
+                        restaurant.save(update_fields=["name", "address", "zipcode", "borough", "cuisine_description"])
                 else:
                     restaurant, _ = Restaurant.objects.get_or_create(
                         name=name,
                         address=address,
                         zipcode=zipcode,
-                        defaults={"city": city, "state": "NY"},
+                        defaults={
+                            "city": city,
+                            "state": "NY",
+                            "borough": boro,
+                            "cuisine_description": cuisine,
+                        },
                     )
                 restaurant_cache[key] = restaurant
 
@@ -148,4 +169,7 @@ class Command(BaseCommand):
                 grade=grade,
                 score=score,
                 summary=violation_desc,
+                violation_code=violation_code,
+                action=action,
+                critical_flag=critical_flag,
             )
