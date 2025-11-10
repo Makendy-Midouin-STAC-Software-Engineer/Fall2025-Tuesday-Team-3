@@ -11,7 +11,7 @@ export default function About() {
     ]
 
     return (
-        <div className="container">
+        <main className="container">
             <div className="about-hero">
                 <h1 className="about-title">About SafeEatsNYC</h1>
                 <p className="about-description">
@@ -21,8 +21,8 @@ export default function About() {
                 </p>
             </div>
 
-            <section className="about-section">
-                <h2 className="section-title">Our Mission</h2>
+            <section className="about-section" aria-labelledby="mission-heading">
+                <h2 id="mission-heading" className="section-title">Our Mission</h2>
                 <p className="section-text">
                     We believe that everyone deserves to know the health and safety standards of the restaurants 
                     they visit. Our platform makes NYC's restaurant inspection data accessible, searchable, and 
@@ -30,12 +30,12 @@ export default function About() {
                 </p>
             </section>
 
-            <section className="about-section">
-                <h2 className="section-title">Meet Our Team</h2>
-                <div className="team-grid">
+            <section className="about-section" aria-labelledby="team-heading">
+                <h2 id="team-heading" className="section-title">Meet Our Team</h2>
+                <div className="team-grid" role="list">
                     {teamMembers.map((member, index) => (
-                        <div key={index} className="team-card">
-                            <div className="team-avatar">
+                        <div key={index} className="team-card" role="listitem">
+                            <div className="team-avatar" aria-hidden="true">
                                 {member.name.split(' ').map(n => n[0]).join('')}
                             </div>
                             <h3 className="team-name">{member.name}</h3>
@@ -44,51 +44,57 @@ export default function About() {
                 </div>
             </section>
 
-            <section className="about-section">
-                <h2 className="section-title">Contact Us</h2>
-                <div className="contact-card">
+            <section className="about-section" aria-labelledby="contact-heading">
+                <h2 id="contact-heading" className="section-title">Contact Us</h2>
+                <address className="contact-card">
                     <div className="contact-item">
-                        <span className="contact-icon">📧</span>
+                        <span className="contact-icon" role="img" aria-label="Email">📧</span>
                         <div>
                             <strong>Email</strong>
-                            <p className="contact-detail">contact@safeatsnyc.com</p>
+                            <p className="contact-detail">
+                                <a href="mailto:contact@safeatsnyc.com" className="contact-link">
+                                    contact@safeatsnyc.com
+                                </a>
+                            </p>
                         </div>
                     </div>
                     <div className="contact-item">
-                        <span className="contact-icon">💬</span>
+                        <span className="contact-icon" role="img" aria-label="Support">💬</span>
                         <div>
                             <strong>Support</strong>
                             <p className="contact-detail">We typically respond within 24-48 hours</p>
                         </div>
                     </div>
-                </div>
+                </address>
             </section>
 
-            <section className="about-section">
-                <h2 className="section-title">Subscribe for Updates</h2>
+            <section className="about-section" aria-labelledby="subscribe-heading">
+                <h2 id="subscribe-heading" className="section-title">Subscribe for Updates</h2>
                 <p className="section-text">
                     Stay informed with SafeEats NYC! Enter your email below to subscribe for updates on 
                     new features, safety alerts, and community news.
                 </p>
-                <div className="subscribe-form">
+                <form className="subscribe-form" onSubmit={(e) => e.preventDefault()} aria-label="Newsletter subscription">
                     <input
                         type="email"
                         className="input"
                         placeholder="Enter your email address"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        aria-label="Email address"
+                        aria-label="Email address for newsletter"
+                        aria-required="true"
+                        required
                     />
-                    <button className="button" type="button">
+                    <button className="button" type="submit" aria-label="Subscribe to newsletter">
                         Subscribe
                     </button>
-                </div>
+                </form>
                 <p className="subscribe-note">
                     By subscribing, you agree to receive updates from SafeEatsNYC. We respect your privacy 
                     and will never share your information.
                 </p>
             </section>
-        </div>
+        </main>
     )
 }
 
