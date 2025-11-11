@@ -484,7 +484,7 @@ body {
 .about-hero {
     text-align: center;
     padding: 40px 0;
-    margin-bottom: 20px;
+    margin-bottom: 48px;
 }
 
 .about-title {
@@ -548,22 +548,22 @@ body {
 }
 
 .team-avatar {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-600) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 16px;
-    font-size: 28px;
+    margin: 0 auto 12px;
+    font-size: 20px;
     font-weight: 700;
     color: white;
     letter-spacing: 1px;
 }
 
 .team-name {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     color: var(--text);
     margin: 0;
@@ -632,8 +632,8 @@ body {
 .subscribe-form {
     display: flex;
     gap: 10px;
-    margin-top: 16px;
-    margin-bottom: 12px;
+    margin: 16px auto 12px;
+    max-width: 500px;
 }
 
 .subscribe-form .input {
