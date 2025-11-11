@@ -8,30 +8,46 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Restaurant',
+            name="Restaurant",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(db_index=True, max_length=255)),
-                ('address', models.CharField(blank=True, default='', max_length=255)),
-                ('city', models.CharField(blank=True, default='', max_length=64)),
-                ('state', models.CharField(blank=True, default='', max_length=2)),
-                ('zipcode', models.CharField(blank=True, default='', max_length=10)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("name", models.CharField(db_index=True, max_length=255)),
+                ("address", models.CharField(blank=True, default="", max_length=255)),
+                ("city", models.CharField(blank=True, default="", max_length=64)),
+                ("state", models.CharField(blank=True, default="", max_length=2)),
+                ("zipcode", models.CharField(blank=True, default="", max_length=10)),
             ],
         ),
         migrations.CreateModel(
-            name='Inspection',
+            name="Inspection",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateField()),
-                ('grade', models.CharField(blank=True, default='', max_length=2)),
-                ('score', models.PositiveIntegerField(blank=True, null=True)),
-                ('summary', models.TextField(blank=True, default='')),
-                ('restaurant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='inspections', to='inspections.restaurant')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("date", models.DateField()),
+                ("grade", models.CharField(blank=True, default="", max_length=2)),
+                ("score", models.PositiveIntegerField(blank=True, null=True)),
+                ("summary", models.TextField(blank=True, default="")),
+                (
+                    "restaurant",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="inspections",
+                        to="inspections.restaurant",
+                    ),
+                ),
             ],
         ),
     ]

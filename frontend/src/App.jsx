@@ -1,10 +1,42 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import './styles.css'
+
+const MAX_STARS = 4
+
+const normalizeStarValue = (value) => {
+    const numeric = Number(value)
+    if (!Number.isFinite(numeric)) {
+        return 0
+    }
+    return Math.max(0, Math.min(MAX_STARS, Math.round(numeric)))
+}
+
+const StarDisplay = ({ value }) => {
+    const rating = normalizeStarValue(value)
+    if (!rating) {
+        return <span className="stars-label muted">No star rating yet</span>
+    }
+
+    return (
+        <div className="stars-rating" aria-label={`${rating} out of ${MAX_STARS} stars`}>
+            {[...Array(MAX_STARS)].map((_, index) => (
+                <span
+                    key={index}
+                    className={index < rating ? 'star filled' : 'star'}
+                    aria-hidden="true"
+                >
+                    ★
+                </span>
+            ))}
+            <span className="stars-label">{rating} / {MAX_STARS}</span>
+        </div>
+    )
+}
 
 export default function App() {
     const [query, setQuery] = useState('')
     const [rawResults, setRawResults] = useState([])
-    const [sortOption, setSortOption] = useState('grade_asc')
+    const [sortOption, setSortOption] = useState('stars_desc')
     const [boroughFilter, setBoroughFilter] = useState('')
     const [cuisineFilter, setCuisineFilter] = useState('')
     const [boroughs, setBoroughs] = useState([])
@@ -13,81 +45,66 @@ export default function App() {
     const [selectedRestaurant, setSelectedRestaurant] = useState(null)
     const [detailLoading, setDetailLoading] = useState(false)
 
-    // Set boroughs directly (hardcoded for demo)
     React.useEffect(() => {
         setBoroughs(['Bronx', 'Brooklyn', 'Manhattan', 'Queens', 'Staten Island'])
     }, [])
 
-    // Client-side sorting function
-    const sortResults = (results, sortOption) => {
+    const sortResults = (results, option) => {
         return [...results].sort((a, b) => {
-            const aGrade = a?.latest_inspection?.grade || ''
-            const bGrade = b?.latest_inspection?.grade || ''
-            const aScore = a?.latest_inspection?.score ?? 999
-            const bScore = b?.latest_inspection?.score ?? 999
+            const aStars = normalizeStarValue(a?.star_rating ?? a?.display_value)
+            const bStars = normalizeStarValue(b?.star_rating ?? b?.display_value)
             const aName = a?.name || ''
             const bName = b?.name || ''
 
-            switch (sortOption) {
-                case 'grade_asc':
-                    // A grades first (best), then B, then C, then ungraded last
-                    const gradeOrder = { 'A': 1, 'B': 2, 'C': 3 }
-                    const aOrder = gradeOrder[aGrade] || 4
-                    const bOrder = gradeOrder[bGrade] || 4
-                    if (aOrder !== bOrder) return aOrder - bOrder
+            switch (option) {
+                case 'stars_asc':
+                    if (aStars !== bStars) return aStars - bStars
                     return aName.localeCompare(bName)
-
-                case 'grade_desc':
-                    // C grades first (worst), then B, then A, then ungraded last
-                    const gradeOrderDesc = { 'C': 1, 'B': 2, 'A': 3 }
-                    const aOrderDesc = gradeOrderDesc[aGrade] || 4
-                    const bOrderDesc = gradeOrderDesc[bGrade] || 4
-                    if (aOrderDesc !== bOrderDesc) return aOrderDesc - bOrderDesc
+                case 'stars_desc':
+                    if (aStars !== bStars) return bStars - aStars
                     return aName.localeCompare(bName)
-
-                case 'score_asc':
-                    // Lowest scores first (safest restaurants)
-                    if (aScore !== bScore) return aScore - bScore
-                    return aName.localeCompare(bName)
-
-                case 'score_desc':
-                    // Highest scores first (least safe restaurants)
-                    if (aScore !== bScore) return bScore - aScore
-                    return aName.localeCompare(bName)
-
                 case 'name_desc':
                     return bName.localeCompare(aName)
-
-                default: // name_asc
+                case 'name_asc':
+                default:
                     return aName.localeCompare(bName)
             }
         })
     }
 
-    // Compute sorted results - only re-sorts when rawResults or sortOption changes
-    const results = React.useMemo(() => {
-        return sortResults(rawResults, sortOption)
-    }, [rawResults, sortOption])
+    const results = useMemo(() => sortResults(rawResults, sortOption), [rawResults, sortOption])
+
+    const buildSearchParams = (baseQuery) => {
+        const params = new URLSearchParams({ q: baseQuery || '*', display: 'stars' })
+        if (boroughFilter) params.append('borough', boroughFilter)
+        if (cuisineFilter.trim()) params.append('cuisine', cuisineFilter.trim())
+        return params
+    }
+
+    const formatDate = (value) => {
+        if (!value || value === '1900-01-01') {
+            return null
+        }
+        const date = new Date(value)
+        if (Number.isNaN(date.getTime())) {
+            return null
+        }
+        return date.toLocaleDateString()
+    }
 
     async function onSearch(e) {
         e.preventDefault()
-        const q = query.trim()
+        const trimmed = query.trim()
 
-        if (!q && !boroughFilter && !cuisineFilter.trim()) {
+        if (!trimmed && !boroughFilter && !cuisineFilter.trim()) {
             setRawResults([])
             return
         }
+
         try {
             setLoading(true)
             setError(null)
-
-            // Build query parameters - use wildcard if no name but filters exist
-            const params = new URLSearchParams({ q: q || '*' })
-            if (boroughFilter) params.append('borough', boroughFilter)
-            if (cuisineFilter.trim()) params.append('cuisine', cuisineFilter.trim())
-
-            console.log('Search URL:', `/api/restaurants/search/?${params}`)
-
+            const params = buildSearchParams(trimmed)
             const res = await fetch(`/api/restaurants/search/?${params}`)
             if (!res.ok) throw new Error(`Request failed: ${res.status}`)
             const data = await res.json()
@@ -102,8 +119,7 @@ export default function App() {
     }
 
     async function onFilterSearch() {
-        // Search by filters only (no name required)
-        if (!boroughFilter && !cuisineFilter.trim()) {
+        if (!boroughFilter && !cuisineFilter.trim() && !query.trim()) {
             setError('Please select at least one filter (borough or cuisine)')
             return
         }
@@ -111,14 +127,7 @@ export default function App() {
         try {
             setLoading(true)
             setError(null)
-
-            // Build query parameters - use a wildcard search if no name provided
-            const params = new URLSearchParams({ q: query.trim() || '*' })
-            if (boroughFilter) params.append('borough', boroughFilter)
-            if (cuisineFilter.trim()) params.append('cuisine', cuisineFilter.trim())
-
-            console.log('Filter search URL:', `/api/restaurants/search/?${params}`)
-
+            const params = buildSearchParams(query.trim())
             const res = await fetch(`/api/restaurants/search/?${params}`)
             if (!res.ok) throw new Error(`Request failed: ${res.status}`)
             const data = await res.json()
@@ -136,7 +145,7 @@ export default function App() {
         try {
             setDetailLoading(true)
             setError(null)
-            const res = await fetch(`/api/restaurants/${restaurantId}/`)
+            const res = await fetch(`/api/restaurants/${restaurantId}/?display=stars`)
             if (!res.ok) throw new Error(`Request failed: ${res.status}`)
             const data = await res.json()
             setSelectedRestaurant(data)
@@ -150,11 +159,12 @@ export default function App() {
     function closeModal() {
         setSelectedRestaurant(null)
     }
+
     return (
         <div className="container">
-            <div className="header">
-                <div className="title">SafeEatsNYC</div>
-            </div>
+            <header className="header">
+                <h1 className="title">SafeEatsNYC</h1>
+            </header>
             <p className="subtitle">Search NYC restaurant inspection results</p>
 
             <form onSubmit={onSearch} className="search-bar">
@@ -176,7 +186,6 @@ export default function App() {
                         value={boroughFilter}
                         onChange={(e) => {
                             setBoroughFilter(e.target.value)
-                            // Auto-search when borough changes (if there's already a query)
                             if (query.trim()) {
                                 setTimeout(() => onSearch({ preventDefault: () => { } }), 100)
                             }
@@ -198,7 +207,6 @@ export default function App() {
                         value={cuisineFilter}
                         onChange={(e) => {
                             setCuisineFilter(e.target.value)
-                            // Auto-search when cuisine changes (if there's already a query)
                             if (query.trim()) {
                                 setTimeout(() => onSearch({ preventDefault: () => { } }), 300)
                             }
@@ -216,10 +224,8 @@ export default function App() {
                         onChange={(e) => setSortOption(e.target.value)}
                         className="filter-select"
                     >
-                        <option value="grade_asc">Grade (A → C) - Best First</option>
-                        <option value="grade_desc">Grade (C → A) - Worst First</option>
-                        <option value="score_asc">Score (Low → High) - Fewest Violations First</option>
-                        <option value="score_desc">Score (High → Low) - Most Violations First</option>
+                        <option value="stars_desc">Star Rating (High → Low)</option>
+                        <option value="stars_asc">Star Rating (Low → High)</option>
                         <option value="name_asc">Name (A-Z)</option>
                         <option value="name_desc">Name (Z-A)</option>
                     </select>
@@ -245,31 +251,36 @@ export default function App() {
             {!loading && !error && results.length > 0 && (
                 <div className="results">
                     {results.map((r) => {
-                        const grade = r?.latest_inspection?.grade
-                        const score = r?.latest_inspection?.score
-                        const badgeClass = grade === 'A' ? 'badge success' : grade ? 'badge warn' : 'badge'
+                        const latestDate = formatDate(r?.latest_inspection?.date)
                         return (
-                            <div key={r.id} className="card" onClick={() => onRestaurantClick(r.id)} style={{ cursor: 'pointer' }}>
+                            <div
+                                key={r.id}
+                                className="card"
+                                onClick={() => onRestaurantClick(r.id)}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(event) => {
+                                    if (event.key === 'Enter' || event.key === ' ') {
+                                        event.preventDefault()
+                                        onRestaurantClick(r.id)
+                                    }
+                                }}
+                            >
                                 <div className="card-header">
                                     <span className="name">{r.name}</span>
-                                    <div className="badges">
-                                        {r.latest_inspection?.grade ? (
-                                            <span className={badgeClass}>Grade: {r.latest_inspection.grade}</span>
-                                        ) : r.latest_inspection?.date ? (
-                                            <span className="badge">Grade: Pending</span>
-                                        ) : (
-                                            <span className="badge">No Recent Inspection</span>
-                                        )}
-                                        {r.latest_inspection?.score !== null && r.latest_inspection?.score !== undefined && (
-                                            <span className="badge">Score: {r.latest_inspection.score}</span>
-                                        )}
-                                    </div>
+                                    <StarDisplay value={r?.star_rating ?? r?.display_value} />
                                 </div>
                                 <div className="address">{[r.address, r.city, r.state, r.zipcode].filter(Boolean).join(', ')}</div>
+                                {(latestDate || r.display_mode === 'stars') && (
+                                    <div className="card-meta">
+                                        {latestDate && <span className="card-pill">Latest inspection: {latestDate}</span>}
+                                        <span className="card-pill accent">SafeEats Star Rating</span>
+                                    </div>
+                                )}
                                 {(r.borough || r.cuisine_description) && (
                                     <div className="restaurant-details">
-                                        {r.borough && <span className="detail-badge">📍 {r.borough}</span>}
-                                        {r.cuisine_description && <span className="detail-badge">🍽️ {r.cuisine_description}</span>}
+                                        {r.borough && <span className="detail-badge">{r.borough}</span>}
+                                        {r.cuisine_description && <span className="detail-badge">{r.cuisine_description}</span>}
                                     </div>
                                 )}
                                 {r.latest_inspection?.summary && (
@@ -291,20 +302,24 @@ export default function App() {
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <button className="modal-close" onClick={closeModal}>&times;</button>
                         <h2>{selectedRestaurant.name}</h2>
+                        <div className="modal-rating">
+                            <StarDisplay value={selectedRestaurant?.star_rating ?? selectedRestaurant?.display_value} />
+                            <p className="modal-rating-caption">Deterministic star rating (4 = clean since 2021)</p>
+                        </div>
                         <p className="modal-address">
                             {[selectedRestaurant.address, selectedRestaurant.city, selectedRestaurant.state, selectedRestaurant.zipcode].filter(Boolean).join(', ')}
                         </p>
                         {selectedRestaurant.borough && (
-                            <p className="modal-borough">📍 {selectedRestaurant.borough}</p>
+                            <p className="modal-borough"><strong>Borough:</strong> {selectedRestaurant.borough}</p>
                         )}
                         {selectedRestaurant.cuisine_description && (
-                            <p className="modal-cuisine">🍽️ {selectedRestaurant.cuisine_description}</p>
+                            <p className="modal-cuisine"><strong>Cuisine:</strong> {selectedRestaurant.cuisine_description}</p>
                         )}
                         {selectedRestaurant.camis && (
                             <p className="modal-camis">CAMIS ID: {selectedRestaurant.camis}</p>
                         )}
                         {selectedRestaurant.phone && (
-                            <p className="modal-phone">📞 {selectedRestaurant.phone}</p>
+                            <p className="modal-phone"><strong>Phone:</strong> {selectedRestaurant.phone}</p>
                         )}
 
                         <h3 className="inspection-history-title">Inspection History</h3>
@@ -313,24 +328,11 @@ export default function App() {
                         ) : selectedRestaurant.inspections && selectedRestaurant.inspections.length > 0 ? (
                             <div className="inspection-list">
                                 {selectedRestaurant.inspections.map((inspection) => {
-                                    const gradeClass = inspection.grade === 'A' ? 'badge success' : inspection.grade ? 'badge warn' : 'badge'
-                                    const isValidDate = inspection.date && inspection.date !== '1900-01-01'
+                                    const readableDate = formatDate(inspection.date) || 'Date Unknown'
                                     return (
                                         <div key={inspection.id} className="inspection-item">
                                             <div className="inspection-header">
-                                                <span className="inspection-date">
-                                                    {isValidDate ? new Date(inspection.date).toLocaleDateString() : 'Date Unknown'}
-                                                </span>
-                                                <div className="badges">
-                                                    {inspection.grade ? (
-                                                        <span className={gradeClass}>Grade: {inspection.grade}</span>
-                                                    ) : (
-                                                        <span className="badge">Grade: Pending</span>
-                                                    )}
-                                                    {inspection.score !== null && inspection.score !== undefined && (
-                                                        <span className="badge">Score: {inspection.score}</span>
-                                                    )}
-                                                </div>
+                                                <span className="inspection-date">{readableDate}</span>
                                             </div>
                                             {inspection.summary && (
                                                 <p className="inspection-summary">
@@ -363,5 +365,3 @@ export default function App() {
         </div>
     )
 }
-
-

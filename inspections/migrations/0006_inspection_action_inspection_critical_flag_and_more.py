@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('inspections', '0005_inspection_violation_code'),
+        ("inspections", "0005_inspection_violation_code"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='inspection',
-            name='action',
-            field=models.CharField(blank=True, default='', max_length=255),
+            model_name="inspection",
+            name="action",
+            field=models.CharField(blank=True, default="", max_length=255),
         ),
         migrations.AddField(
-            model_name='inspection',
-            name='critical_flag',
-            field=models.CharField(blank=True, default='', max_length=20),
+            model_name="inspection",
+            name="critical_flag",
+            field=models.CharField(blank=True, default="", max_length=20),
         ),
         migrations.AddField(
-            model_name='restaurant',
-            name='phone',
-            field=models.CharField(blank=True, default='', max_length=20),
+            model_name="restaurant",
+            name="phone",
+            field=models.CharField(blank=True, default="", max_length=20),
         ),
     ]

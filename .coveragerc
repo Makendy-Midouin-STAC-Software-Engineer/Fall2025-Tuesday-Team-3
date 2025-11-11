@@ -1,0 +1,14 @@
+[run]
+source = inspections,safe_eats_backend
+branch = True
+omit =
+    */migrations/*
+    */tests/*
+    venv/*
+    manage.py
+
+[report]
+show_missing = True
+skip_covered = True
+
+

@@ -27,20 +27,36 @@ class RestaurantSearchSerializer(serializers.ModelSerializer):
             "borough",
             "cuisine_description",
             "phone",
+            "regraded_letter",
+            "star_rating",
+            "forbidden_years",
+            "grading_explanations",
             "latest_inspection",
         ]
 
 
 class InspectionDetailSerializer(serializers.ModelSerializer):
     """Full inspection details for restaurant detail view"""
+
     class Meta:
         model = Inspection
-        fields = ["id", "date", "grade", "score", "summary", "violation_code", "action", "critical_flag"]
+        fields = [
+            "id",
+            "date",
+            "grade",
+            "score",
+            "summary",
+            "violation_code",
+            "action",
+            "critical_flag",
+        ]
 
 
 class RestaurantDetailSerializer(serializers.ModelSerializer):
     """Restaurant with all inspection history"""
+
     inspections = InspectionDetailSerializer(many=True, read_only=True)
+    latest_agency_grade = serializers.SerializerMethodField()
 
     class Meta:
         model = Restaurant
@@ -55,5 +71,14 @@ class RestaurantDetailSerializer(serializers.ModelSerializer):
             "borough",
             "cuisine_description",
             "phone",
+            "regraded_letter",
+            "star_rating",
+            "forbidden_years",
+            "grading_explanations",
+            "latest_agency_grade",
             "inspections",
         ]
+
+    def get_latest_agency_grade(self, obj: Restaurant) -> str:
+        inspection = obj.inspections.first()
+        return inspection.grade if inspection else ""
