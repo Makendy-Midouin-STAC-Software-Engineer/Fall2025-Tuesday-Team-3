@@ -11,6 +11,10 @@ class Restaurant(models.Model):
     borough = models.CharField(max_length=64, blank=True, default="", db_index=True)
     cuisine_description = models.CharField(max_length=255, blank=True, default="", db_index=True)
     phone = models.CharField(max_length=20, blank=True, default="")
+    regraded_letter = models.CharField(max_length=8, blank=True, default="")
+    star_rating = models.PositiveSmallIntegerField(null=True, blank=True)
+    forbidden_years = models.JSONField(default=dict, blank=True)
+    grading_explanations = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
         return self.name

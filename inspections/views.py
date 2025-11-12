@@ -1,12 +1,14 @@
 # Create your views here.
-from django.db.models import OuterRef, Subquery, Q
+from django.conf import settings
+from django.db.models import OuterRef, Subquery
 from django.db import models
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
-from rest_framework.exceptions import ValidationError, NotFound
+from rest_framework.exceptions import ValidationError
 
 from .models import Restaurant, Inspection
 from .serializers import RestaurantSearchSerializer, RestaurantDetailSerializer
+from inspections.services.grading import ALLOWED_YEARS
 
 
 class RestaurantSearchView(ListAPIView):
@@ -17,6 +19,12 @@ class RestaurantSearchView(ListAPIView):
     """
 
     serializer_class = RestaurantSearchSerializer
+
+    def _resolve_display_mode(self) -> str:
+        requested = (self.request.query_params.get("display") or "").strip().lower()
+        if getattr(settings, "STAR_DISPLAY_ENABLED", False) and requested == "stars":
+            return "stars"
+        return "letter"
 
     def get_queryset(self):
         q = (self.request.query_params.get("q") or "").strip()
@@ -74,9 +82,19 @@ class RestaurantSearchView(ListAPIView):
 
         page = self.paginate_queryset(queryset)
 
-        def serialize(qs):
+        display_mode = self._resolve_display_mode()
+        base_year_map = {str(year): None for year in ALLOWED_YEARS}
+
+        def serialize(qs, mode):
             data = []
             for r in qs:
+                regraded_letter = (r.regraded_letter or "").strip() or "Unknown"
+                star_rating = r.star_rating if r.star_rating is not None else 2
+                year_map = base_year_map.copy()
+                if isinstance(r.forbidden_years, dict):
+                    year_map.update(r.forbidden_years)
+                display_value = star_rating if mode == "stars" else regraded_letter
+                display_source = "star_rating" if mode == "stars" else "regraded_letter"
                 data.append(
                     {
                         "id": r.id,
@@ -88,6 +106,14 @@ class RestaurantSearchView(ListAPIView):
                         "borough": r.borough,
                         "cuisine_description": r.cuisine_description,
                         "phone": r.phone,
+                        "regraded_letter": regraded_letter,
+                        "star_rating": star_rating,
+                        "forbidden_years": year_map,
+                        "grading_explanations": getattr(r, "grading_explanations", {}) or {},
+                        "display_mode": mode,
+                        "display_source": display_source,
+                        "display_value": display_value,
+                        "original_agency_grade": getattr(r, "latest_grade", "") or "",
                         "latest_inspection": {
                             "date": getattr(r, "latest_date", None),
                             "grade": getattr(r, "latest_grade", "") or "",
@@ -102,8 +128,8 @@ class RestaurantSearchView(ListAPIView):
             return data
 
         if page is not None:
-            return self.get_paginated_response(serialize(page))
-        return Response(serialize(queryset))
+            return self.get_paginated_response(serialize(page, display_mode))
+        return Response(serialize(queryset, display_mode))
 
 
 class RestaurantDetailView(RetrieveAPIView):
@@ -118,6 +144,28 @@ class RestaurantDetailView(RetrieveAPIView):
         )
     )
     serializer_class = RestaurantDetailSerializer
+
+    def _resolve_display_mode(self) -> str:
+        requested = (self.request.query_params.get("display") or "").strip().lower()
+        if getattr(settings, "STAR_DISPLAY_ENABLED", False) and requested == "stars":
+            return "stars"
+        return "letter"
+
+    def retrieve(self, request, *args, **kwargs):
+        response = super().retrieve(request, *args, **kwargs)
+        data = response.data
+        display_mode = self._resolve_display_mode()
+        regraded_letter = (data.get("regraded_letter") or "").strip() or "Unknown"
+        star_rating = data.get("star_rating", None)
+        if star_rating is None:
+            star_rating = 2
+        display_value = star_rating if display_mode == "stars" else regraded_letter
+        data["display_mode"] = display_mode
+        data["display_source"] = "star_rating" if display_mode == "stars" else "regraded_letter"
+        data["display_value"] = display_value
+        data.setdefault("original_agency_grade", data.get("latest_agency_grade", ""))
+        response.data = data
+        return response
 
 
 class BoroughListView(ListAPIView):

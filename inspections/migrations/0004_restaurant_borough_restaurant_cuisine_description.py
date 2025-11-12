@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('inspections', '0003_alter_inspection_options'),
+        ("inspections", "0003_alter_inspection_options"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='restaurant',
-            name='borough',
-            field=models.CharField(blank=True, db_index=True, default='', max_length=64),
+            model_name="restaurant",
+            name="borough",
+            field=models.CharField(blank=True, db_index=True, default="", max_length=64),
         ),
         migrations.AddField(
-            model_name='restaurant',
-            name='cuisine_description',
-            field=models.CharField(blank=True, db_index=True, default='', max_length=255),
+            model_name="restaurant",
+            name="cuisine_description",
+            field=models.CharField(blank=True, db_index=True, default="", max_length=255),
         ),
     ]

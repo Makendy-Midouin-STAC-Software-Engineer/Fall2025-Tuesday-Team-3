@@ -23,6 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-!z159_ix44%8w10gd#b2s$5el*x321h_b1kcm=-d2fui@i6fbx"
 
 # SECURITY WARNING: don't run with debug turned on in production!
+import json
 import os
 
 DEBUG = os.environ.get("DEBUG", "False") == "True"
@@ -144,3 +145,64 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+
+def _load_list_from_env(env_key: str, default: list[str]) -> list[str]:
+    raw = os.environ.get(env_key)
+    if not raw:
+        return default
+    try:
+        parsed = json.loads(raw)
+    except json.JSONDecodeError:
+        parsed = None
+    if isinstance(parsed, list):
+        return [str(item).strip() for item in parsed if str(item).strip()]
+    return [part.strip() for part in raw.split(",") if part.strip()]
+
+
+LOWEST_GRADE = os.environ.get("LOWEST_GRADE", "C")
+FORBIDDEN_TERMS = _load_list_from_env(
+    "FORBIDDEN_TERMS",
+    [
+        "vermin",
+        "rodent",
+        "rodents",
+        "mouse",
+        "mice",
+        "rat",
+        "rats",
+        "droppings",
+        "feces",
+        "gnawing",
+        "harborage",
+        "infestation",
+        "infested",
+        "pest",
+        "pests",
+        "insect",
+        "insects",
+        "cockroach",
+        "cockroaches",
+        "roach",
+        "roaches",
+        "fly",
+        "flies",
+        "maggot",
+        "maggots",
+        "larva",
+        "larvae",
+    ],
+)
+NEGATION_TERMS = _load_list_from_env(
+    "NEGATION_TERMS",
+    [
+        "no",
+        "not",
+        "without",
+        "free of",
+        "absence of",
+        "none observed",
+        "none found",
+    ],
+)
+STAR_DISPLAY_ENABLED = os.environ.get("STAR_DISPLAY_ENABLED", "false").lower() == "true"
