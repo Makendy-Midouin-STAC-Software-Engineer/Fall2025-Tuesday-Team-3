@@ -18,7 +18,7 @@ class RestaurantSearchView(ListAPIView):
     each annotated with its latest inspection summary.
     """
 
-    serializer_class = RestaurantSearchSerializer
+    serializer_class = None  # We override list() to do custom serialization
 
     def _resolve_display_mode(self) -> str:
         requested = (self.request.query_params.get("display") or "").strip().lower()
@@ -59,8 +59,8 @@ class RestaurantSearchView(ListAPIView):
 
         # Add borough filter if provided
         if borough:
-            # Search for borough in the address field (e.g., "Bronx" in "123 Main St, Bronx, NY")
-            queryset = queryset.filter(address__icontains=borough)
+            # Filter by borough field directly
+            queryset = queryset.filter(borough__icontains=borough)
 
         # Add cuisine filter if provided
         if cuisine:
@@ -78,7 +78,20 @@ class RestaurantSearchView(ListAPIView):
         ).order_by("name")
 
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
+        try:
+            queryset = self.filter_queryset(self.get_queryset())
+        except ValidationError:
+            # Re-raise validation errors as-is
+            raise
+        except Exception as e:
+            # Log unexpected errors and return 500 with details
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.exception("Error in get_queryset")
+            return Response(
+                {"detail": f"Error processing request: {str(e)}"},
+                status=500
+            )
 
         page = self.paginate_queryset(queryset)
 
@@ -88,48 +101,77 @@ class RestaurantSearchView(ListAPIView):
         def serialize(qs, mode):
             data = []
             for r in qs:
-                regraded_letter = (r.regraded_letter or "").strip() or "Unknown"
-                star_rating = r.star_rating if r.star_rating is not None else 2
-                year_map = base_year_map.copy()
-                if isinstance(r.forbidden_years, dict):
-                    year_map.update(r.forbidden_years)
-                display_value = star_rating if mode == "stars" else regraded_letter
-                display_source = "star_rating" if mode == "stars" else "regraded_letter"
-                data.append(
-                    {
-                        "id": r.id,
-                        "name": r.name,
-                        "address": r.address,
-                        "city": r.city,
-                        "state": r.state,
-                        "zipcode": r.zipcode,
-                        "borough": r.borough,
-                        "cuisine_description": r.cuisine_description,
-                        "phone": r.phone,
-                        "regraded_letter": regraded_letter,
-                        "star_rating": star_rating,
-                        "forbidden_years": year_map,
-                        "grading_explanations": getattr(r, "grading_explanations", {}) or {},
-                        "display_mode": mode,
-                        "display_source": display_source,
-                        "display_value": display_value,
-                        "original_agency_grade": getattr(r, "latest_grade", "") or "",
-                        "latest_inspection": {
-                            "date": getattr(r, "latest_date", None),
-                            "grade": getattr(r, "latest_grade", "") or "",
-                            "score": getattr(r, "latest_score", None),
-                            "summary": getattr(r, "latest_summary", "") or "",
-                            "violation_code": getattr(r, "latest_violation_code", "") or "",
-                            "action": getattr(r, "latest_action", "") or "",
-                            "critical_flag": getattr(r, "latest_critical_flag", "") or "",
-                        },
-                    }
-                )
+                try:
+                    regraded_letter = (getattr(r, "regraded_letter", "") or "").strip() or "Unknown"
+                    original_grade = (getattr(r, "latest_grade", "") or "").strip()
+                    star_rating = getattr(r, "star_rating", None)
+                    if star_rating is None:
+                        star_rating = 2
+                    year_map = base_year_map.copy()
+                    forbidden_years = getattr(r, "forbidden_years", None)
+                    if isinstance(forbidden_years, dict):
+                        year_map.update(forbidden_years)
+                    
+                    # Check if regraded_letter is actually the original grade (no forbidden terms found)
+                    grading_explanations = getattr(r, "grading_explanations", {}) or {}
+                    rules_applied = grading_explanations.get("rules_applied", [])
+                    is_using_original = any(rule in ["RULE_4_ORIGINAL_CLEAN", "RULE_3_ORIGINAL_OLD_ONLY"] for rule in rules_applied)
+                    
+                    display_value = star_rating if mode == "stars" else regraded_letter
+                    display_source = "star_rating" if mode == "stars" else "regraded_letter"
+                    data.append(
+                        {
+                            "id": r.id,
+                            "name": getattr(r, "name", "") or "",
+                            "address": getattr(r, "address", "") or "",
+                            "city": getattr(r, "city", "") or "",
+                            "state": getattr(r, "state", "") or "",
+                            "zipcode": getattr(r, "zipcode", "") or "",
+                            "borough": getattr(r, "borough", "") or "",
+                            "cuisine_description": getattr(r, "cuisine_description", "") or "",
+                            "phone": getattr(r, "phone", "") or "",
+                            "regraded_letter": regraded_letter,
+                            "star_rating": star_rating,
+                            "forbidden_years": year_map,
+                            "grading_explanations": grading_explanations,
+                            "display_mode": mode,
+                            "display_source": display_source,
+                            "display_value": display_value,
+                            "original_agency_grade": original_grade,
+                            "is_using_original_grade": is_using_original,
+                            "latest_inspection": {
+                                "date": getattr(r, "latest_date", None),
+                                "grade": getattr(r, "latest_grade", "") or "",
+                                "score": getattr(r, "latest_score", None),
+                                "summary": getattr(r, "latest_summary", "") or "",
+                                "violation_code": getattr(r, "latest_violation_code", "") or "",
+                                "action": getattr(r, "latest_action", "") or "",
+                                "critical_flag": getattr(r, "latest_critical_flag", "") or "",
+                            },
+                        }
+                    )
+                except Exception as e:
+                    import logging
+                    logger = logging.getLogger(__name__)
+                    logger.exception(f"Error serializing restaurant {getattr(r, 'id', 'unknown')}")
+                    # Skip this restaurant and continue
+                    continue
             return data
 
-        if page is not None:
-            return self.get_paginated_response(serialize(page, display_mode))
-        return Response(serialize(queryset, display_mode))
+        try:
+            if page is not None:
+                serialized_data = serialize(page, display_mode)
+                return self.get_paginated_response(serialized_data)
+            serialized_data = serialize(queryset, display_mode)
+            return Response(serialized_data)
+        except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.exception("Error in serialization")
+            return Response(
+                {"detail": f"Error serializing results: {str(e)}"},
+                status=500
+            )
 
 
 class RestaurantDetailView(RetrieveAPIView):

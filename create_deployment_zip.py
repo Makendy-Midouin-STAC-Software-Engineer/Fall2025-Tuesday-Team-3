@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Create a proper deployment ZIP for AWS Elastic Beanstalk
 This script:
@@ -12,6 +13,12 @@ import subprocess
 import sys
 import shutil
 from pathlib import Path
+
+# Set UTF-8 encoding for Windows console
+if sys.platform == 'win32':
+    import io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 
 def run_command(cmd, cwd=None, check=True):
@@ -73,6 +80,16 @@ def build_frontend():
                 shutil.rmtree(assets_dst)
             shutil.copytree(assets_src, assets_dst)
             print(f"  ✓ Copied assets directory")
+        
+        # Copy all other files from dist root (including images from public/)
+        # Vite copies files from public/ to dist root during build
+        image_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp']
+        for file_path in dist_dir.iterdir():
+            if file_path.is_file() and file_path.name != "index.html":
+                # Copy image files and any other files from public/
+                if file_path.suffix.lower() in image_extensions or not file_path.suffix:
+                    shutil.copy2(file_path, staticfiles_dir / file_path.name)
+                    print(f"  ✓ Copied {file_path.name}")
 
 
 def collect_static():

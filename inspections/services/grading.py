@@ -86,8 +86,15 @@ class GradingService:
             ]
             inspections.sort(key=lambda inspection: inspection.date, reverse=True)
         else:
-            inspections = restaurant.inspections.filter(date__year__in=ALLOWED_YEARS).order_by("-date")
-        result = self.grade_from_inspections(inspections)
+            inspections = list(restaurant.inspections.filter(date__year__in=ALLOWED_YEARS).order_by("-date"))
+        
+        # Get the original NYC grade from the most recent inspection
+        original_grade = ""
+        if inspections:
+            latest_inspection = inspections[0]
+            original_grade = (latest_inspection.grade or "").strip()
+        
+        result = self.grade_from_inspections(inspections, original_grade=original_grade)
         logger.info(
             "Restaurant graded",
             extra={
@@ -100,7 +107,7 @@ class GradingService:
         )
         return result
 
-    def grade_from_inspections(self, inspections: Iterable[Inspection]) -> GradeResult:
+    def grade_from_inspections(self, inspections: Iterable[Inspection], original_grade: str = "") -> GradeResult:
         by_year: Dict[int, Dict[str, object]] = {
             year: {"has_data": False, "forbidden": False} for year in ALLOWED_YEARS
         }
@@ -143,7 +150,7 @@ class GradingService:
                 explanations=explanations,
             )
 
-        letter_rule, regraded_letter = self._determine_letter_grade(by_year)
+        letter_rule, regraded_letter = self._determine_letter_grade(by_year, original_grade)
         star_rule, star_rating = self._determine_star_rating(by_year)
 
         explanations = {
@@ -237,16 +244,31 @@ class GradingService:
         snippet = text[begin:finish]
         return snippet.strip()
 
-    def _determine_letter_grade(self, by_year: Dict[int, Dict[str, object]]) -> Tuple[str, str]:
+    def _determine_letter_grade(self, by_year: Dict[int, Dict[str, object]], original_grade: str = "") -> Tuple[str, str]:
         flag = lambda year: bool(by_year[year]["forbidden"])
+        
+        # Rule 1: Recent forbidden (2024 or 2025) → lowest grade
         if flag(2025) or flag(2024):
             return "RULE_1_LOWEST_RECENT", self.lowest_grade
+        
+        # Rule 2: Only 2023 had forbidden, but 2024-2025 are clean → B
         if flag(2023) and not flag(2024) and not flag(2025):
             return "RULE_2_B_2023_ONLY", "B"
+        
+        # Rule 3: Only older years (2021/2022) had forbidden, but 2023-2025 are clean → use original grade or A
         if (flag(2022) or flag(2021)) and not (flag(2023) or flag(2024) or flag(2025)):
+            # Use original NYC grade if available, otherwise default to A
+            if original_grade:
+                return "RULE_3_ORIGINAL_OLD_ONLY", original_grade
             return "RULE_3_A_OLD_ONLY", "A"
+        
+        # Rule 4: No forbidden terms found → use original NYC grade
         if not any(flag(year) for year in ALLOWED_YEARS):
+            if original_grade:
+                return "RULE_4_ORIGINAL_CLEAN", original_grade
+            # If no original grade available, default to A
             return "RULE_4_A_ALL_CLEAN", "A"
+        
         # Fallback: conservatively return lowest grade
         return "RULE_FALLBACK_LOWEST", self.lowest_grade
 
