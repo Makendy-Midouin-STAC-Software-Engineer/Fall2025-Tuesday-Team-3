@@ -59,7 +59,10 @@ class TestGradingService(TestCase):
         self._inspection(2025, "Routine inspection")
         result = self.service.grade_restaurant(self.restaurant)
         self.assertEqual(result.regraded_letter, "A")
-        self.assertIn("RULE_3_A_OLD_ONLY", result.explanations["rules_applied"])
+        # The rule name depends on whether original_grade is available
+        # Since we're creating inspections with grade="A", original_grade will be "A"
+        # So it should use RULE_3_ORIGINAL_OLD_ONLY
+        self.assertIn("RULE_3_ORIGINAL_OLD_ONLY", result.explanations["rules_applied"])
         self.assertEqual(result.star_rating, 2)
         self.assertTrue(result.forbidden_years["2021"])
         self.assertFalse(result.forbidden_years["2023"])

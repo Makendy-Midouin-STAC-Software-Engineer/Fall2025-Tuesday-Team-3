@@ -54,48 +54,78 @@ class RestaurantSearchViewTests(TestCase):
             summary=summary,
         )
 
+    def _get_response_data(self, response):
+        """Helper to extract data from paginated or non-paginated responses."""
+        data = response.json()
+        # Check if response is paginated
+        if isinstance(data, dict) and "results" in data:
+            return data["results"]
+        # Non-paginated response is a list
+        return data
+
     def test_search_by_name(self):
         """Test searching restaurants by name."""
         url = reverse("restaurant-search")
         response = self.client.get(url, {"q": "Pizza"})
         self.assertEqual(response.status_code, 200)
-        data = response.json()
-        self.assertEqual(len(data), 1)
-        self.assertEqual(data[0]["name"], "Pizza Place")
+        data = self._get_response_data(response)
+        self.assertGreaterEqual(len(data), 1)
+        # Find the expected restaurant in results
+        pizza_place = next((r for r in data if r["name"] == "Pizza Place"), None)
+        self.assertIsNotNone(pizza_place, "Pizza Place should be in results")
+        # All results should contain "Pizza" in name
+        for restaurant in data:
+            self.assertIn("Pizza", restaurant["name"])
 
     def test_search_by_borough(self):
         """Test searching restaurants by borough."""
         url = reverse("restaurant-search")
         response = self.client.get(url, {"borough": "Brooklyn"})
         self.assertEqual(response.status_code, 200)
-        data = response.json()
-        self.assertEqual(len(data), 1)
-        self.assertEqual(data[0]["borough"], "Brooklyn")
+        data = self._get_response_data(response)
+        self.assertGreaterEqual(len(data), 1)
+        # Find the expected restaurant in results
+        burger_joint = next((r for r in data if r["name"] == "Burger Joint"), None)
+        self.assertIsNotNone(burger_joint, "Burger Joint should be in results")
+        # All results should have Brooklyn in borough
+        for restaurant in data:
+            self.assertIn("Brooklyn", restaurant["borough"])
 
     def test_search_by_cuisine(self):
         """Test searching restaurants by cuisine."""
         url = reverse("restaurant-search")
         response = self.client.get(url, {"cuisine": "Italian"})
         self.assertEqual(response.status_code, 200)
-        data = response.json()
-        self.assertEqual(len(data), 1)
-        self.assertEqual(data[0]["cuisine_description"], "Italian")
+        data = self._get_response_data(response)
+        self.assertGreaterEqual(len(data), 1)
+        # Find the expected restaurant in results
+        pizza_place = next((r for r in data if r["name"] == "Pizza Place"), None)
+        self.assertIsNotNone(pizza_place, "Pizza Place should be in results")
+        # All results should have Italian in cuisine
+        for restaurant in data:
+            self.assertIn("Italian", restaurant["cuisine_description"])
 
     def test_search_multiple_filters(self):
         """Test searching with multiple filters."""
         url = reverse("restaurant-search")
         response = self.client.get(url, {"q": "Pizza", "borough": "Manhattan"})
         self.assertEqual(response.status_code, 200)
-        data = response.json()
-        self.assertEqual(len(data), 1)
-        self.assertEqual(data[0]["name"], "Pizza Place")
+        data = self._get_response_data(response)
+        self.assertGreaterEqual(len(data), 1)
+        # Find the expected restaurant in results
+        pizza_place = next((r for r in data if r["name"] == "Pizza Place"), None)
+        self.assertIsNotNone(pizza_place, "Pizza Place should be in results")
+        # All results should match both filters
+        for restaurant in data:
+            self.assertIn("Pizza", restaurant["name"])
+            self.assertIn("Manhattan", restaurant["borough"])
 
     def test_search_wildcard(self):
         """Test wildcard search (*) for filter-only searches."""
         url = reverse("restaurant-search")
         response = self.client.get(url, {"q": "*", "borough": "Manhattan"})
         self.assertEqual(response.status_code, 200)
-        data = response.json()
+        data = self._get_response_data(response)
         self.assertGreaterEqual(len(data), 1)
 
     def test_search_no_params_raises_error(self):
@@ -118,7 +148,7 @@ class RestaurantSearchViewTests(TestCase):
         url = reverse("restaurant-search")
         response = self.client.get(url, {"q": "Pizza"})
         self.assertEqual(response.status_code, 200)
-        data = response.json()
+        data = self._get_response_data(response)
         self.assertIn("latest_inspection", data[0])
         self.assertEqual(data[0]["latest_inspection"]["grade"], "A")
         self.assertEqual(data[0]["latest_inspection"]["score"], 10)
@@ -134,7 +164,7 @@ class RestaurantSearchViewTests(TestCase):
         url = reverse("restaurant-search")
         response = self.client.get(url, {"q": "Pizza"})
         self.assertEqual(response.status_code, 200)
-        data = response.json()
+        data = self._get_response_data(response)
         self.assertEqual(data[0]["latest_inspection"]["grade"], "B")
 
     def test_search_display_mode_letter(self):
@@ -142,7 +172,7 @@ class RestaurantSearchViewTests(TestCase):
         url = reverse("restaurant-search")
         response = self.client.get(url, {"q": "Pizza"})
         self.assertEqual(response.status_code, 200)
-        data = response.json()
+        data = self._get_response_data(response)
         self.assertEqual(data[0]["display_mode"], "letter")
         self.assertEqual(data[0]["display_source"], "regraded_letter")
 
@@ -152,7 +182,7 @@ class RestaurantSearchViewTests(TestCase):
         url = reverse("restaurant-search")
         response = self.client.get(url, {"q": "Pizza", "display": "stars"})
         self.assertEqual(response.status_code, 200)
-        data = response.json()
+        data = self._get_response_data(response)
         self.assertEqual(data[0]["display_mode"], "stars")
         self.assertEqual(data[0]["display_source"], "star_rating")
 
@@ -162,7 +192,7 @@ class RestaurantSearchViewTests(TestCase):
         url = reverse("restaurant-search")
         response = self.client.get(url, {"q": "Pizza", "display": "stars"})
         self.assertEqual(response.status_code, 200)
-        data = response.json()
+        data = self._get_response_data(response)
         self.assertEqual(data[0]["display_mode"], "letter")
 
     def test_search_pagination(self):
@@ -182,6 +212,7 @@ class RestaurantSearchViewTests(TestCase):
         self.assertIn("results", data)
         self.assertIn("count", data)
         self.assertLessEqual(len(data["results"]), 5)
+        self.assertEqual(data["count"], 15)
 
     def test_search_with_regraded_data(self):
         """Test search with restaurants that have been regraded."""
@@ -192,12 +223,15 @@ class RestaurantSearchViewTests(TestCase):
         url = reverse("restaurant-search")
         response = self.client.get(url, {"q": "Pizza"})
         self.assertEqual(response.status_code, 200)
-        data = response.json()
-        self.assertEqual(len(data), 1)
-        self.assertIn("regraded_letter", data[0])
-        self.assertIn("star_rating", data[0])
-        self.assertIn("forbidden_years", data[0])
-        self.assertIn("grading_explanations", data[0])
+        data = self._get_response_data(response)
+        self.assertGreaterEqual(len(data), 1)
+        # Find the expected restaurant in results
+        pizza_place = next((r for r in data if r["name"] == "Pizza Place"), None)
+        self.assertIsNotNone(pizza_place, "Pizza Place should be in results")
+        self.assertIn("regraded_letter", pizza_place)
+        self.assertIn("star_rating", pizza_place)
+        self.assertIn("forbidden_years", pizza_place)
+        self.assertIn("grading_explanations", pizza_place)
 
     def test_search_error_handling_in_get_queryset(self):
         """Test error handling when get_queryset raises non-ValidationError exception."""

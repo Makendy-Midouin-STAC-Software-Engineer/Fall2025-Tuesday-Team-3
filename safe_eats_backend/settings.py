@@ -20,15 +20,35 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-!z159_ix44%8w10gd#b2s$5el*x321h_b1kcm=-d2fui@i6fbx"
-
 # SECURITY WARNING: don't run with debug turned on in production!
 import json
 import os
 
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    "django-insecure-!z159_ix44%8w10gd#b2s$5el*x321h_b1kcm=-d2fui@i6fbx"  # Fallback for development only
+)
+
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ["*"]
+# Helper function for loading list from environment
+def _load_list_from_env(env_key: str, default: list[str]) -> list[str]:
+    raw = os.environ.get(env_key)
+    if not raw:
+        return default
+    try:
+        parsed = json.loads(raw)
+    except json.JSONDecodeError:
+        parsed = None
+    if isinstance(parsed, list):
+        return [str(item).strip() for item in parsed if str(item).strip()]
+    return [part.strip() for part in raw.split(",") if part.strip()]
+
+# Allow specific hosts or load from environment
+ALLOWED_HOSTS = _load_list_from_env(
+    "ALLOWED_HOSTS",
+    ["localhost", "127.0.0.1", "safeeats-app-env.eba-nknmey2d.us-east-2.elasticbeanstalk.com"]
+)
 
 
 # Application definition
@@ -135,6 +155,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
+    "PAGE_SIZE_QUERY_PARAM": "page_size",
+    "MAX_PAGE_SIZE": 100,
 }
 
 # CORS settings for local development
@@ -145,20 +167,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
-
-
-def _load_list_from_env(env_key: str, default: list[str]) -> list[str]:
-    raw = os.environ.get(env_key)
-    if not raw:
-        return default
-    try:
-        parsed = json.loads(raw)
-    except json.JSONDecodeError:
-        parsed = None
-    if isinstance(parsed, list):
-        return [str(item).strip() for item in parsed if str(item).strip()]
-    return [part.strip() for part in raw.split(",") if part.strip()]
-
 
 LOWEST_GRADE = os.environ.get("LOWEST_GRADE", "C")
 FORBIDDEN_TERMS = _load_list_from_env(
