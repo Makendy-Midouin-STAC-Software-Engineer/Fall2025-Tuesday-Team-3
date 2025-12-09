@@ -32,6 +32,8 @@ class RestaurantSearchSerializer(serializers.ModelSerializer):
             "forbidden_years",
             "grading_explanations",
             "latest_inspection",
+            "latitude",
+            "longitude",
         ]
 
 
@@ -77,6 +79,8 @@ class RestaurantDetailSerializer(serializers.ModelSerializer):
             "grading_explanations",
             "latest_agency_grade",
             "inspections",
+            "latitude",
+            "longitude",
         ]
 
     def get_latest_agency_grade(self, obj: Restaurant) -> str:

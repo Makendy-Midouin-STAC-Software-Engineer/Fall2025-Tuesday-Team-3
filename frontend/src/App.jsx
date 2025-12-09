@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import MapView from './MapView'
 import './styles.css'
 
 const MAX_STARS = 4
@@ -70,6 +71,7 @@ export default function App() {
     const [error, setError] = useState(null)
     const [selectedRestaurant, setSelectedRestaurant] = useState(null)
     const [detailLoading, setDetailLoading] = useState(false)
+    const [viewMode, setViewMode] = useState('list') // 'list' or 'map'
 
     React.useEffect(() => {
         setBoroughs(['Bronx', 'Brooklyn', 'Manhattan', 'Queens', 'Staten Island'])
@@ -134,17 +136,17 @@ export default function App() {
             const params = buildSearchParams(trimmed)
             const url = `/api/restaurants/search/?${params}`
             const res = await fetch(url)
-            
+
             if (!res.ok) {
                 const errorData = await res.json().catch(() => ({}))
                 const errorMsg = errorData.detail || errorData.message || `Request failed with status ${res.status}`
                 throw new Error(errorMsg)
             }
-            
+
             const data = await res.json()
             const list = Array.isArray(data) ? data : (data.results ?? [])
             setRawResults(list)
-            
+
             if (list.length === 0) {
                 setError(null) // Clear error, just show empty state
             }
@@ -169,17 +171,17 @@ export default function App() {
             const params = buildSearchParams(query.trim())
             const url = `/api/restaurants/search/?${params}`
             const res = await fetch(url)
-            
+
             if (!res.ok) {
                 const errorData = await res.json().catch(() => ({}))
                 const errorMsg = errorData.detail || errorData.message || `Request failed with status ${res.status}`
                 throw new Error(errorMsg)
             }
-            
+
             const data = await res.json()
             const list = Array.isArray(data) ? data : (data.results ?? [])
             setRawResults(list)
-            
+
             if (list.length === 0) {
                 setError(null) // Clear error, just show empty state
             }
@@ -314,7 +316,7 @@ export default function App() {
                         <p>Searching NYC restaurants...</p>
                     </div>
                 )}
-                
+
                 {error && (
                     <div className="error-message" role="alert">
                         <span className="error-icon">⚠️</span>
@@ -324,9 +326,9 @@ export default function App() {
 
                 {!loading && !error && results.length === 0 && (
                     <div className="empty-state">
-                        <img 
-                            src={getImagePath("placeholder-nyc-skyline.jpg")} 
-                            alt="NYC" 
+                        <img
+                            src={getImagePath("placeholder-nyc-skyline.jpg")}
+                            alt="NYC"
                             className="empty-image"
                         />
                         <h3>Start Your Search</h3>
@@ -338,71 +340,113 @@ export default function App() {
                     <>
                         <div className="results-header">
                             <h2 className="results-title">Found {results.length} restaurant{results.length !== 1 ? 's' : ''}</h2>
+                            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                <button
+                                    onClick={() => setViewMode('list')}
+                                    style={{
+                                        padding: '8px 16px',
+                                        border: '1px solid #e5e7eb',
+                                        borderRadius: '6px',
+                                        background: viewMode === 'list' ? '#3b82f6' : 'white',
+                                        color: viewMode === 'list' ? 'white' : '#374151',
+                                        cursor: 'pointer',
+                                        fontSize: '14px',
+                                        fontWeight: viewMode === 'list' ? '600' : '400',
+                                    }}
+                                >
+                                    📋 List
+                                </button>
+                                <button
+                                    onClick={() => setViewMode('map')}
+                                    style={{
+                                        padding: '8px 16px',
+                                        border: '1px solid #e5e7eb',
+                                        borderRadius: '6px',
+                                        background: viewMode === 'map' ? '#3b82f6' : 'white',
+                                        color: viewMode === 'map' ? 'white' : '#374151',
+                                        cursor: 'pointer',
+                                        fontSize: '14px',
+                                        fontWeight: viewMode === 'map' ? '600' : '400',
+                                    }}
+                                >
+                                    🗺️ Map
+                                </button>
+                            </div>
                         </div>
-                        <div className="results-grid">
-                            {results.map((r) => {
-                                const latestDate = formatDate(r?.latest_inspection?.date)
-                                return (
-                                    <div
-                                        key={r.id}
-                                        className="restaurant-card"
-                                        onClick={() => onRestaurantClick(r.id)}
-                                        role="button"
-                                        tabIndex={0}
-                                        onKeyDown={(event) => {
-                                            if (event.key === 'Enter' || event.key === ' ') {
-                                                event.preventDefault()
-                                                onRestaurantClick(r.id)
-                                            }
-                                        }}
-                                    >
-                                        <div className="card-content">
-                                            <div className="card-header-row">
-                                                <h3 className="card-name">{r.name}</h3>
-                                                <StarDisplay value={r?.star_rating ?? r?.display_value} />
-                                            </div>
-                                            {(() => {
-                                                const addressText = [r.address, r.city, r.state, r.zipcode].filter(Boolean).join(', ')
-                                                const mapsUrl = buildMapsUrl(r.address, r.city, r.state, r.zipcode)
-                                                return mapsUrl ? (
-                                                    <a 
-                                                        href={mapsUrl} 
-                                                        target="_blank" 
-                                                        rel="noopener noreferrer"
-                                                        className="card-address-link"
-                                                        onClick={(e) => e.stopPropagation()}
-                                                    >
-                                                        📍 {addressText}
-                                                    </a>
-                                                ) : (
-                                                    <p className="card-address">
-                                                        📍 {addressText}
-                                                    </p>
-                                                )
-                                            })()}
-                                            {latestDate && (
-                                                <p className="card-date">Last inspected: {latestDate}</p>
-                                            )}
-                                            {(r.borough || r.cuisine_description) && (
-                                                <div className="card-tags">
-                                                    {r.borough && <span className="card-tag borough">{r.borough}</span>}
-                                                    {r.cuisine_description && <span className="card-tag cuisine">{r.cuisine_description}</span>}
+                        {viewMode === 'map' ? (
+                            <div style={{ marginTop: '20px' }}>
+                                <MapView
+                                    restaurants={results}
+                                    onRestaurantClick={onRestaurantClick}
+                                    selectedRestaurantId={selectedRestaurant?.id}
+                                />
+                            </div>
+                        ) : (
+                            <div className="results-grid">
+                                {results.map((r) => {
+                                    const latestDate = formatDate(r?.latest_inspection?.date)
+                                    return (
+                                        <div
+                                            key={r.id}
+                                            className="restaurant-card"
+                                            onClick={() => onRestaurantClick(r.id)}
+                                            role="button"
+                                            tabIndex={0}
+                                            onKeyDown={(event) => {
+                                                if (event.key === 'Enter' || event.key === ' ') {
+                                                    event.preventDefault()
+                                                    onRestaurantClick(r.id)
+                                                }
+                                            }}
+                                        >
+                                            <div className="card-content">
+                                                <div className="card-header-row">
+                                                    <h3 className="card-name">{r.name}</h3>
+                                                    <StarDisplay value={r?.star_rating ?? r?.display_value} />
                                                 </div>
-                                            )}
-                                            {r.latest_inspection?.summary && (
-                                                <p className="card-summary">
-                                                    {r.latest_inspection?.violation_code && (
-                                                        <span className="violation-code">{r.latest_inspection.violation_code}: </span>
-                                                    )}
-                                                    {r.latest_inspection.summary.substring(0, 120)}
-                                                    {r.latest_inspection.summary.length > 120 && '...'}
-                                                </p>
-                                            )}
+                                                {(() => {
+                                                    const addressText = [r.address, r.city, r.state, r.zipcode].filter(Boolean).join(', ')
+                                                    const mapsUrl = buildMapsUrl(r.address, r.city, r.state, r.zipcode)
+                                                    return mapsUrl ? (
+                                                        <a
+                                                            href={mapsUrl}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="card-address-link"
+                                                            onClick={(e) => e.stopPropagation()}
+                                                        >
+                                                            📍 {addressText}
+                                                        </a>
+                                                    ) : (
+                                                        <p className="card-address">
+                                                            📍 {addressText}
+                                                        </p>
+                                                    )
+                                                })()}
+                                                {latestDate && (
+                                                    <p className="card-date">Last inspected: {latestDate}</p>
+                                                )}
+                                                {(r.borough || r.cuisine_description) && (
+                                                    <div className="card-tags">
+                                                        {r.borough && <span className="card-tag borough">{r.borough}</span>}
+                                                        {r.cuisine_description && <span className="card-tag cuisine">{r.cuisine_description}</span>}
+                                                    </div>
+                                                )}
+                                                {r.latest_inspection?.summary && (
+                                                    <p className="card-summary">
+                                                        {r.latest_inspection?.violation_code && (
+                                                            <span className="violation-code">{r.latest_inspection.violation_code}: </span>
+                                                        )}
+                                                        {r.latest_inspection.summary.substring(0, 120)}
+                                                        {r.latest_inspection.summary.length > 120 && '...'}
+                                                    </p>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                )
-                            })}
-                        </div>
+                                    )
+                                })}
+                            </div>
+                        )}
                     </>
                 )}
             </main>
@@ -411,7 +455,7 @@ export default function App() {
                 <div className="modal-overlay" onClick={closeModal}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <button className="modal-close" onClick={closeModal} aria-label="Close">×</button>
-                        
+
                         <div className="modal-header">
                             <h2 className="modal-title">{selectedRestaurant.name}</h2>
                             <div className="modal-rating-large">
@@ -428,9 +472,9 @@ export default function App() {
                                         const addressText = [selectedRestaurant.address, selectedRestaurant.city, selectedRestaurant.state, selectedRestaurant.zipcode].filter(Boolean).join(', ')
                                         const mapsUrl = buildMapsUrl(selectedRestaurant.address, selectedRestaurant.city, selectedRestaurant.state, selectedRestaurant.zipcode)
                                         return mapsUrl ? (
-                                            <a 
-                                                href={mapsUrl} 
-                                                target="_blank" 
+                                            <a
+                                                href={mapsUrl}
+                                                target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="info-value-link"
                                             >

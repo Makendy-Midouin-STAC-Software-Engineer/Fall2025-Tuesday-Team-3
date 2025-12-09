@@ -15,6 +15,9 @@ class Restaurant(models.Model):
     star_rating = models.PositiveSmallIntegerField(null=True, blank=True)
     forbidden_years = models.JSONField(default=dict, blank=True)
     grading_explanations = models.JSONField(default=dict, blank=True)
+    # Map coordinates (nullable for backward compatibility)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True, db_index=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True, db_index=True)
 
     def __str__(self):
         return self.name

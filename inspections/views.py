@@ -119,6 +119,12 @@ class RestaurantSearchView(ListAPIView):
                     
                     display_value = star_rating if mode == "stars" else regraded_letter
                     display_source = "star_rating" if mode == "stars" else "regraded_letter"
+                    # Get coordinates (convert Decimal to float for JSON serialization)
+                    lat = getattr(r, "latitude", None)
+                    lng = getattr(r, "longitude", None)
+                    latitude = float(lat) if lat is not None else None
+                    longitude = float(lng) if lng is not None else None
+                    
                     data.append(
                         {
                             "id": r.id,
@@ -139,6 +145,8 @@ class RestaurantSearchView(ListAPIView):
                             "display_value": display_value,
                             "original_agency_grade": original_grade,
                             "is_using_original_grade": is_using_original,
+                            "latitude": latitude,
+                            "longitude": longitude,
                             "latest_inspection": {
                                 "date": getattr(r, "latest_date", None),
                                 "grade": getattr(r, "latest_grade", "") or "",
